@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Object
+  - NonObject
+  - Ground
+  - StartPoint
+  - Flag
+  - Wall
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -15,15 +22,15 @@ TagManager:
   - 
   - PostProcessing
   - 
+  - Player
   - 
+  - Ground
+  - Wall
   - 
+  - Object
+  - NonObject
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Bullet
   - 
   - 
   - 
