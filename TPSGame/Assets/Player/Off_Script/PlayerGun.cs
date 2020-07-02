@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class PlayerGun : MonoBehaviour
 {
+    // オブジェクトのデータの格納場
+    ObjectData Odata;
+    // オブジェクトのデータ登録
+    public ObjectData SetOdata { set { this.Odata = value; } }
+
     // Start is called before the first frame update
     void Start() {
 

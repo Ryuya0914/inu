@@ -21,14 +21,27 @@ public class PlayerDirector : MonoBehaviour
     // フラグ *************************************************
     bool InputFlag = false;         // 入力
     bool MoveFlag = false;          // 移動
-    bool JumpFlag = false;          // ジャンプ
     bool CameraMoveFlag = false;    // カメラ回転
-    bool ShootFlag = false;         // 射撃
-    bool TransChangeFlag = false;   // 変身
+
+    // スクリプト *******************************************
+    [SerializeField] CameraController S_CameraCon;
+    [SerializeField] PlayerMove S_Pmove;
+    [SerializeField] PlayerGun S_Pgun;
+    [SerializeField] PlayerTransChange S_Ptranschange;
+    [SerializeField] PlayerFlag S_Pflag;
+    
+
+
 
     void Start()
     {
+        // データをそれぞれのスクリプトに読み込ませる
+        PlayerDataLoad();
+        ObjectDataLoad(Odata);
         
+// 後で消す
+        FlagChange(true);
+// ここまで後で消す
     }
 
 
@@ -36,33 +49,43 @@ public class PlayerDirector : MonoBehaviour
     {
         // ユーザからの入力を受け取り、移動とかのメソッドを呼び出す
         if(InputFlag) { // 入力可能かどうか
-            // 移動
-            if(MoveFlag) InputMove();
-            // ジャンプ
-            if(JumpFlag) InputJump();
-            // カメラ回転
-            if(CameraMoveFlag) InputCameraMove();
-            // 射撃
-            if(ShootFlag) InputShoot();
-            // 変身
-            if(TransChangeFlag) InputTransChage();
+            if(MoveFlag) {  // 行動可能かどうか
+                InputMove();        // 移動
+                InputJump();        // ジャンプ
+                InputShoot();       // 射撃
+                InputTransChage();  // 変身
+            }
+            if(CameraMoveFlag) { // カメラ回転可能かどうか
+                InputCameraMove();  // カメラ回転
+            }
         }
+        
     }
 
     // プレイヤのデータを読み込む (スタート時)
     void PlayerDataLoad() {
-
+        S_CameraCon.SetPdata = Pdata;
+        // カメラに追跡するプレイヤを登録
+        S_CameraCon.SetPlayerT = transform;
     }
     // オブジェクトのデータを読み込む (スタート時と変身したとき)
     void ObjectDataLoad(ObjectData objData) {
+        Odata = objData;
+        S_CameraCon.SetOdata = objData;
+    }
 
+    // プレイヤのフラグを一括変更
+    void FlagChange(bool f) {
+        InputFlag = f;
+        //MoveFlag = f;
+        CameraMoveFlag = f;
     }
 
     // 移動のメソッド呼び出し
     void InputMove() {
         float h = Input.GetAxis(hmoveB);        // 左右移動の入力
         float v = Input.GetAxis(vmoveB);        // 前後移動の入力
-        if(h != 0 || v != 0) {                 // 前後左右どこかに入力があるか
+        if(h != 0 || v != 0) {                  // 前後左右どこかに入力があるか
 // 移動のメソッド
         }
     }
@@ -74,10 +97,11 @@ public class PlayerDirector : MonoBehaviour
     }
     // カメラ回転のメソッド呼び出し
     void InputCameraMove() {
-        float h = Input.GetAxis(camerah);      // マウスの横方向の移動
-        float v = Input.GetAxis(camerav);      // マウスの縦方向の移動
+        S_CameraCon.CameraPosUpdate();          // カメラの位置更新
+        float h = Input.GetAxis(camerah);       // マウスの横方向の移動
+        float v = Input.GetAxis(camerav);       // マウスの縦方向の移動
         if(h != 0 || v != 0) {               // カメラ回転の入力があるか
-// カメラ回転のメソッド
+            S_CameraCon.CameraRotate(h, v);     // カメラを回転させる
         }
     }
     // 射撃のメソッド呼び出し
