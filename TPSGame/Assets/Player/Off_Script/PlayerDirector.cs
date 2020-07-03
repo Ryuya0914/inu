@@ -1,4 +1,4 @@
-﻿// ユーザの入力、パラメータの変更
+﻿// ユーザの入力、パラメータの変更 (Updateメソッドはここにしかない)
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,19 +65,22 @@ public class PlayerDirector : MonoBehaviour
     // プレイヤのデータを読み込む (スタート時)
     void PlayerDataLoad() {
         S_CameraCon.SetPdata = Pdata;
-        // カメラに追跡するプレイヤを登録
+        // それぞれのスクリプトにプレイヤを登録
         S_CameraCon.SetPlayerT = transform;
+        S_Pmove.SetPlayerT = transform;
+
     }
     // オブジェクトのデータを読み込む (スタート時と変身したとき)
     void ObjectDataLoad(ObjectData objData) {
         Odata = objData;
         S_CameraCon.SetOdata = objData;
+        S_Pmove.SetOdata = objData;
     }
 
     // プレイヤのフラグを一括変更
     void FlagChange(bool f) {
         InputFlag = f;
-        //MoveFlag = f;
+        MoveFlag = f;
         CameraMoveFlag = f;
     }
 
@@ -86,7 +89,7 @@ public class PlayerDirector : MonoBehaviour
         float h = Input.GetAxis(hmoveB);        // 左右移動の入力
         float v = Input.GetAxis(vmoveB);        // 前後移動の入力
         if(h != 0 || v != 0) {                  // 前後左右どこかに入力があるか
-// 移動のメソッド
+            S_Pmove.Move(h, v);
         }
     }
     // ジャンプのメソッド呼び出し

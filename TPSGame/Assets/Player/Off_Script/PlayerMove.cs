@@ -9,13 +9,19 @@ public class PlayerMove : MonoBehaviour
     ObjectData Odata;
     // オブジェクトのデータ登録
     public ObjectData SetOdata { set { this.Odata = value; } }
+    // 追跡するプレイヤ
+    Transform PlayerT;
+    // プレイヤのtransformを登録
+    public Transform SetPlayerT { set { this.PlayerT = value; } }
 
 
     // 移動
     public void Move(float h, float v) {
-        Vector3 vec = transform.forward;
-        vec.x *= v;
-
+        Vector3 vec = new Vector3(h, 0.0f, v);      // 入力さえれた値をまとめる
+        vec = vec.normalized;                       // ノーマライズ
+        Vector3 movepos = transform.forward * vec.z + transform.right * vec.x;  // 入力された値をプレイヤの向いている方向に合わせる
+        movepos = movepos.normalized * Odata.MoveSpeed * Time.deltaTime;        // 移動速度を設定
+        PlayerT.transform.position += movepos;      // ポジションの更新
     }
 
     // ジャンプ

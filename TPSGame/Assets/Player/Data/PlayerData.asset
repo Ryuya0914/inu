@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   TransChageCoolTime: 10
-  RotateSpeed: 5
+  RotateSpeed: 3
   CameraUpLimit: 45
   CameraDownLimit: -45
