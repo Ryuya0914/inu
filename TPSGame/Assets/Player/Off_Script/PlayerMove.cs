@@ -13,6 +13,10 @@ public class PlayerMove : MonoBehaviour
     Transform PlayerT;
     // プレイヤのtransformを登録
     public Transform SetPlayerT { set { this.PlayerT = value; } }
+    // プレイヤのrigidbody
+    Rigidbody PlayerR;
+    // プレイヤのrigidbodyを登録
+    public Rigidbody SetPlayerR { set { this.PlayerR = value; } }
 
 
     // 移動
@@ -24,9 +28,9 @@ public class PlayerMove : MonoBehaviour
         PlayerT.transform.position += movepos;      // ポジションの更新
     }
 
-    // ジャンプ
+    // ジャンプ(空中ジャンプは後で直す)
     public void Jump() {
-
+        PlayerR.velocity = transform.up * Odata.JumpPower;
     }
 
 }

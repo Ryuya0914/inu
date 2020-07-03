@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c3a8d019a618674180a047a25cd298c, type: 3}
-  m_Name: kariObjectData
+  m_Name: odata3
   m_EditorClassIdentifier: 
   ObjectNum: -1
   MaxLife: 100
   MaxAmmo: 10
   shootDamage: 50
   MoveSpeed: 5
-  JumpHeight: 5
+  JumpPower: 5
   ShootInterval: 1
   ShootRange: 10
-  camerapos: {x: 0, y: 1.3, z: 0}
+  camerapos: {x: 0, y: 1.5, z: 0}
