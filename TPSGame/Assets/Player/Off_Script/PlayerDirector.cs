@@ -68,6 +68,7 @@ public class PlayerDirector : MonoBehaviour
         // それぞれのスクリプトにプレイヤを登録
         S_CameraCon.SetPlayerT = transform;
         S_Pmove.SetPlayerT = transform;
+        S_Pmove.SetPlayerR = GetComponent<Rigidbody>();
 
     }
     // オブジェクトのデータを読み込む (スタート時と変身したとき)
@@ -95,7 +96,7 @@ public class PlayerDirector : MonoBehaviour
     // ジャンプのメソッド呼び出し
     void InputJump() {
         if(Input.GetKeyDown(jumpB)) {          // ジャンプの入力があるか
-// ジャンプのメソッド
+            S_Pmove.Jump();
         }
     }
     // カメラ回転のメソッド呼び出し
