@@ -5,7 +5,8 @@ using UnityEngine;
 
 [CreateAssetMenu]
 public class PlayerData : ScriptableObject {
-    // 変身のクールタイム,カメラの回転速度,カメラの上下の角度制限
-    public float TransChageCoolTime, RotateSpeed, CameraUpLimit, CameraDownLimit;
+    // 変身のクールタイム,カメラの回転速度,カメラの上下の角度制限,変身のRayの長さ
+    public float TransChageCoolTime, RotateSpeed, CameraUpLimit, CameraDownLimit, RayRange;
+    
 
 }

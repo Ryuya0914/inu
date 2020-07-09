@@ -9,11 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b16be0a078e0e9640a79340eb3be9672, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: 6c3a8d019a618674180a047a25cd298c, type: 3}
+  m_Name: odata_Cube
   m_EditorClassIdentifier: 
-  TransChageCoolTime: 10
-  RotateSpeed: 3
-  CameraUpLimit: 45
-  CameraDownLimit: -45
-  RayRange: 4.5
+  ObjectNum: -1
+  MaxLife: 100
+  MaxAmmo: 10
+  shootDamage: 50
+  MoveSpeed: 5
+  JumpPower: 5
+  ShootInterval: 1
+  ShootRange: 10
+  camerapos: {x: 0, y: 1.5, z: 0}
