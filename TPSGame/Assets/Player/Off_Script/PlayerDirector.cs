@@ -7,7 +7,7 @@ public class PlayerDirector : MonoBehaviour
 {
     [SerializeField] PlayerData Pdata;      // プレイヤデータ
     [SerializeField] ObjectData Odata;      // オブジェクトデータ
-
+    [SerializeField] GameObject myobj;      // プレイヤの初期オブジェクト
 
     // 操作**********************************************
     string hmoveB = "Horizontal";       // 左右移動
@@ -15,8 +15,8 @@ public class PlayerDirector : MonoBehaviour
     KeyCode jumpB = KeyCode.Space;      // ジャンプ
     string camerah = "Mouse X";         // カメラ横
     string camerav = "Mouse Y";         // カメラ縦
-    int shootB = 1;                     // 射撃
-    int transchangeB = 2;               // 変身
+    int shootB = 0;                     // 射撃
+    int transchangeB = 1;               // 変身
 
     // フラグ *************************************************
     bool InputFlag = false;         // 入力
@@ -29,17 +29,17 @@ public class PlayerDirector : MonoBehaviour
     [SerializeField] PlayerGun S_Pgun;
     [SerializeField] PlayerTransChange S_Ptranschange;
     [SerializeField] PlayerFlag S_Pflag;
+
     
 
 
-
-    void Start()
+    void Awake()
     {
         // データをそれぞれのスクリプトに読み込ませる
         PlayerDataLoad();
         ObjectDataLoad(Odata);
         
-// 後で消す
+// 後で消す 試合開始時にフラグをトゥルーにする
         FlagChange(true);
 // ここまで後で消す
     }
@@ -65,9 +65,12 @@ public class PlayerDirector : MonoBehaviour
     // プレイヤのデータを読み込む (スタート時)
     void PlayerDataLoad() {
         S_CameraCon.SetPdata = Pdata;
+        S_Ptranschange.SetPdata = Pdata;
         // それぞれのスクリプトにプレイヤを登録
         S_CameraCon.SetPlayerT = transform;
         S_Pmove.SetPlayerT = transform;
+        S_Ptranschange.SetCameraT = Camera.main.transform;
+        S_Ptranschange.RegisterObj(myobj);
         S_Pmove.SetPlayerR = GetComponent<Rigidbody>();
 
     }
@@ -117,7 +120,8 @@ public class PlayerDirector : MonoBehaviour
     // 変身のメソッド呼び出し
     void InputTransChage() {
         if(Input.GetMouseButtonDown(transchangeB)) {  // 変身の入力があるかどうか
-// 変身のメソッド
+            ObjectData _data = S_Ptranschange.TransChange();    // 変身させる
+            if (_data) ObjectDataLoad(_data);                   // オブジェクトデータ更新
         }
     }
 

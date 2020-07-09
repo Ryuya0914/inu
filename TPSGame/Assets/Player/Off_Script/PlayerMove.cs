@@ -9,7 +9,7 @@ public class PlayerMove : MonoBehaviour
     ObjectData Odata;
     // オブジェクトのデータ登録
     public ObjectData SetOdata { set { this.Odata = value; } }
-    // 追跡するプレイヤ
+    // プレイヤのtransform
     Transform PlayerT;
     // プレイヤのtransformを登録
     public Transform SetPlayerT { set { this.PlayerT = value; } }
