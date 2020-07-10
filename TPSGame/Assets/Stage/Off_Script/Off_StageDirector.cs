@@ -35,6 +35,7 @@ public class Off_StageDirector : MonoBehaviour
 
     void Start()
     {
+        //ステージの選択
         switch (stage_select.off_stage)
         {
             case 0:
@@ -54,6 +55,7 @@ public class Off_StageDirector : MonoBehaviour
                 L_obj_ = L_obj_2;
                 break;
         }
+
         //タグの種類ごとに配列にどーーーん
         S_objpos = GameObject.FindGameObjectsWithTag("Small_Item");
         M_objpos = GameObject.FindGameObjectsWithTag("Medium_Item");
@@ -68,6 +70,7 @@ public class Off_StageDirector : MonoBehaviour
         Instobj(L_obj_, L_objpos, L_rnd);
     }
 
+    //乱数作るやつ
     void objrnd()
     {
         S_rnd = new int[S_objpos.Length];
@@ -88,6 +91,7 @@ public class Off_StageDirector : MonoBehaviour
 
     }
 
+    //オブジェクト生成
     void Instobj(GameObject[] obj, GameObject[] objpos, int[] rnd)
     {
         for (int i = 0; i < objpos.Length; i++)
