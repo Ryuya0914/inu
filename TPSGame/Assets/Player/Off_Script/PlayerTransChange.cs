@@ -18,7 +18,7 @@ public class PlayerTransChange : MonoBehaviour
 
     // 変身するオブジェクトのリスト
     List<ObjectData> OdataList = new List<ObjectData>();
-    List<GameObject> ObjectList = new List<GameObject>();
+    [SerializeField] List<GameObject> ObjectList = new List<GameObject>();
 
     // 現在変身中のオブジェクトの番号(リストの中の番号)
     int mynum = 0;
@@ -34,7 +34,6 @@ public class PlayerTransChange : MonoBehaviour
             int listnum = SearchList(_data);    // リストの何番目にあるか探す
             if (listnum < 0) return null;
             ChangeObject(listnum);              // 実際に変身する
-            mynum = listnum;                    // 自身のオブジェクト番号更新
             return _data;
         }
         return null;
@@ -51,9 +50,9 @@ public class PlayerTransChange : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Pdata.RayRange, mask.value)) {
             _data = hit.collider.transform.parent.GetComponent<ObjectDirector>().GetOdata;   // オブジェクトデータを取得
         }
-// 後で消す rayを可視化
-        Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.red, Pdata.RayRange);
-// ここまで後で消す
+// rayを可視化
+//        Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.red, Pdata.RayRange);
+
 
         return _data;
     }
@@ -73,35 +72,13 @@ public class PlayerTransChange : MonoBehaviour
     void ChangeObject(int listnum) {
         ObjectList[mynum].SetActive(false);
         ObjectList[listnum].SetActive(true);
+        mynum = listnum;                    // 自身のオブジェクト番号更新
     }
 
-    // 変身オブジェクトの作成
-    public void AddObject(GameObject[] objs) {     // プレファブが入った配列を受け取る
-        for (int i = 1; i < objs.Length; i++) {
-            GameObject obj = CreateMyObj(objs[i]);  // 生成
-            RegisterObj(obj);                       // 登録
-        }
-    }
-
-
-    // instantiateメソッド
-    GameObject CreateMyObj(GameObject obj) {
-        GameObject newobj = Instantiate(obj);   // 生成
-        newobj.transform.parent = transform;    // プレイヤの子オブジェクトに設定
-        newobj.transform.localPosition = Vector3.zero;  // 初期位置をプレイヤの位置にセット
-        foreach(Transform childT in newobj.transform) {     // 全ての子オブジェクトのtagとlayerを変更
-            childT.gameObject.tag = "Player";                      // tagを変更
-            childT.gameObject.layer = gameObject.layer;            // layerを変更
-        }
-        newobj.tag = "Player";                      // tagを変更
-        newobj.layer = gameObject.layer;            // layerを変更
-        newobj.SetActive(false);                    // 非表示にしておく
-        return newobj;
-    }
 
     // 変身するオブジェクトをListに追加
-    public void RegisterObj(GameObject obj) {
-        ObjectList.Add(obj);                                        // オブジェクト格納
-        OdataList.Add(obj.GetComponent<ObjectDirector>().GetOdata); // オブジェクトデータ格納
+    public void RegisterObj() {
+        for (int i = 0; i < ObjectList.Count; i++)
+        OdataList.Add(ObjectList[i].GetComponent<ObjectDirector>().GetOdata); // オブジェクトデータ格納
     }
 }

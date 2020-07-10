@@ -7,7 +7,6 @@ public class PlayerDirector : MonoBehaviour
 {
     [SerializeField] PlayerData Pdata;      // プレイヤデータ
     [SerializeField] ObjectData Odata;      // オブジェクトデータ
-    [SerializeField] GameObject myobj;      // プレイヤの初期オブジェクト
 
     // 操作**********************************************
     string hmoveB = "Horizontal";       // 左右移動
@@ -24,7 +23,7 @@ public class PlayerDirector : MonoBehaviour
     bool CameraMoveFlag = false;    // カメラ回転
 
     // スクリプト *******************************************
-    [SerializeField] CameraController S_CameraCon;
+    CameraController S_CameraCon;
     [SerializeField] PlayerMove S_Pmove;
     [SerializeField] PlayerGun S_Pgun;
     [SerializeField] PlayerTransChange S_Ptranschange;
@@ -35,6 +34,8 @@ public class PlayerDirector : MonoBehaviour
 
     void Awake()
     {
+        // カメラを見つけてくる
+        S_CameraCon = Camera.main.transform.parent.GetComponent<CameraController>();
         // データをそれぞれのスクリプトに読み込ませる
         PlayerDataLoad();
         ObjectDataLoad(Odata);
@@ -70,19 +71,19 @@ public class PlayerDirector : MonoBehaviour
         S_CameraCon.SetPlayerT = transform;
         S_Pmove.SetPlayerT = transform;
         S_Ptranschange.SetCameraT = Camera.main.transform;
-        S_Ptranschange.RegisterObj(myobj);
         S_Pmove.SetPlayerR = GetComponent<Rigidbody>();
-
+        S_Ptranschange.RegisterObj();
     }
+
     // オブジェクトのデータを読み込む (スタート時と変身したとき)
     void ObjectDataLoad(ObjectData objData) {
         Odata = objData;
-        S_CameraCon.SetOdata = objData;
         S_Pmove.SetOdata = objData;
+        S_CameraCon.SetOdata = objData;
     }
 
     // プレイヤのフラグを一括変更
-    void FlagChange(bool f) {
+    public void FlagChange(bool f) {
         InputFlag = f;
         MoveFlag = f;
         CameraMoveFlag = f;
