@@ -23,9 +23,10 @@ public class CameraController : MonoBehaviour {
 
     // カメラの位置更新
     public void CameraPosUpdate() {
+        Camera.main.transform.localPosition = Odata.cameraOffsetZ;
         // カメラの中心の位置をプレイヤの位置に合わせて更新
         transform.position = PlayerT.position;
-        transform.position += Odata.camerapos;
+        transform.position += Odata.cameraOffsetY;
     }
 
     // カメラの角度計算

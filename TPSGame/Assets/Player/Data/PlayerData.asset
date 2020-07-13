@@ -17,3 +17,5 @@ MonoBehaviour:
   CameraUpLimit: 45
   CameraDownLimit: -45
   RayRange: 4.5
+  ShootRange: 20
+  BulletSpeed: 20
