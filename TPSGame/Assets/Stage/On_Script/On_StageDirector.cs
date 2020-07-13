@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Off_StageDirector : MonoBehaviour
+public class On_StageDirector : MonoBehaviour
 {
     GameObject[] S_obj_;
     GameObject[] M_obj_;

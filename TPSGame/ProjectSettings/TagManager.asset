@@ -11,6 +11,9 @@ TagManager:
   - Flag
   - Wall
   - Bullet
+  - Small_Item
+  - Medium_Item
+  - Large_Item
   layers:
   - Default
   - TransparentFX
