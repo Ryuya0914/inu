@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4000012134845870}
   - component: {fileID: 33000013043744982}
   - component: {fileID: 23000014119172864}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: band_1_open.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 33000010310048572}
   - component: {fileID: 23000013898206240}
   - component: {fileID: 5489144937736640055}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: cap_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 33000011612429338}
   - component: {fileID: 23000013509434766}
   - component: {fileID: 4610661240676871695}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: box_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 4000014122005678}
   - component: {fileID: 33000012181881354}
   - component: {fileID: 23000011005186308}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: band_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,8 +347,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000010038464148}
-  m_Layer: 0
-  m_Name: L_Gift3
+  - component: {fileID: 6854364129109048704}
+  m_Layer: 15
+  m_Name: L_Gift
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,3 +373,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6854364129109048704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000014260480130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: db95f61449fdb5a4d938dca7610db7da, type: 2}

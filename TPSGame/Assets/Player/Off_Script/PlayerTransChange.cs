@@ -21,7 +21,7 @@ public class PlayerTransChange : MonoBehaviour
     [SerializeField] List<GameObject> ObjectList = new List<GameObject>();
 
     // 現在変身中のオブジェクトの番号(リストの中の番号)
-    int mynum = 0;
+    [SerializeField] int mynum = 0;
 
     // layer
     [SerializeField] LayerMask mask;
@@ -45,21 +45,29 @@ public class PlayerTransChange : MonoBehaviour
         // rayを作成
         Ray ray = new Ray(CameraT.position, CameraT.forward);
 
+// rayを可視化
+        Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.red, Pdata.RayRange);
+
         RaycastHit hit;
         // rayの衝突判定
         if (Physics.Raycast(ray, out hit, Pdata.RayRange, mask.value)) {
-            _data = hit.collider.transform.parent.GetComponent<ObjectDirector>().GetOdata;   // オブジェクトデータを取得
+            GameObject hitObj = hit.collider.gameObject;
+            for (int i = 0; i < 3; i++) {
+                ObjectDirector director;
+                if(director = hitObj.GetComponent<ObjectDirector>()) { // オブジェクトデータを取得
+                    Debug.Log(111);
+                    return director.GetOdata;
+                } 
+                hitObj = hitObj.transform.parent.gameObject;    // オブジェクトデータが見つからなかったときは親オブジェクトを探す
+                i++;
+            }
         }
-// rayを可視化
-//        Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.red, Pdata.RayRange);
-
-
-        return _data;
+        return null;
     }
     
     // 変身するオブジェクトをListから探す
     int SearchList(ObjectData _data) {
-        for (int i = 1; i < OdataList.Count; i++) {     // リストからオブジェクトの場所を探す
+        for (int i = 0; i < OdataList.Count; i++) {     // リストからオブジェクトの場所を探す
             if(OdataList[i] == _data) {
                 return i;   // オブジェクトの場所を返す
             }

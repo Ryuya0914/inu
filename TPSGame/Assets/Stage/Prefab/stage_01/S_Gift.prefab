@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011253730322}
   - component: {fileID: 7237681771911381413}
-  m_Layer: 0
+  - component: {fileID: 1813400994903208764}
+  m_Layer: 15
   m_Name: S_Gift
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,6 +49,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &1813400994903208764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010238139128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 91da31322367d344d84d802c881790d2, type: 2}
 --- !u!1 &1000011116579472
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,7 +73,7 @@ GameObject:
   - component: {fileID: 4000010029050410}
   - component: {fileID: 33000010237346954}
   - component: {fileID: 23000011957610528}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: band_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +150,7 @@ GameObject:
   - component: {fileID: 4000011556094554}
   - component: {fileID: 33000012825014306}
   - component: {fileID: 23000011935611272}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: box_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +227,7 @@ GameObject:
   - component: {fileID: 4000012275231716}
   - component: {fileID: 33000012809119012}
   - component: {fileID: 23000010760288986}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: band_1_open
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +304,7 @@ GameObject:
   - component: {fileID: 4000010634831868}
   - component: {fileID: 33000012693347528}
   - component: {fileID: 23000011816599206}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: cap_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

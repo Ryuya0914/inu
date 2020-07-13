@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4000012607409770}
   - component: {fileID: 33000011339090932}
   - component: {fileID: 23000011614463080}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: cap_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4000012033805056}
   - component: {fileID: 33000010327851224}
   - component: {fileID: 23000012284429738}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: band_2_open
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 4000013808492404}
   - component: {fileID: 33000010036389608}
   - component: {fileID: 23000013863643520}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: box_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 4000011868189356}
   - component: {fileID: 33000011040239404}
   - component: {fileID: 23000012814466142}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: band_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,13 +318,14 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011568983350}
   - component: {fileID: 623815152118539532}
-  m_Layer: 0
+  - component: {fileID: 7323819099904678095}
+  m_Layer: 15
   m_Name: M_Gift
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4000011568983350
 Transform:
   m_ObjectHideFlags: 0
@@ -356,3 +357,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5915475, y: 1.0351353, z: 0.6178993}
   m_Center: {x: 0.0065879226, y: 0.5270357, z: -0.0021959543}
+--- !u!114 &7323819099904678095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012674062072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 5eb80a50162e59f40a30a25c8479df0f, type: 2}
