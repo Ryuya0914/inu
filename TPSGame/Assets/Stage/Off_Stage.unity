@@ -174,7 +174,6 @@ MonoBehaviour:
   - {fileID: 2426278600949577008, guid: 2c6fbc9e79edffd4e8039e5b4f75698d, type: 3}
   L_obj_1:
   - {fileID: 9193199801252609263, guid: f6af904dd23942d459a49e361bb8befc, type: 3}
-  - {fileID: 1310734645493494, guid: bfaa72d4c6cf98342859cba7c156709c, type: 3}
   - {fileID: 1000014260480130, guid: a4874b582284b594b930fed42c1671be, type: 3}
   - {fileID: 1098664898953688, guid: 362cdb3dbab8ccd4d8e4dd0f329cdd4e, type: 3}
   - {fileID: 2426278600949577008, guid: 2c6fbc9e79edffd4e8039e5b4f75698d, type: 3}
