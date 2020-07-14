@@ -21,6 +21,10 @@ public class CameraController : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;   // カーソルを動かないようにする
     }
 
+    public void StartAngleSet(float f) {
+        CameraRotate(f, 0f);
+    }
+
     // カメラの位置更新
     public void CameraPosUpdate() {
         Camera.main.transform.localPosition = Odata.cameraOffsetZ;

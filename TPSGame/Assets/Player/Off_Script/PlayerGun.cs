@@ -10,14 +10,13 @@ public class PlayerGun : MonoBehaviour
     // オブジェクトのデータ登録
     public ObjectData SetOdata { set { this.Odata = value; } }
 
-    // Start is called before the first frame update
-    void Start() {
+    [SerializeField] List<GameObject> bullets;
+    int bulletoffset = 0;
+
+    public void ShootBullet() {
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
+
 }
