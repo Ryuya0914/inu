@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: M_Gift
   m_EditorClassIdentifier: 
   ObjectNum: 4
-  MaxLife: 50
+  MaxLife: 180
   MaxAmmo: 10
-  shootDamage: 25
-  MoveSpeed: 5
-  JumpPower: 5
-  cameraOffsetY: {x: 0, y: 0.5, z: 0}
-  cameraOffsetZ: {x: 0, y: 0, z: -0.5}
+  shootDamage: 35
+  MoveSpeed: 3
+  JumpPower: 4
+  BulletOffset: 0
+  cameraOffsetY: {x: 0, y: 1, z: 0}
+  cameraOffsetZ: {x: 0, y: 0, z: -1}

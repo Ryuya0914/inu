@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: M_Gun02
   m_EditorClassIdentifier: 
   ObjectNum: 5
-  MaxLife: 0
-  MaxAmmo: 0
-  shootDamage: 0
-  MoveSpeed: 0
-  JumpPower: 0
-  ShootInterval: 0
-  ShootRange: 0
-  camerapos: {x: 0, y: 0, z: 0}
+  MaxLife: 180
+  MaxAmmo: 10
+  shootDamage: 35
+  MoveSpeed: 3
+  JumpPower: 4
+  BulletOffset: 0
+  cameraOffsetY: {x: 0, y: 0.7, z: 0}
+  cameraOffsetZ: {x: 0, y: 0, z: -1.5}
