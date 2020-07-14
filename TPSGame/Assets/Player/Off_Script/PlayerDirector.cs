@@ -72,7 +72,9 @@ public class PlayerDirector : MonoBehaviour
         S_Pmove.SetPlayerT = transform;
         S_Ptranschange.SetCameraT = Camera.main.transform;
         S_Pmove.SetPlayerR = GetComponent<Rigidbody>();
+
         S_Ptranschange.RegisterObj();
+        S_CameraCon.StartAngleSet(transform.rotation.y);
     }
 
     // オブジェクトのデータを読み込む (スタート時と変身したとき)
