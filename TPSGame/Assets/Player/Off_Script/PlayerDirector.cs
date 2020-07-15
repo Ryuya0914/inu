@@ -67,6 +67,7 @@ public class PlayerDirector : MonoBehaviour
     void PlayerDataLoad() {
         S_CameraCon.SetPdata = Pdata;
         S_Ptranschange.SetPdata = Pdata;
+        S_Pgun.SetPdata = Pdata;
         // それぞれのスクリプトにプレイヤを登録
         S_CameraCon.SetPlayerT = transform;
         S_Pmove.SetPlayerT = transform;
@@ -82,6 +83,8 @@ public class PlayerDirector : MonoBehaviour
         Odata = objData;
         S_Pmove.SetOdata = objData;
         S_CameraCon.SetOdata = objData;
+        S_Ptranschange.SetOdata = objData;
+        S_Pgun.SetOdata = objData;
     }
 
     // プレイヤのフラグを一括変更
@@ -117,7 +120,7 @@ public class PlayerDirector : MonoBehaviour
     // 射撃のメソッド呼び出し
     void InputShoot() {
         if(Input.GetMouseButtonDown(shootB)) {  // 射撃の入力があるかどうか
-// 射撃のメソッド
+            S_Pgun.ShootBullet();
         }
     }
     // 変身のメソッド呼び出し
