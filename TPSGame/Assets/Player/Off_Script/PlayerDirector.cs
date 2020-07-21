@@ -8,6 +8,8 @@ public class PlayerDirector : MonoBehaviour
     [SerializeField] PlayerData Pdata;      // プレイヤデータ
     [SerializeField] ObjectData Odata;      // オブジェクトデータ
 
+    public ObjectData SetOdata { set { this.Odata = value; } }
+
     // 操作**********************************************
     string hmoveB = "Horizontal";       // 左右移動
     string vmoveB = "Vertical";         // 前後移動
@@ -28,21 +30,27 @@ public class PlayerDirector : MonoBehaviour
     [SerializeField] PlayerGun S_Pgun;
     [SerializeField] PlayerTransChange S_Ptranschange;
     [SerializeField] PlayerFlag S_Pflag;
+    [SerializeField] PlayerLife S_Plife;
+    [SerializeField] PlayerAudio S_Paudio;
+    PlayerUI S_Pui;
 
-    
 
 
     void Awake()
     {
         // カメラを見つけてくる
         S_CameraCon = Camera.main.transform.parent.GetComponent<CameraController>();
+        // UIを見つけてくる
+        S_Pui = GameObject.Find("PlayerCanvas").GetComponent<PlayerUI>();
         // データをそれぞれのスクリプトに読み込ませる
         PlayerDataLoad();
         ObjectDataLoad(Odata);
-        
-// 後で消す 試合開始時にフラグをトゥルーにする
-        FlagChange(true);
-// ここまで後で消す
+
+        S_Ptranschange.ResetChangeFlag();   // 初期で変身できるようにする
+    }
+
+    void Start() {
+        PActive();      // 試合開始時に呼んでもらう
     }
 
 
@@ -76,6 +84,8 @@ public class PlayerDirector : MonoBehaviour
 
         S_Ptranschange.RegisterObj();
         S_CameraCon.StartAngleSet(transform.rotation.y);
+
+
     }
 
     // オブジェクトのデータを読み込む (スタート時と変身したとき)
@@ -83,15 +93,9 @@ public class PlayerDirector : MonoBehaviour
         Odata = objData;
         S_Pmove.SetOdata = objData;
         S_CameraCon.SetOdata = objData;
-        S_Ptranschange.SetOdata = objData;
-        S_Pgun.SetOdata = objData;
-    }
-
-    // プレイヤのフラグを一括変更
-    public void FlagChange(bool f) {
-        InputFlag = f;
-        MoveFlag = f;
-        CameraMoveFlag = f;
+        S_Ptranschange.SetOdata(objData);
+        S_Pgun.SetOdata(objData);
+        S_Plife.SetOdata(objData);
     }
 
     // 移動のメソッド呼び出し
@@ -120,7 +124,8 @@ public class PlayerDirector : MonoBehaviour
     // 射撃のメソッド呼び出し
     void InputShoot() {
         if(Input.GetMouseButtonDown(shootB)) {  // 射撃の入力があるかどうか
-            S_Pgun.ShootBullet();
+            int _ammo = S_Pgun.ShootBullet();   // 射撃する
+            AmmoUpdate(_ammo);                  // 弾薬のUI更新
         }
     }
     // 変身のメソッド呼び出し
@@ -130,5 +135,47 @@ public class PlayerDirector : MonoBehaviour
             if (_data) ObjectDataLoad(_data);                   // オブジェクトデータ更新
         }
     }
+
+    // プレイヤをアクティブにする
+    public void PActive() {
+        // 動けるようにする
+        InputFlag = true;
+        MoveFlag = true;
+        CameraMoveFlag = true;
+        // UIを表示
+        S_Pui.CursorSet();
+    }
+
+    // プレイヤを非アクティブにする
+    public void PNonActive() {
+        // 動かないようにする
+        InputFlag = false;
+        MoveFlag = false;
+        CameraMoveFlag = false;
+        // UIを非表示
+        S_Pui.CursorDel();
+    }
+
+    // 死亡時の処理
+    void PlayerDead() {
+        PNonActive();
+
+
+    }
+
+
+    // HPの更新
+    public void LifeUpdate(int life) {
+        S_Pui.LifeUIUpdate(life/100f);
+        if (life <= 0) {
+            PlayerDead();
+        }
+    }
+
+    // 弾薬の更新
+    public void AmmoUpdate(int ammo) {
+        S_Pui.AmmoUIUpdate(ammo / (Odata.MaxAmmo * 1.0f));
+    }
+
 
 }

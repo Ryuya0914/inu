@@ -16,11 +16,6 @@ public class CameraController : MonoBehaviour {
     // 現在のカメラの角度
     float Hangle = 0, Vangle = 0;
 
-    void Start() {
-        Cursor.visible = false;         // マウスカーソルを消す
-        Cursor.lockState = CursorLockMode.Locked;   // カーソルを動かないようにする
-    }
-
     public void StartAngleSet(float f) {
         CameraRotate(f, 0f);
     }

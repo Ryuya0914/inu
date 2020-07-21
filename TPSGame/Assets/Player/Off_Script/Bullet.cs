@@ -6,11 +6,15 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
 
-    void OnDisable() {
-        rb.velocity = Vector3.zero;
+    int damage = 0;
+
+    public int GetSetDamage { 
+        get { return this.damage; }
+        set { this.damage = value;} 
     }
 
-    // プレイヤ意外と接触した場合は消す
+
+    // プレイヤ以外と接触した場合は消す
     void OnTriggerEnter(Collider col) {
         if (col.tag != "Player") {
             gameObject.SetActive(false);

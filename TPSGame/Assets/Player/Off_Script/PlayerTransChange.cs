@@ -10,7 +10,11 @@ public class PlayerTransChange : MonoBehaviour
     ObjectData Odata;
     // プレイヤデータ、オブジェクトのデータ登録
     public PlayerData SetPdata { set { this.Pdata = value; } }
-    public ObjectData SetOdata { set { this.Odata = value; } }
+    public void SetOdata(ObjectData odata) {
+        Odata = odata;
+        Flag_reload = true;         // リロード中にする
+        StartCoroutine("ReloadChange"); // リロードのコルーチンを開始
+    }
     // カメラのtransform
     Transform CameraT;
     // カメラのtransformを登録
@@ -26,9 +30,12 @@ public class PlayerTransChange : MonoBehaviour
     // layer
     [SerializeField] LayerMask mask;
     
+    // 変身できるフラグ
+    bool Flag_reload = false;
 
     // 変身
     public ObjectData TransChange() {
+        if (Flag_reload) return null;
         ObjectData _data = GoRay();             // rayを飛ばして変身したいオブジェクトの取得
         if(_data && OdataList[mynum].ObjectNum != _data.ObjectNum) {     // rayでオブジェクトを取得できたか,現在のオブジェクトと同じじゃないか
             int listnum = SearchList(_data);    // リストの何番目にあるか探す
@@ -55,7 +62,6 @@ public class PlayerTransChange : MonoBehaviour
             for (int i = 0; i < 3; i++) {
                 ObjectDirector director;
                 if(director = hitObj.GetComponent<ObjectDirector>()) { // オブジェクトデータを取得
-                    Debug.Log(111);
                     return director.GetOdata;
                 } 
                 hitObj = hitObj.transform.parent.gameObject;    // オブジェクトデータが見つからなかったときは親オブジェクトを探す
@@ -88,5 +94,28 @@ public class PlayerTransChange : MonoBehaviour
     public void RegisterObj() {
         for (int i = 0; i < ObjectList.Count; i++)
         OdataList.Add(ObjectList[i].GetComponent<ObjectDirector>().GetOdata); // オブジェクトデータ格納
+    }
+
+
+
+    float checktime = 0.1f;
+    // 変身のリロード
+    public IEnumerator ReloadChange() {
+        float time = 0;
+        while(Flag_reload) {
+            if(time >= Pdata.TransChageCoolTime) { // 一定時間経過したら
+                ResetChangeFlag();
+                yield break;
+            }
+            yield return new WaitForSeconds(checktime);
+            time += checktime;
+        }
+
+        yield break;
+    }
+
+    // 変身できるようにする
+    public void ResetChangeFlag() {
+        Flag_reload = false;
     }
 }

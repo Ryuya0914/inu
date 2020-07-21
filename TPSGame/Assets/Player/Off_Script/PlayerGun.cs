@@ -10,9 +10,15 @@ public class PlayerGun : MonoBehaviour
     ObjectData Odata;
     // プレイヤデータ、オブジェクトのデータ登録
     public PlayerData SetPdata { set { this.Pdata = value; } }
-    public ObjectData SetOdata { set { this.Odata = value; } }
+    public void SetOdata(ObjectData odata) {
+        Odata = odata;
+        nowammo = odata.MaxAmmo;
+    }
 
-    //[SerializeField] List<Rigidbody> bullets;
+    [SerializeField] PlayerDirector S_Pdirector;
+
+    int nowammo = 0;    // 現在の弾薬数
+    
     [SerializeField] List<GameObject> bullets;
     int bulletoffset = 0;
 
@@ -21,7 +27,9 @@ public class PlayerGun : MonoBehaviour
         bullets[0].transform.parent.transform.parent = null;
     }
 
-    public void ShootBullet() {
+    public int ShootBullet() {
+        if (nowammo <= 0) return 0;
+
         Transform b = bullets[bulletoffset].transform;
 
         // 弾丸の初期化
@@ -33,6 +41,11 @@ public class PlayerGun : MonoBehaviour
         // 次の弾丸を指定
         bulletoffset++;
         if (bulletoffset >= bullets.Count) bulletoffset = 0;
+
+        nowammo--;  // 弾薬を消費
+        if (nowammo <= 0) Reload(); // 弾薬がなくなったらリロードする
+
+        return nowammo;
     }
 
 
@@ -47,19 +60,40 @@ public class PlayerGun : MonoBehaviour
 
     // 弾丸を発射する
     void Shoot(Rigidbody b) {
-        b.velocity = Vector3.zero;
-        b.gameObject.SetActive(true);
-        Vector3 force = b.transform.forward * Pdata.BulletSpeed;
-        b.AddForce(force);
+        b.velocity = Vector3.zero;                                      // 弾丸を停止させる
+        b.gameObject.SetActive(true);                                   // 弾丸を表示
+        b.GetComponent<Bullet>().GetSetDamage = Odata.shootDamage;      // 弾丸にダメージを付与
+        Vector3 force = b.transform.forward * Pdata.BulletSpeed;        // 飛ばす力を計算
+        b.AddForce(force);                                              // 飛ばす
     }
 
-
-    // 弾との当たり判定
-    void OnTriggerEnter(Collider col) {
-        if (col.tag == "Bullet") {
-            col.gameObject.SetActive(false);    // 弾を消す
+    // リロード
+    public void Reload() {
+        if (nowammo < Odata.MaxAmmo) {  // 弾薬が最大じゃなかったら
+            nowammo = 0;                        // 弾薬をなくす
+            S_Pdirector.AmmoUpdate(nowammo);    // UIの表示
+            StartCoroutine("ReloadAmmo");       // リロードのコルーチン呼び出し
         }
     }
 
+    float checktime = 0.1f;
+    IEnumerator ReloadAmmo() {
+        float time = 0;
+        while(nowammo <= 0) {
+            if (time >= Pdata.BulletReloadSpeed) {
+                ResetAmmo();
+                yield break;
+            }
+            yield return new WaitForSeconds(checktime);
+            time += checktime;
+        }
+        yield break;
+    }
+
+
+    public void ResetAmmo() {
+        nowammo = Odata.MaxAmmo;
+        S_Pdirector.AmmoUpdate(nowammo);
+    }
 
 }
