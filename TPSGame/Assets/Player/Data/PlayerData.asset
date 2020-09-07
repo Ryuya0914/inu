@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16be0a078e0e9640a79340eb3be9672, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  TransChageCoolTime: 10
+  TransChageCoolTime: 3
   RotateSpeed: 3
-  CameraUpLimit: 45
-  CameraDownLimit: -45
+  CameraUpLimit: 60
+  CameraDownLimit: -60
   RayRange: 4
   ShootRange: 20
-  BulletSpeed: 50
+  BulletSpeed: 2000
   BulletReloadSpeed: 2

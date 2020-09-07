@@ -12,7 +12,7 @@ public class PlayerGun : MonoBehaviour
     public PlayerData SetPdata { set { this.Pdata = value; } }
     public void SetOdata(ObjectData odata) {
         Odata = odata;
-        nowammo = odata.MaxAmmo;
+        ResetAmmo();
     }
 
     [SerializeField] PlayerDirector S_Pdirector;
@@ -28,15 +28,19 @@ public class PlayerGun : MonoBehaviour
     }
 
     public int ShootBullet() {
+        // 弾薬が無かったら発射しない
         if (nowammo <= 0) return 0;
 
         Transform b = bullets[bulletoffset].transform;
 
+        // 弾丸を飛ばす方向を求める
+        Vector3 bulletforward = GetVec();
+
         // 弾丸の初期化
-        Set(b.transform);
+        Set(b.transform, bulletforward);
 
         // 発射する
-        Shoot(b.GetComponent<Rigidbody>());
+        Shoot(b.GetComponent<Rigidbody>(), bulletforward);
 
         // 次の弾丸を指定
         bulletoffset++;
@@ -49,21 +53,47 @@ public class PlayerGun : MonoBehaviour
     }
 
 
+    // 弾丸を飛ばす方向を求める
+    Vector3 GetVec() {
+        Vector3 vec = Vector3.zero;
+        Transform cameraT = Camera.main.transform;
+        // rayを作成
+        Ray ray = new Ray(cameraT.position, cameraT.forward);
+
+        // rayを可視化
+        //Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.ShootRange, Color.red, 2.0f);
+
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, Pdata.ShootRange)) {
+            
+            vec = (cameraT.forward * hit.distance) + cameraT.position - gameObject.transform.position;
+            vec = vec.normalized;
+            //Debug.DrawRay(gameObject.transform.position, vec * Pdata.ShootRange, Color.green, 2.0f);
+
+        } else {
+            vec = Camera.main.transform.forward;
+        }
+
+
+
+        return vec;
+    }
+
+
     // 弾丸の発射位置と向きをセットする
-    void Set(Transform b) {
-        Vector3 pos = Camera.main.transform.position;
-        Vector3 vec = Camera.main.transform.eulerAngles;
+    void Set(Transform b, Vector3 vec) {
+        Vector3 pos = gameObject.transform.position;
         pos += vec * Odata.BulletOffset;
         b.position = pos;
-        b.eulerAngles = vec;
     }
 
     // 弾丸を発射する
-    void Shoot(Rigidbody b) {
+    void Shoot(Rigidbody b, Vector3 vec) {
         b.velocity = Vector3.zero;                                      // 弾丸を停止させる
         b.gameObject.SetActive(true);                                   // 弾丸を表示
         b.GetComponent<Bullet>().GetSetDamage = Odata.shootDamage;      // 弾丸にダメージを付与
-        Vector3 force = b.transform.forward * Pdata.BulletSpeed;        // 飛ばす力を計算
+        Vector3 force = vec * Pdata.BulletSpeed;        // 飛ばす力を計算
         b.AddForce(force);                                              // 飛ばす
     }
 

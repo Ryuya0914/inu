@@ -18,6 +18,6 @@ MonoBehaviour:
   shootDamage: 35
   MoveSpeed: 3
   JumpPower: 4
-  BulletOffset: 0
+  BulletOffset: 5
   cameraOffsetY: {x: 0, y: 0.7, z: 0}
   cameraOffsetZ: {x: 0, y: 0, z: -1.5}

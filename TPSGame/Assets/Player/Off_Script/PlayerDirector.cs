@@ -163,6 +163,10 @@ public class PlayerDirector : MonoBehaviour
 
     }
 
+    // リスポーン
+    void PlayerRespawn() {
+
+    }
 
     // HPの更新
     public void LifeUpdate(int life) {
