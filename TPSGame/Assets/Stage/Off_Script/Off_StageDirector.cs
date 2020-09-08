@@ -30,8 +30,6 @@ public class Off_StageDirector : MonoBehaviour
     [SerializeField] GameObject[] M_obj_2;
     [SerializeField] GameObject[] L_obj_2;
 
-
-
     int[] S_rnd;
     int[] M_rnd;
     int[] L_rnd;
