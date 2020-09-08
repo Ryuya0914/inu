@@ -20,3 +20,4 @@ MonoBehaviour:
   ShootRange: 20
   BulletSpeed: 2000
   BulletReloadSpeed: 2
+  RespawnTime: 3.5

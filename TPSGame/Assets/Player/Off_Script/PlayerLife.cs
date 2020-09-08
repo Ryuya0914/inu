@@ -26,6 +26,12 @@ public class PlayerLife : MonoBehaviour
         }
     }
 
+    // HP全回復
+    public void RecoveryHP() {
+        mylife = 100;
+        HPUpdate();
+    }
+
     // UIを変更
     void HPUpdate() {
         S_Pdirector.LifeUpdate(mylife);

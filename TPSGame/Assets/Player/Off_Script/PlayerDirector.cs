@@ -18,6 +18,7 @@ public class PlayerDirector : MonoBehaviour
     string camerav = "Mouse Y";         // カメラ縦
     int shootB = 0;                     // 射撃
     int transchangeB = 1;               // 変身
+    KeyCode respawn = KeyCode.Return;   // リスポーン
 
     // フラグ *************************************************
     bool InputFlag = false;         // 入力
@@ -35,7 +36,11 @@ public class PlayerDirector : MonoBehaviour
     PlayerUI S_Pui;
 
     // データ ************************************************
-    string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     0:自分側, 1:敵側
+    Vector3 StartPos;   // 初期位置(リスポーン地点)
+    int PState = 0;     // 0:ゲーム開始前, 1:ゲームプレイ時, 2:死亡時, 3:リスポーン中
+    string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
+    string[] ZoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
+    
     
 
     void Awake()
@@ -52,25 +57,31 @@ public class PlayerDirector : MonoBehaviour
     }
 
     void Start() {
+        StartPos = transform.position;  // リスポーン地点を設定
         PActive();      // 試合開始時に呼んでもらう
     }
 
 
     void Update()
     {
-        // ユーザからの入力を受け取り、移動とかのメソッドを呼び出す
-        if(InputFlag) { // 入力可能かどうか
-            if(MoveFlag) {  // 行動可能かどうか
-                InputMove();        // 移動
-                InputJump();        // ジャンプ
-                InputShoot();       // 射撃
-                InputTransChage();  // 変身
+        if(PState == 1) {
+            // ユーザからの入力を受け取り、移動とかのメソッドを呼び出す
+            if(InputFlag) { // 入力可能かどうか
+                if(MoveFlag) {  // 行動可能かどうか
+                    InputMove();        // 移動
+                    InputJump();        // ジャンプ
+                    InputShoot();       // 射撃
+                    InputTransChage();  // 変身
+                }
+                if(CameraMoveFlag) { // カメラ回転可能かどうか
+                    InputCameraMove();  // カメラ回転
+                }
             }
-            if(CameraMoveFlag) { // カメラ回転可能かどうか
-                InputCameraMove();  // カメラ回転
-            }
+
+        } else if (PState == 2) {
+            PlayerRespawn();
         }
-        
+
     }
 
     // プレイヤのデータを読み込む (スタート時)
@@ -141,11 +152,14 @@ public class PlayerDirector : MonoBehaviour
     // プレイヤをアクティブにする
     public void PActive() {
         // 動けるようにする
+        PState = 1;
         InputFlag = true;
         MoveFlag = true;
         CameraMoveFlag = true;
         // UIを表示
         S_Pui.CursorSet();
+        // 敵と味方の旗を教える
+        S_Pflag.NameSet(FlagName[0], FlagName[1], ZoneName[0], ZoneName[1]);
     }
 
     // プレイヤを非アクティブにする
@@ -160,14 +174,20 @@ public class PlayerDirector : MonoBehaviour
 
     // 死亡時の処理
     void PlayerDead() {
-        PNonActive();
-
-
+        PNonActive();           // 動けないようにする
+        S_Pflag.LostFlag();     // 旗を落とす
+        
+        PState = 2;
     }
 
     // リスポーン
     void PlayerRespawn() {
-
+        if(Input.GetKeyDown(respawn)) {
+            transform.position = StartPos;  // リスポーン位置に移動
+            S_Plife.RecoveryHP();           // HP回復
+            S_Pgun.ResetAmmo();             // 弾丸をもとに戻す
+            PActive();                      // 動けるようにする
+        }
     }
 
     // HPの更新
