@@ -34,7 +34,9 @@ public class PlayerDirector : MonoBehaviour
     [SerializeField] PlayerAudio S_Paudio;
     PlayerUI S_Pui;
 
-
+    // データ ************************************************
+    string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     0:自分側, 1:敵側
+    
 
     void Awake()
     {
