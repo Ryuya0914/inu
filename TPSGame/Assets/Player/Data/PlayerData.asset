@@ -18,6 +18,6 @@ MonoBehaviour:
   CameraDownLimit: -60
   RayRange: 4
   ShootRange: 20
-  BulletSpeed: 2000
+  BulletSpeed: 1000
   BulletReloadSpeed: 2
   RespawnTime: 3.5
