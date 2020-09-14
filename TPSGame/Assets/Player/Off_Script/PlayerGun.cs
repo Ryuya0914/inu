@@ -64,18 +64,20 @@ public class PlayerGun : MonoBehaviour
         //Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.ShootRange, Color.red, 2.0f);
 
         RaycastHit hit;
+        // 弾を発射する位置
+        Vector3 startpos = new Vector3(transform.forward.x * Odata.BulletOffset.z, Odata.BulletOffset.y, transform.forward.z * Odata.BulletOffset.z);
 
         if(Physics.Raycast(ray, out hit, Pdata.ShootRange)) {
-            
-            vec = (cameraT.forward * hit.distance) + cameraT.position - gameObject.transform.position;
-            vec = vec.normalized;
+            // 弾を発射する位置から弾を着弾させたい位置までのベクトル
+            vec = (cameraT.forward * hit.distance) + cameraT.position - (gameObject.transform.position + startpos);
             //Debug.DrawRay(gameObject.transform.position, vec * Pdata.ShootRange, Color.green, 2.0f);
 
         } else {
-            vec = Camera.main.transform.forward;
+            // カメラの向いている方向　×　射程 - 弾の発射位置
+            vec = (Camera.main.transform.forward * Pdata.ShootRange) - startpos;
         }
 
-
+        vec = vec.normalized;
 
         return vec;
     }
@@ -84,7 +86,9 @@ public class PlayerGun : MonoBehaviour
     // 弾丸の発射位置と向きをセットする
     void Set(Transform b, Vector3 vec) {
         Vector3 pos = gameObject.transform.position;
-        pos += vec * Odata.BulletOffset;
+        // 弾を発射する位置
+        Vector3 startpos = new Vector3(transform.forward.x * Odata.BulletOffset.z, Odata.BulletOffset.y, transform.forward.z * Odata.BulletOffset.z);
+        pos += startpos;
         b.position = pos;
     }
 

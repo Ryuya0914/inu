@@ -48,7 +48,6 @@ public class PlayerTransChange : MonoBehaviour
 
     // rayを飛ばす
     ObjectData GoRay() {
-        ObjectData _data = null;    // rayで取得したオブジェクトデータをしまう変数
         // rayを作成
         Ray ray = new Ray(CameraT.position, CameraT.forward);
 
