@@ -115,9 +115,7 @@ public class PlayerDirector : MonoBehaviour
     void InputMove() {
         float h = Input.GetAxis(hmoveB);        // 左右移動の入力
         float v = Input.GetAxis(vmoveB);        // 前後移動の入力
-        if(h != 0 || v != 0) {                  // 前後左右どこかに入力があるか
-            S_Pmove.Move(h, v);
-        }
+        S_Pmove.Move(h, v);
     }
     // ジャンプのメソッド呼び出し
     void InputJump() {

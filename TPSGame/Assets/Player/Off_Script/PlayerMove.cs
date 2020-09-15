@@ -21,16 +21,22 @@ public class PlayerMove : MonoBehaviour
 
     // 移動
     public void Move(float h, float v) {
-        Vector3 vec = new Vector3(h, 0.0f, v);      // 入力さえれた値をまとめる
-        vec = vec.normalized;                       // ノーマライズ
-        Vector3 movepos = transform.forward * vec.z + transform.right * vec.x;  // 入力された値をプレイヤの向いている方向に合わせる
-        movepos = movepos.normalized * Odata.MoveSpeed * Time.deltaTime;        // 移動速度を設定
-        PlayerT.transform.position += movepos;      // ポジションの更新
+        if (h != 0 || v != 0) {
+            Vector3 vec = new Vector3(h, 0.0f, v);      // 入力さえれた値をまとめる
+            vec = vec.normalized;                       // ノーマライズ
+            Vector3 movevec = transform.forward * vec.z + transform.right * vec.x;  // 入力された値をプレイヤの向いている方向に合わせる
+            movevec = movevec.normalized * Odata.MoveSpeed;        // 移動速度を設定
+            movevec.y = PlayerR.velocity.y;
+            PlayerR.velocity = movevec;     // 重力で移動する
+        } else {
+            PlayerR.velocity = new Vector3(0f, PlayerR.velocity.y, 0f); // 入力が無かったら移動しないようにする
+        }
     }
 
     // ジャンプ(空中ジャンプは後で直す)
     public void Jump() {
-        PlayerR.velocity = transform.up * Odata.JumpPower;
+        Vector3 v = PlayerR.velocity;
+        PlayerR.velocity = new Vector3(v.x, Odata.JumpPower, v.z);
     }
 
 }
