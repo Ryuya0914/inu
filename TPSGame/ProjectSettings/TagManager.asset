@@ -18,6 +18,8 @@ TagManager:
   - Flag_2
   - Zone_1
   - Zone_2
+  - UnderGround
+  - PlayerLeg
   layers:
   - Default
   - TransparentFX
@@ -30,7 +32,7 @@ TagManager:
   - PostProcessing
   - 
   - Player
-  - 
+  - PlayerLeg
   - Ground
   - Wall
   - 

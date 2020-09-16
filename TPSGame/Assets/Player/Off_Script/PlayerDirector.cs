@@ -24,6 +24,7 @@ public class PlayerDirector : MonoBehaviour
     bool InputFlag = false;         // 入力
     bool MoveFlag = false;          // 移動
     bool CameraMoveFlag = false;    // カメラ回転
+    public bool JumpFlag = true;
 
     // スクリプト *******************************************
     CameraController S_CameraCon;
@@ -37,7 +38,7 @@ public class PlayerDirector : MonoBehaviour
 
     // データ ************************************************
     Vector3 StartPos;   // 初期位置(リスポーン地点)
-    int PState = 0;     // 0:ゲーム開始前, 1:ゲームプレイ時, 2:死亡時, 3:リスポーン中
+    int PState = 0;     // 0:ゲーム開始前, 1:ゲームプレイ時, 2:死亡時, 3:リスポーン中, 4:メニュー開いたとき
     string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
     string[] ZoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
     
@@ -58,6 +59,7 @@ public class PlayerDirector : MonoBehaviour
 
     void Start() {
         StartPos = transform.position;  // リスポーン地点を設定
+        S_Pflag.NameSet(FlagName[0], FlagName[1], ZoneName[0], ZoneName[1]);        // 敵と味方の旗を教える
         PActive();      // 試合開始時に呼んでもらう
     }
 
@@ -65,6 +67,10 @@ public class PlayerDirector : MonoBehaviour
     void Update()
     {
         if(PState == 1) {
+            // メニュー画面開きたいとき
+            if(Input.GetKeyDown(KeyCode.Escape)) {
+                PNonActive();
+            }
             // ユーザからの入力を受け取り、移動とかのメソッドを呼び出す
             if(InputFlag) { // 入力可能かどうか
                 if(MoveFlag) {  // 行動可能かどうか
@@ -80,8 +86,12 @@ public class PlayerDirector : MonoBehaviour
 
         } else if (PState == 2) {
             PlayerRespawn();
+        } else if (PState == 4) {   // メニュー画面閉じる用
+            if (Input.GetKeyDown(KeyCode.Escape))
+                PActive();
         }
-
+        
+        JumpFlag = false;   // 無限ジャンプ防ぐため
     }
 
     // プレイヤのデータを読み込む (スタート時)
@@ -119,7 +129,7 @@ public class PlayerDirector : MonoBehaviour
     }
     // ジャンプのメソッド呼び出し
     void InputJump() {
-        if(Input.GetKeyDown(jumpB)) {          // ジャンプの入力があるか
+        if(Input.GetKeyDown(jumpB) && JumpFlag) {   // ジャンプの入力があるか
             S_Pmove.Jump();
         }
     }
@@ -156,8 +166,6 @@ public class PlayerDirector : MonoBehaviour
         CameraMoveFlag = true;
         // UIを表示
         S_Pui.CursorSet();
-        // 敵と味方の旗を教える
-        S_Pflag.NameSet(FlagName[0], FlagName[1], ZoneName[0], ZoneName[1]);
     }
 
     // プレイヤを非アクティブにする
@@ -168,6 +176,7 @@ public class PlayerDirector : MonoBehaviour
         CameraMoveFlag = false;
         // UIを非表示
         S_Pui.CursorDel();
+        PState = 4;
     }
 
     // 死亡時の処理

@@ -42,7 +42,10 @@ public class PlayerLife : MonoBehaviour
         if(col.tag == "Bullet") {
             DecreaseHP(col.gameObject.GetComponent<Bullet>().GetSetDamage);
             col.gameObject.SetActive(false);    // 弾を消す
+        } else if (col.tag == "UnderGround") {  // 奈落に落ちた時死ぬ機能
+            DecreaseHP(1000);
         }
+
     }
 
 
