@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 2821417758271094006}
   - component: {fileID: 6815978764970118063}
   - component: {fileID: 6926333691761232562}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GW_knight
-  m_TagString: Untagged
+  m_TagString: NonObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

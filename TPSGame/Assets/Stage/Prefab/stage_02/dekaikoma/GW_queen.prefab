@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 4655181565641724717}
   - component: {fileID: 7774589934459157442}
   - component: {fileID: 142429380865123629}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GW_queen
-  m_TagString: Untagged
+  m_TagString: NonObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

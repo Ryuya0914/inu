@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4034121092293694567}
   - component: {fileID: 5831083114966855681}
   - component: {fileID: 2622402795582794253}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: L_queen1
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

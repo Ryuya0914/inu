@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 900297638163905690}
   - component: {fileID: 6962280808092690254}
   - component: {fileID: 2854423117580001270}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GB_rook1
-  m_TagString: Untagged
+  m_TagString: NonObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

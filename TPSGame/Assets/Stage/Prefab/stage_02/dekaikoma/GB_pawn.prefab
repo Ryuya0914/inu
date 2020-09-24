@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7489279043954966211}
   - component: {fileID: 6174159903422238906}
   - component: {fileID: 3134557230254856175}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GB_pawn
-  m_TagString: Untagged
+  m_TagString: NonObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7952547317139030135}
   - component: {fileID: 2565775609068744985}
   - component: {fileID: 5579735335015312364}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: L_elephant1
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
