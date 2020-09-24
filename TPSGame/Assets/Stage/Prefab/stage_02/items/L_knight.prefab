@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2880411446626870596}
   - component: {fileID: 9180173230136173639}
   - component: {fileID: 937811451202348957}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: L_knight
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
