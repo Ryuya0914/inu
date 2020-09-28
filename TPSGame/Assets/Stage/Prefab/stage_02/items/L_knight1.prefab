@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3964398398700654555}
   - component: {fileID: 6590989047132222134}
   - component: {fileID: 5640811315500531939}
+  - component: {fileID: 3699488637230770960}
   m_Layer: 15
   m_Name: L_knight1
   m_TagString: Object
@@ -106,3 +107,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2583108, y: 0.18291712, z: 1.2642422}
   m_Center: {x: 0, y: 0.027944803, z: 0.0010170937}
+--- !u!114 &3699488637230770960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3964398398698459419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: f1171ffae269eb04c8ab9b4bdefb0c83, type: 2}

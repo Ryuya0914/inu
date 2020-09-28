@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1231050069058603296}
   - component: {fileID: 1260140917670652820}
   - component: {fileID: 1247658894740703826}
-  - component: {fileID: 4630135841989393651}
+  - component: {fileID: 6590317158408995617}
   - component: {fileID: 5834302979902276142}
   m_Layer: 22
   m_Name: Flag_2
@@ -79,8 +79,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &4630135841989393651
-SphereCollider:
+--- !u!136 &6590317158408995617
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -89,8 +89,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 0.2941193
+  m_Height: 0.58823854
+  m_Direction: 1
   m_Center: {x: -0.000000014901161, y: 0, z: 0}
 --- !u!114 &5834302979902276142
 MonoBehaviour:
@@ -106,4 +107,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   Mren: {fileID: 1247658894740703826}
-  Scol: {fileID: 4630135841989393651}
+  Ccol: {fileID: 6590317158408995617}

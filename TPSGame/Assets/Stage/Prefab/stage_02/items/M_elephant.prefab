@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8798087552314275397}
   - component: {fileID: 6704330071668802805}
   - component: {fileID: 7925074206847125259}
+  - component: {fileID: 8852729715345864858}
   m_Layer: 15
   m_Name: M_elephant
   m_TagString: Object
@@ -106,3 +107,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2600443, y: 0.28056097, z: 1.2583108}
   m_Center: {x: 0.00086677074, y: 0.07676673, z: 0}
+--- !u!114 &8852729715345864858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798087552312076421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 8b0bdc5069710814d96e0f3ee9aeed0b, type: 2}

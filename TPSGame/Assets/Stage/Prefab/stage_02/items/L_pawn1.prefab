@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2301042047376632042}
   - component: {fileID: 7849097677426189329}
   - component: {fileID: 7942623522817475215}
+  - component: {fileID: 4378478782861487825}
   m_Layer: 15
   m_Name: L_pawn1
   m_TagString: Object
@@ -106,3 +107,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2583108, y: 0.22759831, z: 1.2583108}
   m_Center: {x: 0, y: 0.0502854, z: 0}
+--- !u!114 &4378478782861487825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2301042047378634282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 0d9ffbcceaf01274aa786367522ffdaa, type: 2}

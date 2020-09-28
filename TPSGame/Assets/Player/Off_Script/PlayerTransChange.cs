@@ -52,11 +52,12 @@ public class PlayerTransChange : MonoBehaviour
         Ray ray = new Ray(CameraT.position, CameraT.forward);
 
 // rayを可視化
-        Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.red, Pdata.RayRange);
+        //Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.red, Pdata.RayRange);
 
         RaycastHit hit;
         // rayの衝突判定
         if (Physics.Raycast(ray, out hit, Pdata.RayRange, mask.value)) {
+            if (hit.collider.tag != "Object") return null;  // 当たったオブジェクトが変身できるやつじゃなかったら変身しない
             GameObject hitObj = hit.collider.gameObject;
             for (int i = 0; i < 3; i++) {
                 ObjectDirector director;
