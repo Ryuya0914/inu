@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2878105283109741447}
   - component: {fileID: 872252416774679200}
   - component: {fileID: 2106306540723436548}
+  - component: {fileID: 4075966074779247706}
   m_Layer: 15
   m_Name: S_rook
   m_TagString: Object
@@ -106,3 +107,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2567136, y: 0.26821172, z: 1.2634742}
   m_Center: {x: 0.0025258064, y: 0.07173842, z: -0.000893116}
+--- !u!114 &4075966074779247706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2878105283107552583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 805b82fa10170f648b096e0cd81750b5, type: 2}

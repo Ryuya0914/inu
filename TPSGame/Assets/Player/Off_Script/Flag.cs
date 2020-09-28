@@ -11,7 +11,7 @@ public class Flag : MonoBehaviour
     // 見た目
     [SerializeField] MeshRenderer Mren;
     // コライダ
-    [SerializeField] SphereCollider Scol;
+    [SerializeField] CapsuleCollider Ccol;
 
 
     void Start() {
@@ -42,7 +42,7 @@ public class Flag : MonoBehaviour
     // 見た目と当たり判定のオンオフ切り替え
     void EnableOnOff(bool b) {
         Mren.enabled = b;
-        Scol.enabled = b;
+        Ccol.enabled = b;
     }
 
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8821809910071105882}
   - component: {fileID: 4832903962475273506}
   - component: {fileID: 5454568161546831839}
+  - component: {fileID: 5146031819441518375}
   m_Layer: 15
   m_Name: S_queen
   m_TagString: Object
@@ -106,3 +107,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2583108, y: 0.17307174, z: 1.2583108}
   m_Center: {x: 0, y: 0.023022115, z: 0}
+--- !u!114 &5146031819441518375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8821809910073100186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 26d18c2aa43524b4a8c0c25cca1957b9, type: 2}
