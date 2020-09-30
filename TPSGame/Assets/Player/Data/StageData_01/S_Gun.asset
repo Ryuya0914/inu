@@ -19,5 +19,5 @@ MonoBehaviour:
   MoveSpeed: 4
   JumpPower: 5
   cameraOffsetY: {x: 0, y: 0.5, z: 0}
-  cameraOffsetZ: {x: 0, y: 0, z: -1}
+  cameraOffsetZ: {x: 0, y: 0, z: -0.5}
   BulletOffset: {x: 0, y: 0.22, z: 0.62}

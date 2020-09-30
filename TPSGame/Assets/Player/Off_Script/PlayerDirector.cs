@@ -112,7 +112,7 @@ public class PlayerDirector : MonoBehaviour
         S_Pmove.SetPlayerR = GetComponent<Rigidbody>();
 
         S_Ptranschange.RegisterObj();
-        S_CameraCon.StartAngleSet(transform.rotation.y);
+        S_CameraCon.StartAngleSet(transform.eulerAngles.y);
 
 
     }

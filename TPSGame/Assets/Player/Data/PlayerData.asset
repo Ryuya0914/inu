@@ -16,7 +16,7 @@ MonoBehaviour:
   RotateSpeed: 1
   CameraUpLimit: 60
   CameraDownLimit: -60
-  RayRange: 5
+  RayRange: 2.5
   ShootRange: 20
   BulletSpeed: 1000
   BulletReloadSpeed: 2

@@ -57,11 +57,13 @@ public class PlayerGun : MonoBehaviour
     Vector3 GetVec() {
         Vector3 vec = Vector3.zero;
         Transform cameraT = Camera.main.transform;
+        // rayのスタート地点
+        Vector3 raypos = cameraT.position + (cameraT.forward * -Odata.cameraOffsetZ.z * 2.2f);
         // rayを作成
-        Ray ray = new Ray(cameraT.position, cameraT.forward);
+        Ray ray = new Ray(raypos, cameraT.forward);
 
         // rayを可視化
-        //Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.ShootRange, Color.red, 2.0f);
+        //Debug.DrawRay(raypos, ray.direction.normalized * Pdata.ShootRange, Color.red, 2.0f);
 
         RaycastHit hit;
         // 弾を発射する位置
@@ -69,7 +71,7 @@ public class PlayerGun : MonoBehaviour
 
         if(Physics.Raycast(ray, out hit, Pdata.ShootRange)) {
             // 弾を発射する位置から弾を着弾させたい位置までのベクトル
-            vec = (cameraT.forward * hit.distance) + cameraT.position - (gameObject.transform.position + startpos);
+            vec = (cameraT.forward * hit.distance) + raypos - (gameObject.transform.position + startpos);
             //Debug.DrawRay(gameObject.transform.position, vec * Pdata.ShootRange, Color.green, 2.0f);
 
         } else {

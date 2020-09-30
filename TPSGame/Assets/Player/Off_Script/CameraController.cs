@@ -19,7 +19,9 @@ public class CameraController : MonoBehaviour {
     float Phangle = 0, Pvangle = 0;
 
     public void StartAngleSet(float f) {
-        CameraRotate(f, 0f, true);
+        Hangle = f;
+        Phangle = f;
+        CameraRotate(0f, 0f, true);
     }
 
     // カメラの位置更新
