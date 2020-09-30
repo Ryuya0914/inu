@@ -39,13 +39,25 @@ public class CameraController : MonoBehaviour {
         if(b) {
             float num = Phangle - Hangle;    // プレイヤとカメラの方向の差分
             float _speed = Pdata.RotateSpeed * 720f * Time.deltaTime; // カメラの回転速度
-            if(Mathf.Abs(num) < _speed) {
+            if(Mathf.Abs(num) < _speed) {   // プレイヤとカメラの向いている方向が近かったら
                 Hangle = Phangle;
-            } else {
-                if(num < 0)
-                    Hangle -= _speed;
-                else
-                    Hangle += _speed;
+            } else {                        // プレイヤとカメラの向いている方向が離れていたら
+                if(Phangle < 0) {       // プレイヤの向いている方向(world)が0度未満だったら
+                    if ((0 + Phangle) <= Hangle && Hangle < (180 + Phangle)) // カメラの方向がプレイヤから見て右だったら
+                        Hangle -= _speed;
+                    else
+                        Hangle += _speed;
+                } else {
+                    if ((-180 + Phangle) < Hangle && Hangle <= (0 + Phangle)) // カメラの方向がプレイヤから見て左だったら
+                        Hangle += _speed;
+                    else
+                        Hangle -= _speed;
+                }
+                // 左右の角度の数値の調整
+                if(Hangle >= 180f)
+                    Hangle -= 360f;
+                else if(Hangle < -180f)
+                    Hangle += 360f;
             }
             if(num == 0) {
 
