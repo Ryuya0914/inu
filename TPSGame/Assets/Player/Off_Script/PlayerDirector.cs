@@ -17,8 +17,10 @@ public class PlayerDirector : MonoBehaviour
     string camerah = "Mouse X";         // カメラ横
     string camerav = "Mouse Y";         // カメラ縦
     int shootB = 0;                     // 射撃
-    int transchangeB = 1;               // 変身
+    int transchangeB = 1;               // 変身 
     KeyCode respawn = KeyCode.Return;   // リスポーン
+    KeyCode reloadB = KeyCode.R;        // リロード
+    KeyCode cameraRotateB = KeyCode.LeftShift;    // カメラだけ回転する 
 
     // フラグ *************************************************
     bool InputFlag = false;         // 入力
@@ -38,7 +40,7 @@ public class PlayerDirector : MonoBehaviour
 
     // データ ************************************************
     Vector3 StartPos;   // 初期位置(リスポーン地点)
-    int PState = 0;     // 0:ゲーム開始前, 1:ゲームプレイ時, 2:死亡時, 3:リスポーン中, 4:メニュー開いたとき
+    int PState = 0;     // 0:ゲーム開始前, 1:ゲームプレイ時, 2:死亡時, 3:リスポーン中, 4:メニュー開いたとき 5:カメラだけ回転するとき
     string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
     string[] ZoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
     
@@ -73,6 +75,9 @@ public class PlayerDirector : MonoBehaviour
             }
             // ユーザからの入力を受け取り、移動とかのメソッドを呼び出す
             if(InputFlag) { // 入力可能かどうか
+                if(Input.GetKey(cameraRotateB)) {
+                    MoveFlag = false;
+                }
                 if(MoveFlag) {  // 行動可能かどうか
                     InputMove();        // 移動
                     InputJump();        // ジャンプ
@@ -80,8 +85,9 @@ public class PlayerDirector : MonoBehaviour
                     InputTransChage();  // 変身
                 }
                 if(CameraMoveFlag) { // カメラ回転可能かどうか
-                    InputCameraMove();  // カメラ回転
+                    InputCameraMove(MoveFlag);  // カメラ回転
                 }
+                MoveFlag = true;
             }
 
         } else if (PState == 2) {
@@ -134,17 +140,18 @@ public class PlayerDirector : MonoBehaviour
         }
     }
     // カメラ回転のメソッド呼び出し
-    void InputCameraMove() {
+    void InputCameraMove(bool f) {
         S_CameraCon.CameraPosUpdate();          // カメラの位置更新
         float h = Input.GetAxis(camerah);       // マウスの横方向の移動
         float v = Input.GetAxis(camerav);       // マウスの縦方向の移動
-        if(h != 0 || v != 0) {               // カメラ回転の入力があるか
-            S_CameraCon.CameraRotate(h, v);     // カメラを回転させる
-        }
+        S_CameraCon.CameraRotate(h, v, f);     // カメラを回転させる
+        
     }
     // 射撃のメソッド呼び出し
     void InputShoot() {
-        if(Input.GetMouseButtonDown(shootB)) {  // 射撃の入力があるかどうか
+        if(Input.GetKeyDown(reloadB)) {
+            S_Pgun.Reload();    // リロードする
+        } else if(Input.GetMouseButtonDown(shootB)) {  // 射撃の入力があるかどうか
             int _ammo = S_Pgun.ShootBullet();   // 射撃する
             AmmoUpdate(_ammo);                  // 弾薬のUI更新
         }
