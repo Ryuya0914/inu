@@ -13,6 +13,9 @@ public class PlayerFlag : MonoBehaviour
     GameObject myFlag = null;
     // エフェクト    1:旗取得時, 2:旗もっているとき
     [SerializeField] EffectController[] S_effect;
+    // 旗を拾えるかフラグ
+    public bool FlagGetFlag = true;
+
 
     // 敵と味方の旗・陣地のタグの名前を設定
     public void NameSet(string f1, string f2, string z1, string z2) {
@@ -25,6 +28,7 @@ public class PlayerFlag : MonoBehaviour
 
     // 旗を取得
     void GetFlag(GameObject f) {
+        if (!FlagGetFlag) return;
         // エフェクト再生
         S_effect[0].EffectPlay(transform.position);
         S_effect[1].EffectPlay(Vector3.zero);
@@ -43,7 +47,7 @@ public class PlayerFlag : MonoBehaviour
             myFlag.GetComponent<Flag>().Drop(transform.position);
 
             myFlag = null;
-
+            FlagGetFlag = false;
         }
     }
 
@@ -89,6 +93,10 @@ public class PlayerFlag : MonoBehaviour
                     GetFlag(col.gameObject);
             }
         }
+    }
+
+    IEnumerator GetInterval() {
+        yield return new WaitForSeconds(3.0f);
     }
 
 }
