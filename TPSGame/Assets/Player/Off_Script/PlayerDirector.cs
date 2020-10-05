@@ -199,6 +199,7 @@ public class PlayerDirector : MonoBehaviour
     // リスポーン
     void PlayerRespawn() {
         if(Input.GetKeyDown(respawn)) {
+            S_Pflag.FlagGetFlag = true;     // 旗を拾えるようにする
             transform.position = StartPos;  // リスポーン位置に移動
             S_Plife.RecoveryHP();           // HP回復
             S_Pgun.ResetAmmo();             // 弾丸をもとに戻す
