@@ -37,6 +37,7 @@ public class PlayerDirector : MonoBehaviour
     [SerializeField] PlayerLife S_Plife;
     [SerializeField] PlayerAudio S_Paudio;
     PlayerUI S_Pui;
+    [SerializeField] EffectController S_effect;           // 死亡
 
     // データ ************************************************
     Vector3 StartPos;   // 初期位置(リスポーン地点)
@@ -44,7 +45,7 @@ public class PlayerDirector : MonoBehaviour
     string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
     string[] ZoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
     
-    
+
 
     void Awake()
     {
@@ -190,7 +191,8 @@ public class PlayerDirector : MonoBehaviour
     void PlayerDead() {
         PNonActive();           // 動けないようにする
         S_Pflag.LostFlag();     // 旗を落とす
-        
+        S_effect.EffectPlay(transform.position);   // エフェクトを再生
+
         PState = 2;
     }
 
