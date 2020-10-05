@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class Off_StageDirector_2 : MonoBehaviour
 {
-    GameObject[] S_obj_;
-    GameObject[] M_obj_;
-    GameObject[] L_obj_;
     GameObject[] S_objpos;
     GameObject[] M_objpos;
     GameObject[] L_objpos;
     GameObject[] GW_objpos;
     GameObject[] GB_objpos;
-    GameObject player_;
 
     bool[] GW_pos = new bool[] {true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
     bool[] GB_pos = new bool[] {true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
@@ -21,7 +17,7 @@ public class Off_StageDirector_2 : MonoBehaviour
     GameObject respawn_2;
 
     //プレイヤー
-    [SerializeField] GameObject[] player;
+    [SerializeField] GameObject player;
     //配置するオブジェクト(ステージ1)
     [SerializeField] GameObject[] S_obj_1;
     [SerializeField] GameObject[] M_obj_1;
@@ -41,11 +37,6 @@ public class Off_StageDirector_2 : MonoBehaviour
 
     void Start()
     {
-        S_obj_ = S_obj_1;
-        M_obj_ = M_obj_1;
-        L_obj_ = L_obj_1;
-        player_ = player[0];
-
         //タグの種類ごとに配列にどーーーん
         S_objpos = GameObject.FindGameObjectsWithTag("Small_Item");
         M_objpos = GameObject.FindGameObjectsWithTag("Medium_Item");
@@ -57,15 +48,15 @@ public class Off_StageDirector_2 : MonoBehaviour
         objrnd();
         //ものの配置
         respawnset(respawn_obj, GW_objpos, GB_objpos, respawn_rnd);
-        Instobj(S_obj_, S_objpos, S_rnd);
-        Instobj(M_obj_, M_objpos, M_rnd);
-        Instobj(L_obj_, L_objpos, L_rnd);
+        Instobj(S_obj_1, S_objpos, S_rnd);
+        Instobj(M_obj_1, M_objpos, M_rnd);
+        Instobj(L_obj_1, L_objpos, L_rnd);
         InstGobj(GW_obj_1, GW_objpos, GW_pos);
         InstGobj(GB_obj_1, GB_objpos, GB_pos);
         respawn_1 = GameObject.Find("king1");
         respawn_2 = GameObject.Find("king2");
         //プレイヤーの配置
-        Instplayer(player_, respawn_1, respawn_2);
+        Instplayer(player, respawn_1, respawn_2);
     }
 
     //乱数作るやつ
@@ -76,15 +67,15 @@ public class Off_StageDirector_2 : MonoBehaviour
         L_rnd = new int[L_objpos.Length];
         for (int i = 0; i < S_objpos.Length; i++)
         {
-            S_rnd[i] = Random.Range(0, S_obj_.Length);
+            S_rnd[i] = Random.Range(0, S_obj_1.Length);
         }
         for (int i = 0; i < M_objpos.Length; i++)
         {
-            M_rnd[i] = Random.Range(0, M_obj_.Length);
+            M_rnd[i] = Random.Range(0, M_obj_1.Length);
         }
         for (int i = 0; i < L_objpos.Length; i++)
         {
-            L_rnd[i] = Random.Range(0, L_obj_.Length);
+            L_rnd[i] = Random.Range(0, L_obj_1.Length);
         }
         respawn_rnd = Random.Range(0, 15);
         GW_pos[respawn_rnd] = false;

@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class Off_StageDirector : MonoBehaviour
 {
-    GameObject[] S_obj_;
-    GameObject[] M_obj_;
-    GameObject[] L_obj_;
     GameObject[] S_objpos;
     GameObject[] M_objpos;
     GameObject[] L_objpos;
-    GameObject player_;
-
-    [SerializeField] GameObject[] stage;
-    [SerializeField] GameObject[] objpos_pre;
-
 
     GameObject respawn_1;//プレイヤーのスポーン位置
     GameObject respawn_2;
 
     //プレイヤー
-    [SerializeField] GameObject[] player;
+    [SerializeField] GameObject player;
     //配置するオブジェクト(ステージ1)
     [SerializeField] GameObject[] S_obj_1;
     [SerializeField] GameObject[] M_obj_1;
@@ -33,14 +25,8 @@ public class Off_StageDirector : MonoBehaviour
 
     void Start()
     {
-        Instantiate(stage[0]);
-        Instantiate(objpos_pre[0]);
         respawn_1 = GameObject.Find("Respawn_1");
         respawn_2 = GameObject.Find("Respawn_2");
-        S_obj_ = S_obj_1;
-        M_obj_ = M_obj_1;
-        L_obj_ = L_obj_1;
-        player_ = player[0];
 
         //タグの種類ごとに配列にどーーーん
         S_objpos = GameObject.FindGameObjectsWithTag("Small_Item");
@@ -50,11 +36,11 @@ public class Off_StageDirector : MonoBehaviour
         //置くものをランダムで決める
         objrnd();
         //ものの配置
-        Instobj(S_obj_, S_objpos, S_rnd);
-        Instobj(M_obj_, M_objpos, M_rnd);
-        Instobj(L_obj_, L_objpos, L_rnd);
+        Instobj(S_obj_1, S_objpos, S_rnd);
+        Instobj(M_obj_1, M_objpos, M_rnd);
+        Instobj(L_obj_1, L_objpos, L_rnd);
         //プレイヤーの配置
-        Instplayer(player_, respawn_1, respawn_2);
+        Instplayer(player, respawn_1, respawn_2);
     }
 
     //乱数作るやつ
@@ -65,15 +51,15 @@ public class Off_StageDirector : MonoBehaviour
         L_rnd = new int[L_objpos.Length];
         for (int i = 0; i < S_objpos.Length; i++)
         {
-            S_rnd[i] = Random.Range(0, S_obj_.Length);
+            S_rnd[i] = Random.Range(0, S_obj_1.Length);
         }
         for (int i = 0; i < M_objpos.Length; i++)
         {
-            M_rnd[i] = Random.Range(0, M_obj_.Length);
+            M_rnd[i] = Random.Range(0, M_obj_1.Length);
         }
         for (int i = 0; i < L_objpos.Length; i++)
         {
-            L_rnd[i] = Random.Range(0, L_obj_.Length);
+            L_rnd[i] = Random.Range(0, L_obj_1.Length);
         }
 
     }
