@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8321819259952952341}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.091, z: 0}
+  m_LocalPosition: {x: 0, y: 1.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8353097730683152632}
@@ -38,16 +38,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8321819259952952342}
     m_Modifications:
-    - target: {fileID: 5560619340809662815, guid: 60594aedbdd61ef40bedefc5e3d87396,
-        type: 3}
-      propertyPath: m_Name
-      value: M_pawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 5560619340809662815, guid: 60594aedbdd61ef40bedefc5e3d87396,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5560619340810153343, guid: 60594aedbdd61ef40bedefc5e3d87396,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -101,6 +91,16 @@ PrefabInstance:
     - target: {fileID: 5560619340810153343, guid: 60594aedbdd61ef40bedefc5e3d87396,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5560619340809662815, guid: 60594aedbdd61ef40bedefc5e3d87396,
+        type: 3}
+      propertyPath: m_Name
+      value: M_pawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 5560619340809662815, guid: 60594aedbdd61ef40bedefc5e3d87396,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
