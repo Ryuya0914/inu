@@ -77,7 +77,7 @@ public class Off_StageDirector_2 : MonoBehaviour
         {
             L_rnd[i] = Random.Range(0, L_obj_1.Length);
         }
-        respawn_rnd = Random.Range(0, 15);
+        respawn_rnd = Random.Range(0, 7);
         GW_pos[respawn_rnd] = false;
         GB_pos[respawn_rnd] = false;
 
