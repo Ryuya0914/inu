@@ -1,0 +1,116 @@
+﻿// 一定間隔毎に呼び出されて、どこに進むかを選択する
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AIMove : MonoBehaviour {
+    // オブジェクトのデータ
+    [SerializeField] ObjectData Odata;
+    public ObjectData SetOdata { set { this.Odata = value; } }
+    
+    // 移動する方向に関する数値
+    Vector3 destinationPos;     // 現在の目的地
+    Vector3 nowMoveVec = Vector3.zero;  // 現在進む方向
+    float searchInterval = 1.0f;        // 経路を探索する間隔
+    int SameVecCount = 0;               // 同じ方向に何回連続で進んだか数える
+
+    // Ray飛ばす用
+    [SerializeField] GameObject RayPosParent;   // Rayを飛ばす位置のオブジェクトをAIオブジェクト中心に回転させる用
+    [SerializeField] Transform[] raypos = new Transform[3];      // Rayを飛ばす位置にゲームオブジェクトを設置
+    [SerializeField] float rayRange = 2.0f;     // Rayの長さ                                                                       シリアライズ後で消す
+    [SerializeField] LayerMask layermask;       // Rayの衝突するオブジェクトを制限
+    float[] GoRayVectors = new float[] { 0, 45, -45, 90, -90, 135, -135, 180 };
+    
+    // その他
+    bool moveFlag = false;       // trueのとき移動し続ける
+    public bool SetMoveFlag { set { this.moveFlag = value; } }
+    Rigidbody rb;                       // 移動時に使う
+
+
+
+
+    void Start() {
+        rb = GetComponent<Rigidbody>(); // rigidbodyを取得
+        StartCoroutine(nameof(ReSearchRoute));  // 経路を一定間隔で再探索するコルーチンをスタートする
+    }
+
+    void FixedUpdate() {
+        if(moveFlag) {
+            // 加速度を使って移動させる
+            rb.velocity = nowMoveVec * Odata.MoveSpeed;
+        }
+    }
+
+
+    // 目的地を変更
+    public void SetDestPos(Vector3 vec) {
+        destinationPos = vec;
+        //SearchMovevec();        // 新しい経路を探索
+    }
+
+
+    //進む方向を決めるメソッド
+    public void SearchMovevec() {
+        //// かくかく移動を軽減するために、最低2回同じ方向に進むようにする
+        //if(SameVecCount <= 1) {
+        //    if(GoRay(RayPosParent.transform.forward)) {
+        //        SameVecCount++;
+        //        return;
+        //    }
+        //}
+
+        // 目的地へのベクトルを作成
+        Vector3 destVec = destinationPos - transform.position;
+        destVec.y = 0f;
+        destVec = destVec.normalized;
+
+
+        for (int i = 0; i < GoRayVectors.Length; i++) {
+            // Rayを飛ばすオブジェクトの向きを変える
+            RayPosParent.transform.LookAt(RayPosParent.transform.position + destVec);
+            RayPosParent.transform.Rotate(new Vector3(0, GoRayVectors[i]));
+            //Debug.Log(RayPosParent.transform.rotation);
+            if(GoRay()) {  // 指定した方向に障害物がないか調べる     
+                nowMoveVec = RayPosParent.transform.forward;
+                break;
+            } else {
+                nowMoveVec = Vector3.zero;
+            }
+        }
+        // 同じ方向に連続で進んだ回数をリセット
+        SameVecCount = 0;
+    }
+
+
+    // Rayを飛ばして障害物がないか調べる
+    bool GoRay() {
+        // Rayを飛ばす方向にRayposオブジェクトを移動させる
+
+        for (int i = 0; i < raypos.Length; i++) {
+            // Rayを作成
+            Ray ray = new Ray(raypos[i].position, raypos[i].forward);
+            // デバッグ用にRayを可視化
+            Debug.DrawRay(ray.origin, raypos[i].forward * rayRange, Color.red, 1.0f);                                                               // 後で消す
+
+            // Rayを飛ばす
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit, rayRange, layermask)) {
+                return false;
+            }
+
+        }
+        // 障害物がなければtrueを返す
+        return true;
+    }
+
+    IEnumerator ReSearchRoute() {
+        while(true) {
+            // 経路を探索する
+            if(moveFlag) SearchMovevec();
+            // 一定秒数まつ
+            yield return new WaitForSeconds(searchInterval);
+        }
+    }
+
+}
