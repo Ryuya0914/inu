@@ -14,6 +14,11 @@ public class AIDirector : MonoBehaviour
     // AIの現在の状態
     AIState nowState = AIState.WAIT;
 
+    // 敵に関すること
+    bool F_findEnemy = false;
+    
+
+
     
     void Start()
     {
