@@ -77,6 +77,7 @@ public class PlayerDirector : MonoBehaviour
             // ユーザからの入力を受け取り、移動とかのメソッドを呼び出す
             if(InputFlag) { // 入力可能かどうか
                 if(Input.GetKey(cameraRotateB)) {
+                    S_Pmove.Move(0f, 0f);
                     MoveFlag = false;
                 }
                 if(MoveFlag) {  // 行動可能かどうか

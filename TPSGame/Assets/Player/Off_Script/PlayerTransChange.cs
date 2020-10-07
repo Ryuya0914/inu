@@ -65,6 +65,8 @@ public class PlayerTransChange : MonoBehaviour
                 ObjectDirector director;
                 if(director = hitObj.GetComponent<ObjectDirector>()) { // オブジェクトデータを取得
                     return director.GetOdata;
+                } else if (hitObj.transform.parent == null) {
+                    return null;
                 } 
                 hitObj = hitObj.transform.parent.gameObject;    // オブジェクトデータが見つからなかったときは親オブジェクトを探す
                 i++;
