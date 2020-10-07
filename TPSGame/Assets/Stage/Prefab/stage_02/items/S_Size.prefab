@@ -38,16 +38,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2743120790292883414}
     m_Modifications:
-    - target: {fileID: 1535551487292121293, guid: 236e8a70f11861f4f98443d35e8221c3,
-        type: 3}
-      propertyPath: m_Name
-      value: S_pawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 1535551487292121293, guid: 236e8a70f11861f4f98443d35e8221c3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1535551487291768045, guid: 236e8a70f11861f4f98443d35e8221c3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -101,6 +91,16 @@ PrefabInstance:
     - target: {fileID: 1535551487291768045, guid: 236e8a70f11861f4f98443d35e8221c3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1535551487292121293, guid: 236e8a70f11861f4f98443d35e8221c3,
+        type: 3}
+      propertyPath: m_Name
+      value: S_pawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1535551487292121293, guid: 236e8a70f11861f4f98443d35e8221c3,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
