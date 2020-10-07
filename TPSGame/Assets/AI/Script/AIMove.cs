@@ -12,20 +12,23 @@ public class AIMove : MonoBehaviour {
     // 移動する方向に関する数値
     Vector3 destinationPos;     // 現在の目的地
     Vector3 nowMoveVec = Vector3.zero;  // 現在進む方向
-    float searchInterval = 1.0f;        // 経路を探索する間隔
-    int SameVecCount = 0;               // 同じ方向に何回連続で進んだか数える
+    float searchInterval = 0.8f;        // 経路を探索する間隔
 
     // Ray飛ばす用
     [SerializeField] GameObject RayPosParent;   // Rayを飛ばす位置のオブジェクトをAIオブジェクト中心に回転させる用
     [SerializeField] Transform[] raypos = new Transform[3];      // Rayを飛ばす位置にゲームオブジェクトを設置
     [SerializeField] float rayRange = 2.0f;     // Rayの長さ                                                                       シリアライズ後で消す
     [SerializeField] LayerMask layermask;       // Rayの衝突するオブジェクトを制限
-    float[] GoRayVectors = new float[] { 0, 45, -45, 90, -90, 135, -135, 180 };
+    float[,] GoRayVectors = new float[,] { 
+        { 0, 45, -45, 90, -90, 135, -135, 180 }, 
+        { 0, -45, 45, -90, 90, -135, 135, 180 } 
+    };
     
     // その他
     bool moveFlag = false;       // trueのとき移動し続ける
     public bool SetMoveFlag { set { this.moveFlag = value; } }
     Rigidbody rb;                       // 移動時に使う
+    [SerializeField] GameObject myObjects;
 
 
 
@@ -65,21 +68,24 @@ public class AIMove : MonoBehaviour {
         destVec.y = 0f;
         destVec = destVec.normalized;
 
+        // ランダムで正面の障害物を確かめた後に左右どちらから調べるかを決める
+        int ramd = Random.Range(0, 2);
 
         for (int i = 0; i < GoRayVectors.Length; i++) {
             // Rayを飛ばすオブジェクトの向きを変える
             RayPosParent.transform.LookAt(RayPosParent.transform.position + destVec);
-            RayPosParent.transform.Rotate(new Vector3(0, GoRayVectors[i]));
+            RayPosParent.transform.Rotate(new Vector3(0, GoRayVectors[ramd,i]));
             //Debug.Log(RayPosParent.transform.rotation);
             if(GoRay()) {  // 指定した方向に障害物がないか調べる     
                 nowMoveVec = RayPosParent.transform.forward;
+                // 移動する方向を向く
+                myObjects.transform.LookAt(transform.position + nowMoveVec);
+
                 break;
             } else {
                 nowMoveVec = Vector3.zero;
             }
         }
-        // 同じ方向に連続で進んだ回数をリセット
-        SameVecCount = 0;
     }
 
 
@@ -108,8 +114,10 @@ public class AIMove : MonoBehaviour {
         while(true) {
             // 経路を探索する
             if(moveFlag) SearchMovevec();
+            // 何秒待つか決める
+            float waitTime = searchInterval + (Random.Range(-1, 2) / 10);
             // 一定秒数まつ
-            yield return new WaitForSeconds(searchInterval);
+            yield return new WaitForSeconds(waitTime);
         }
     }
 
