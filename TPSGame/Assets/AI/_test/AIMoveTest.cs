@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class AIMoveTest : MonoBehaviour
 {
-    [SerializeField] AIMove[] S_Amove;
-    bool Mflag = false;
+    [SerializeField] AIDirector[] S_Adire;
 
-    void Start() {
-        for (int i = 0; i < S_Amove.Length; i++) {
-            S_Amove[i].SetMoveFlag = true;
-        }
-        Mflag = true;
-    }
+
 
     void Update()
     {
-        for (int i = 0; i < S_Amove.Length; i++) {
-            S_Amove[i].SetDestPos(transform.position); // 目的地を変更
+        if(Input.GetKeyDown(KeyCode.Y)) {
+            for(int i = 0; i < S_Adire.Length; i++) {
+                S_Adire[i].ChangeState(1);
+            }
+
         }
-        
+
     }
 }

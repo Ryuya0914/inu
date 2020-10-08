@@ -25,8 +25,7 @@ public class AIMove : MonoBehaviour {
     };
     
     // その他
-    bool moveFlag = false;       // trueのとき移動し続ける
-    public bool SetMoveFlag { set { this.moveFlag = value; } }
+    AIDirector S_Adire;
     Rigidbody rb;                       // 移動時に使う
     [SerializeField] GameObject myObjects;
 
@@ -34,12 +33,14 @@ public class AIMove : MonoBehaviour {
 
 
     void Start() {
+        S_Adire = GetComponent<AIDirector>();
         rb = GetComponent<Rigidbody>(); // rigidbodyを取得
         StartCoroutine(nameof(ReSearchRoute));  // 経路を一定間隔で再探索するコルーチンをスタートする
     }
 
     void FixedUpdate() {
-        if(moveFlag) {
+        int num = S_Adire.GetAIState;
+        if(num == 1 || num == 2) {
             // 加速度を使って移動させる
             rb.velocity = nowMoveVec * Odata.MoveSpeed;
         }
@@ -53,6 +54,8 @@ public class AIMove : MonoBehaviour {
     }
 
 
+    int RandCount = 0;
+    int ramd = 0;
     //進む方向を決めるメソッド
     public void SearchMovevec() {
         //// かくかく移動を軽減するために、最低2回同じ方向に進むようにする
@@ -68,8 +71,14 @@ public class AIMove : MonoBehaviour {
         destVec.y = 0f;
         destVec = destVec.normalized;
 
-        // ランダムで正面の障害物を確かめた後に左右どちらから調べるかを決める
-        int ramd = Random.Range(0, 2);
+
+        if (RandCount > 3) {
+            // ランダムで正面の障害物を確かめた後に左右どちらから調べるかを決める
+            ramd = Random.Range(0, 2);
+            RandCount = 0;
+        } else {
+            RandCount++;
+        }
 
         for (int i = 0; i < GoRayVectors.Length; i++) {
             // Rayを飛ばすオブジェクトの向きを変える
@@ -113,7 +122,8 @@ public class AIMove : MonoBehaviour {
     IEnumerator ReSearchRoute() {
         while(true) {
             // 経路を探索する
-            if(moveFlag) SearchMovevec();
+            int num = S_Adire.GetAIState;
+            if(num == 1 || num == 2) SearchMovevec();
             // 何秒待つか決める
             float waitTime = searchInterval + (Random.Range(-1, 2) / 10);
             // 一定秒数まつ

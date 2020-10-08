@@ -13,6 +13,14 @@ public class AIDirector : MonoBehaviour
     }
     // AIの現在の状態
     AIState nowState = AIState.WAIT;
+    AIState nextState = AIState.GOFLAG;
+    public int GetAIState { get { return (int)nowState; } }
+
+    // スクリプト
+    AIMove S_Amove;
+    AIFlag S_Aflag;
+
+
 
     // 敵に関すること
     bool F_findEnemy = false;
@@ -22,7 +30,8 @@ public class AIDirector : MonoBehaviour
     
     void Start()
     {
-        
+        S_Amove = GetComponent<AIMove>();
+        S_Aflag = GetComponent<AIFlag>();
     }
     
     void Update()
@@ -45,4 +54,35 @@ public class AIDirector : MonoBehaviour
 
 
     }
+
+
+    // ステートが切り替わった時に行う処理
+    public void ChangeState(int newState) {
+        // ステートを切り替える
+        nowState = (AIState)newState;
+
+        switch(nowState) {
+            case AIState.GOFLAG:
+                S_Amove.SetDestPos(S_Aflag.GetDestination());   // 目的地を変更
+
+                break;
+            case AIState.GOHOME:
+                S_Amove.SetDestPos(S_Aflag.GetDestination());   // 目的地を変更
+
+
+                break;
+            case AIState.WAIT:
+                
+
+                break;
+            case AIState.DEAD:
+                S_Aflag.LostFlag(); // 旗を落とす
+
+                break;
+        }
+
+    }
+
+
+
 }

@@ -360,7 +360,7 @@ PrefabInstance:
     - target: {fileID: 6465731290996343959, guid: e960ec27b4763804e906fc6c528c00c6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 46.75
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 6465731290996343959, guid: e960ec27b4763804e906fc6c528c00c6,
         type: 3}
@@ -370,7 +370,7 @@ PrefabInstance:
     - target: {fileID: 6465731290996343959, guid: e960ec27b4763804e906fc6c528c00c6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -36.23
+      value: -36.7
       objectReference: {fileID: 0}
     - target: {fileID: 6465731290996343959, guid: e960ec27b4763804e906fc6c528c00c6,
         type: 3}
@@ -414,6 +414,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e960ec27b4763804e906fc6c528c00c6, type: 3}
+--- !u!114 &518195654 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1469658993820604861, guid: e960ec27b4763804e906fc6c528c00c6,
+    type: 3}
+  m_PrefabInstance: {fileID: 518195653}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b30375204c8415a4bb9cd461b0d96617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &554886112 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6465731290996343959, guid: e960ec27b4763804e906fc6c528c00c6,
@@ -695,9 +707,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126600432127486353, guid: 47a8b45aafb9c0b4593ac7f1f7687871,
         type: 3}
+      propertyPath: S_Adire.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126600432127486353, guid: 47a8b45aafb9c0b4593ac7f1f7687871,
+        type: 3}
       propertyPath: S_Amove.Array.data[0]
       value: 
       objectReference: {fileID: 554886113}
+    - target: {fileID: 1126600432127486353, guid: 47a8b45aafb9c0b4593ac7f1f7687871,
+        type: 3}
+      propertyPath: S_Adire.Array.data[0]
+      value: 
+      objectReference: {fileID: 518195654}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47a8b45aafb9c0b4593ac7f1f7687871, type: 3}
 --- !u!1001 &1461409375
@@ -784,7 +806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1961639342
 Transform:
   m_ObjectHideFlags: 0
