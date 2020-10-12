@@ -37,7 +37,8 @@ public class AIFlag : MonoBehaviour {
 
     // 旗を取得
     void GetFlag(GameObject f) {
-        if(S_Adire.GetAIState == 3)
+        int num = S_Adire.GetAIState;
+        if(num == 3)
             return;
         // エフェクト再生
         S_effect[0].EffectPlay(transform.position);
@@ -84,11 +85,11 @@ public class AIFlag : MonoBehaviour {
 
 
     // 目的地を返すメソッド
-    public Vector3 GetDestination() {
+    public Transform GetDestination() {
         if (myFlag == null) {   // 旗を持っていなかったら旗の位置を返す
-            return O_EneFlag.transform.position;
+            return O_EneFlag.transform;
         } else {                // 旗を持っていたら自分の陣地の位置を返す
-            return O_myZone.transform.position;
+            return O_myZone.transform;
         }
     }
 

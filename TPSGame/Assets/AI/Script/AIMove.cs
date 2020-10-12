@@ -10,7 +10,7 @@ public class AIMove : MonoBehaviour {
     public ObjectData SetOdata { set { this.Odata = value; } }
     
     // 移動する方向に関する数値
-    Vector3 destinationPos;     // 現在の目的地
+    Transform destinationPos;     // 現在の目的地
     Vector3 nowMoveVec = Vector3.zero;  // 現在進む方向
     float searchInterval = 0.8f;        // 経路を探索する間隔
 
@@ -40,7 +40,7 @@ public class AIMove : MonoBehaviour {
 
     void FixedUpdate() {
         int num = S_Adire.GetAIState;
-        if(num == 1 || num == 2) {
+        if(num == 1 || num == 2 || num == 4) {
             // 加速度を使って移動させる
             rb.velocity = nowMoveVec * Odata.MoveSpeed;
         }
@@ -48,7 +48,7 @@ public class AIMove : MonoBehaviour {
 
 
     // 目的地を変更
-    public void SetDestPos(Vector3 vec) {
+    public void SetDestPos(Transform vec) {
         destinationPos = vec;
         //SearchMovevec();        // 新しい経路を探索
     }
@@ -67,7 +67,7 @@ public class AIMove : MonoBehaviour {
         //}
 
         // 目的地へのベクトルを作成
-        Vector3 destVec = destinationPos - transform.position;
+        Vector3 destVec = destinationPos.position - transform.position;
         destVec.y = 0f;
         destVec = destVec.normalized;
 
@@ -87,9 +87,10 @@ public class AIMove : MonoBehaviour {
             //Debug.Log(RayPosParent.transform.rotation);
             if(GoRay()) {  // 指定した方向に障害物がないか調べる     
                 nowMoveVec = RayPosParent.transform.forward;
-                // 移動する方向を向く
-                myObjects.transform.LookAt(transform.position + nowMoveVec);
-
+                if(!S_Adire.Get_findEnemyFlag) { // 敵を見つけていないとき
+                    // 移動する方向を向く
+                    myObjects.transform.LookAt(transform.position + nowMoveVec);
+                }
                 break;
             } else {
                 nowMoveVec = Vector3.zero;
@@ -106,7 +107,7 @@ public class AIMove : MonoBehaviour {
             // Rayを作成
             Ray ray = new Ray(raypos[i].position, raypos[i].forward);
             // デバッグ用にRayを可視化
-            Debug.DrawRay(ray.origin, raypos[i].forward * rayRange, Color.red, 1.0f);                                                               // 後で消す
+            Debug.DrawRay(ray.origin, raypos[i].forward * rayRange, Color.red, 0.6f);                                                               // 後で消す
 
             // Rayを飛ばす
             RaycastHit hit;
@@ -123,7 +124,7 @@ public class AIMove : MonoBehaviour {
         while(true) {
             // 経路を探索する
             int num = S_Adire.GetAIState;
-            if(num == 1 || num == 2) SearchMovevec();
+            if(num == 1 || num == 2 || num == 4) SearchMovevec();
             // 何秒待つか決める
             float waitTime = searchInterval + (Random.Range(-1, 2) / 10);
             // 一定秒数まつ

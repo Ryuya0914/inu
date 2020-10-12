@@ -41,7 +41,7 @@ public class PlayerDirector : MonoBehaviour
 
     // データ ************************************************
     Vector3 StartPos;   // 初期位置(リスポーン地点)
-    int PState = 0;     // 0:ゲーム開始前, 1:ゲームプレイ時, 2:死亡時, 3:リスポーン中, 4:メニュー開いたとき 5:カメラだけ回転するとき
+    public int PState = 0;     // 0:ゲーム開始前, 1:ゲームプレイ時, 2:死亡時, 3:リスポーン中, 4:メニュー開いたとき 5:カメラだけ回転するとき
     string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
     string[] ZoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
     
