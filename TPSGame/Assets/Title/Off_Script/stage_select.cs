@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class stage_select : MonoBehaviour
 {
-    public static int off_stage = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] GameObject credit;
 
     public void Off_select()
     {
-        off_stage = 0;
-        SceneManager.LoadScene("Off_Stage");
+        SceneManager.LoadScene("Off_Stage_2");
+    }
+
+    public void Credit()
+    {
+        credit.SetActive(true);
+    }
+
+    public void Close()
+    {
+        credit.SetActive(false);
     }
 }

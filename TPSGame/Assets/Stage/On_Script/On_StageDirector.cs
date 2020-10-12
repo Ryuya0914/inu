@@ -40,29 +40,29 @@ public class On_StageDirector : MonoBehaviour
     void Start()
     {
         //ステージの選択
-        switch (stage_select.off_stage)
-        {
-            case 0:
-                Instantiate(stage[0]);
-                Instantiate(objpos_pre[0]);
-                respawn_1 = GameObject.Find("Respawn_1");
-                respawn_2 = GameObject.Find("Respawn_2");
-                S_obj_ = S_obj_1;
-                M_obj_ = M_obj_1;
-                L_obj_ = L_obj_1;
-                player_ = player[0];
-                break;
-            case 1:
-                Instantiate(stage[1]);
-                Instantiate(objpos_pre[1]);
-                respawn_1 = GameObject.Find("Respawn_1");
-                respawn_2 = GameObject.Find("Respawn_2");
-                S_obj_ = S_obj_2;
-                M_obj_ = M_obj_2;
-                L_obj_ = L_obj_2;
-                player_ = player[1];
-                break;
-        }
+        //switch (stage_select.off_stage)
+        //{
+        //    case 0:
+        //        Instantiate(stage[0]);
+        //        Instantiate(objpos_pre[0]);
+        //        respawn_1 = GameObject.Find("Respawn_1");
+        //        respawn_2 = GameObject.Find("Respawn_2");
+        //        S_obj_ = S_obj_1;
+        //        M_obj_ = M_obj_1;
+        //        L_obj_ = L_obj_1;
+        //        player_ = player[0];
+        //        break;
+        //    case 1:
+        //        Instantiate(stage[1]);
+        //        Instantiate(objpos_pre[1]);
+        //        respawn_1 = GameObject.Find("Respawn_1");
+        //        respawn_2 = GameObject.Find("Respawn_2");
+        //        S_obj_ = S_obj_2;
+        //        M_obj_ = M_obj_2;
+        //        L_obj_ = L_obj_2;
+        //        player_ = player[1];
+        //        break;
+        //}
 
         //タグの種類ごとに配列にどーーーん
         S_objpos = GameObject.FindGameObjectsWithTag("Small_Item");
