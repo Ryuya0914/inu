@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Off_StageDirector_2 : MonoBehaviour
 {
@@ -27,9 +28,13 @@ public class Off_StageDirector_2 : MonoBehaviour
     [SerializeField] GameObject[] GW_obj_1;
     [SerializeField] GameObject[] GB_obj_1;
     [SerializeField] GameObject[] respawn_obj;
+    [SerializeField] GameObject R;
 
     [SerializeField] Text playerscore;
     [SerializeField] Text AIscore;
+    [SerializeField] Text playerR;
+    [SerializeField] Text AIR;
+    [SerializeField] Text WL;
     int Pscore = 0;
     int Ascore = 0;
 
@@ -69,10 +74,26 @@ public class Off_StageDirector_2 : MonoBehaviour
 
     void Update()
     {
-        score(Pscore, Ascore);
+        score();
         if (Pscore >= 7 || Ascore >= 7)
         {
-
+            Rscore();
+            if (Pscore > Ascore)
+            {
+                WL.text = "YOU WIN";
+            }
+            else
+            {
+                WL.text = "YOU LOSE";
+            }
+            R.SetActive(true);
+            GameObject.Find("Player_02(Clone)").GetComponent<PlayerDirector>().PNonActive();
+            GameObject.Find("AI(Clone)").GetComponent<AIDirector>().ChangeState(0);
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                SceneManager.LoadScene("Title");
+            }
+        
         }
     }
 
@@ -171,10 +192,16 @@ public class Off_StageDirector_2 : MonoBehaviour
         GameObject.Find("AI(Clone)").GetComponent<AIDirector>().AActive();
     }
 
-    void score(int p,int a)
+    void Rscore()
     {
-        playerscore.text = p.ToString();
-        AIscore.text = a.ToString();
+        playerR.text = "プレイヤー:" + Pscore.ToString();
+        AIR.text = "AI:" + Ascore.ToString();
+    }
+
+    void score()
+    {
+        playerscore.text = Pscore.ToString();
+        AIscore.text = Ascore.ToString();
     }
 
     public void addP(int p)

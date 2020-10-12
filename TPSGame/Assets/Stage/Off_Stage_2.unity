@@ -303,8 +303,24 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4336721063606880933, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
+        type: 3}
+      propertyPath: m_Text
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4336721065347338889, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
+        type: 3}
+      propertyPath: m_Text
+      value: "\u30D7\u30EC\u30A4\u30E4\u30FC"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9, type: 3}
+--- !u!1 &146435902 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4336721065124459551, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
+    type: 3}
+  m_PrefabInstance: {fileID: 146435901}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &178079728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6465731290996343959, guid: e960ec27b4763804e906fc6c528c00c6,
@@ -509,6 +525,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3510578088161465072, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510578087611407196, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3510578088441231651, guid: b7ce1044d93317748ac5896e90fc902f,
         type: 3}
       propertyPath: m_IsActive
@@ -622,8 +648,12 @@ MonoBehaviour:
   respawn_obj:
   - {fileID: 6046014484235219257, guid: 22de4d2dc8d45054899c339e57fd731b, type: 3}
   - {fileID: 1982912209651874672, guid: a6a311f6789bf26469ccd237fe2eac5e, type: 3}
+  R: {fileID: 146435902}
   playerscore: {fileID: 1327278022}
   AIscore: {fileID: 1464782832}
+  playerR: {fileID: 1790910490}
+  AIR: {fileID: 1818878734}
+  WL: {fileID: 1178412922}
 --- !u!114 &603886059 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7347504889663772200, guid: e960ec27b4763804e906fc6c528c00c6,
@@ -919,6 +949,18 @@ PrefabInstance:
       objectReference: {fileID: 178079733}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47a8b45aafb9c0b4593ac7f1f7687871, type: 3}
+--- !u!114 &1178412922 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4336721063968095758, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
+    type: 3}
+  m_PrefabInstance: {fileID: 146435901}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1327278022 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3510578088161465079, guid: b7ce1044d93317748ac5896e90fc902f,
@@ -1005,6 +1047,30 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3510578087611407139, guid: b7ce1044d93317748ac5896e90fc902f,
     type: 3}
   m_PrefabInstance: {fileID: 209490581}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1790910490 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4336721065347338889, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
+    type: 3}
+  m_PrefabInstance: {fileID: 146435901}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1818878734 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4336721063606880933, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
+    type: 3}
+  m_PrefabInstance: {fileID: 146435901}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
