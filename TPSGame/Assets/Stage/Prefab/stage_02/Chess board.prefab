@@ -163,6 +163,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1557714569425605358, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1557714569425605358, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1557714569425605358, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 470155801212215593, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 470155801212215593, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 470155801212215593, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788719956262656583, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788719956262656583, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788719956262656583, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2840284229448827517, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2840284229448827517, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2840284229448827517, guid: 7b4b81e7450d0384aa0e154fc1106305,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b4b81e7450d0384aa0e154fc1106305, type: 3}
 --- !u!4 &2913038978531432105 stripped
