@@ -53,8 +53,8 @@ public class Off_StageDirector_2 : MonoBehaviour
         Instobj(L_obj_1, L_objpos, L_rnd);
         InstGobj(GW_obj_1, GW_objpos, GW_pos);
         InstGobj(GB_obj_1, GB_objpos, GB_pos);
-        respawn_1 = GameObject.Find("king1");
-        respawn_2 = GameObject.Find("king2");
+        respawn_1 = GameObject.Find("Respawn1");
+        respawn_2 = GameObject.Find("Respawn2");
         //プレイヤーの配置
         Instplayer(player, respawn_1, respawn_2);
     }
