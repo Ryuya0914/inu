@@ -13,7 +13,7 @@ public class PlayerTransChange : MonoBehaviour
     public void SetOdata(ObjectData odata) {
         Odata = odata;
         Flag_reload = true;         // リロード中にする
-        StartCoroutine("ReloadChange"); // リロードのコルーチンを開始
+        Invoke(nameof(ResetChangeFlag), 0.2f);
     }
     // カメラのtransform
     Transform CameraT;
@@ -98,24 +98,6 @@ public class PlayerTransChange : MonoBehaviour
     public void RegisterObj() {
         for (int i = 0; i < ObjectList.Count; i++)
         OdataList.Add(ObjectList[i].GetComponent<ObjectDirector>().GetOdata); // オブジェクトデータ格納
-    }
-
-
-
-    float checktime = 0.1f;
-    // 変身のリロード
-    public IEnumerator ReloadChange() {
-        float time = 0;
-        while(Flag_reload) {
-            if(time >= Pdata.TransChageCoolTime) { // 一定時間経過したら
-                ResetChangeFlag();
-                yield break;
-            }
-            yield return new WaitForSeconds(checktime);
-            time += checktime;
-        }
-
-        yield break;
     }
 
     // 変身できるようにする
