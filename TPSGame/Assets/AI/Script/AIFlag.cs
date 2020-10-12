@@ -19,6 +19,7 @@ public class AIFlag : MonoBehaviour {
     GameObject O_myZone;
     GameObject O_EneFlag;
 
+    Off_StageDirector_2 unnti;
 
     void Start()
     {
@@ -26,6 +27,8 @@ public class AIFlag : MonoBehaviour {
         S_Adire = GetComponent<AIDirector>();
         // 敵の旗と自身の陣地のゲームオブジェクト取得
         Invoke(nameof(GetMyObj), 1.0f);
+
+        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
     }
 
     // 旗と陣地のゲームオブジェクトを取得
@@ -78,7 +81,7 @@ public class AIFlag : MonoBehaviour {
     // 得点取得
     void GetPoint() {
         // 得点を得たことを通知
-        Debug.Log("PointGet");
+        unnti.addA(3);
         // 旗をなくす
         ReturnFlag();
     }

@@ -22,7 +22,7 @@ public class AIDirector : MonoBehaviour
     AIFlag S_Aflag;
     AIGun S_Agun;
     PlayerDirector S_Pdire;
-
+    Off_StageDirector_2 unnti;
 
 
     // 接敵判定フィールド
@@ -54,6 +54,7 @@ public class AIDirector : MonoBehaviour
 
         RespawnPos = transform.position;            // リスポーン地点取得
         Invoke(nameof(GetPlayer), 0.5f);              // プレイヤを取得
+        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
     }
 
     void Update()
@@ -158,7 +159,7 @@ public class AIDirector : MonoBehaviour
 
                 SearchPlayer_Lost();
                 S_Aflag.LostFlag(); // 旗を落とす
-                
+                unnti.addA(-1);
                 // ステートを切り替える
                 nowState = (AIState)newState;
                 break;

@@ -15,7 +15,11 @@ public class PlayerFlag : MonoBehaviour
     [SerializeField] EffectController[] S_effect;
     // 旗を拾えるかフラグ
     public bool FlagGetFlag = true;
-
+    Off_StageDirector_2 unnti;
+    void Start()
+    {
+        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+    }
 
     // 敵と味方の旗・陣地のタグの名前を設定
     public void NameSet(string f1, string f2, string z1, string z2) {
@@ -66,7 +70,7 @@ public class PlayerFlag : MonoBehaviour
     // 得点取得
     void GetPoint() {
         // 得点を得たことを通知
-        Debug.Log("PointGet");
+        unnti.addP(3);
         // 旗をなくす
         ReturnFlag();
     }

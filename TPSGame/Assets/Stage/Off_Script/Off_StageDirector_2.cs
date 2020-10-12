@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Off_StageDirector_2 : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class Off_StageDirector_2 : MonoBehaviour
     [SerializeField] GameObject[] GB_obj_1;
     [SerializeField] GameObject[] respawn_obj;
 
+    [SerializeField] Text playerscore;
+    [SerializeField] Text AIscore;
+    int Pscore = 0;
+    int Ascore = 0;
 
     int[] S_rnd;
     int[] M_rnd;
@@ -60,6 +65,15 @@ public class Off_StageDirector_2 : MonoBehaviour
         //プレイヤーの配置
         Instplayer(player, AI, respawn_1, respawn_2);
         Invoke("Active", 3.0f);
+    }
+
+    void Update()
+    {
+        score(Pscore, Ascore);
+        if (Pscore >= 7 || Ascore >= 7)
+        {
+
+        }
     }
 
     //乱数作るやつ
@@ -155,5 +169,21 @@ public class Off_StageDirector_2 : MonoBehaviour
     {
         GameObject.Find("Player_02(Clone)").GetComponent<PlayerDirector>().PActive();
         GameObject.Find("AI(Clone)").GetComponent<AIDirector>().AActive();
+    }
+
+    void score(int p,int a)
+    {
+        playerscore.text = p.ToString();
+        AIscore.text = a.ToString();
+    }
+
+    public void addP(int p)
+    {
+        Pscore += p;
+    }
+
+    public void addA(int a)
+    {
+        Ascore += a;
     }
 }
