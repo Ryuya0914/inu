@@ -74,4 +74,18 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+
+    // 旗が敵に取られた時に呼び出される
+    public void FlagGetLavel() {
+
+
+
+    }
+
+
+    // 一定秒数後に旗が取られた表示を消す
+    void FlagGetLavelOff() {
+
+    }
+
 }
