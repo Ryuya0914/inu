@@ -193,6 +193,8 @@ public class PlayerDirector : MonoBehaviour
         S_effect.EffectPlay(transform.position);   // エフェクトを再生
 
         PState = 2;
+
+        S_Pui.RespawnCount(Pdata.RespawnTime);
         Invoke(nameof(PlayerRespawn), Pdata.RespawnTime);
 
         unnti.addP(-1);
@@ -216,7 +218,7 @@ public class PlayerDirector : MonoBehaviour
     }
 
     // 弾薬の更新
-    public void AmmoUpdate(int ammo) {
+    public void AmmoUpdate(float ammo) {
         S_Pui.AmmoUIUpdate(ammo / (Odata.MaxAmmo * 1.0f));
     }
 
