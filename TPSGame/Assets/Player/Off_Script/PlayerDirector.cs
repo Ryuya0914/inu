@@ -92,8 +92,6 @@ public class PlayerDirector : MonoBehaviour
                 MoveFlag = true;
             }
 
-        } else if (PState == 2) {
-            PlayerRespawn();
         } else if (PState == 4) {   // メニュー画面閉じる用
             if (Input.GetKeyDown(KeyCode.Escape))
                 PActive();
@@ -195,17 +193,16 @@ public class PlayerDirector : MonoBehaviour
         S_effect.EffectPlay(transform.position);   // エフェクトを再生
 
         PState = 2;
+        Invoke(nameof(PlayerRespawn), Pdata.RespawnTime);
     }
 
     // リスポーン
     void PlayerRespawn() {
-        if(Input.GetKeyDown(respawn)) {
-            S_Pflag.FlagGetFlag = true;     // 旗を拾えるようにする
-            transform.position = StartPos;  // リスポーン位置に移動
-            S_Plife.RecoveryHP();           // HP回復
-            S_Pgun.ResetAmmo();             // 弾丸をもとに戻す
-            PActive();                      // 動けるようにする
-        }
+        S_Pflag.FlagGetFlag = true;     // 旗を拾えるようにする
+        transform.position = StartPos;  // リスポーン位置に移動
+        S_Plife.RecoveryHP();           // HP回復
+        S_Pgun.ResetAmmo();             // 弾丸をもとに戻す
+        PActive();                      // 動けるようにする
     }
 
     // HPの更新

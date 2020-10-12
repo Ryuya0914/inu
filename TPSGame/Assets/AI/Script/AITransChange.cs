@@ -50,7 +50,7 @@ public class AITransChange : MonoBehaviour
     public void SetOdata(ObjectData odata) {
         Odata = odata;
         S_Adire.SetOdata = odata;
-        S_Amove.SetOdata = odata;
+        S_Amove.SetOdata(odata);
         S_Agun.SetOdata(odata);
         S_Alife.SetOdata(odata);
         F_Change = false;               // 変身出来なくする

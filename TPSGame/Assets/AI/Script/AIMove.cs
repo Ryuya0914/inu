@@ -7,7 +7,7 @@ using UnityEngine;
 public class AIMove : MonoBehaviour {
     // オブジェクトのデータ
     [SerializeField] ObjectData Odata;
-    public ObjectData SetOdata { set { this.Odata = value; } }
+
     
     // 移動する方向に関する数値
     Transform destinationPos;     // 現在の目的地
@@ -29,8 +29,22 @@ public class AIMove : MonoBehaviour {
     Rigidbody rb;                       // 移動時に使う
     [SerializeField] GameObject myObjects;
 
+    // オブジェクトが変わった時にrayを飛ばすオブジェクトの位置を変えるよう
+    [SerializeField] Vector3[] rayposScales;
 
+    // オブジェクトデータ変更
+    public void SetOdata(ObjectData data) {
+        this.Odata = data;
+        int ObjNum = data.ObjectNum;
+        if(20 <= ObjNum && ObjNum <= 29) {
+            RayPosParent.transform.localScale = rayposScales[0];
+        } else if(30 <= ObjNum && ObjNum <= 39) {
+            RayPosParent.transform.localScale = rayposScales[1];
+        } else if(40 <= ObjNum && ObjNum <= 49) {
+            RayPosParent.transform.localScale = rayposScales[2];
+        }
 
+    }
 
     void Start() {
         S_Adire = GetComponent<AIDirector>();
@@ -79,7 +93,7 @@ public class AIMove : MonoBehaviour {
         } else {
             RandCount++;
         }
-
+        
         for (int i = 0; i < GoRayVectors.Length; i++) {
             // Rayを飛ばすオブジェクトの向きを変える
             RayPosParent.transform.LookAt(RayPosParent.transform.position + destVec);

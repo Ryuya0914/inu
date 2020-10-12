@@ -15,6 +15,7 @@ public class AILife : MonoBehaviour
     int mylife = 100;
     AIDirector S_Adire;         // ディレクタスクリプト
     Vector3 RespawnPos;         // リスポーン地点
+    [SerializeField] EffectController S_effect;
 
     void Start() {
         S_Adire = GetComponent<AIDirector>();   // ディレクタ取得
@@ -31,6 +32,7 @@ public class AILife : MonoBehaviour
         mylife -= damage * 100 / Odata.MaxLife;
         if (mylife <= 0) {       // HPが0以下になったら
             S_Adire.ChangeState(3);     // AIのステート切り替え
+            S_effect.EffectPlay(transform.position);
             Invoke(nameof(Respawn), Pdata.RespawnTime);     // 一定時間後に生き返らせる
         }
     }
