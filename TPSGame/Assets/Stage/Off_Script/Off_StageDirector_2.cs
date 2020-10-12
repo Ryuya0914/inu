@@ -18,6 +18,7 @@ public class Off_StageDirector_2 : MonoBehaviour
 
     //プレイヤー
     [SerializeField] GameObject player;
+    [SerializeField] GameObject AI;
     //配置するオブジェクト(ステージ1)
     [SerializeField] GameObject[] S_obj_1;
     [SerializeField] GameObject[] M_obj_1;
@@ -56,7 +57,7 @@ public class Off_StageDirector_2 : MonoBehaviour
         respawn_1 = GameObject.Find("Respawn1");
         respawn_2 = GameObject.Find("Respawn2");
         //プレイヤーの配置
-        Instplayer(player, respawn_1, respawn_2);
+        Instplayer(player, AI, respawn_1, respawn_2);
     }
 
     //乱数作るやつ
@@ -142,8 +143,9 @@ public class Off_StageDirector_2 : MonoBehaviour
     }
 
     //プレイヤー・カメラ生成
-    void Instplayer(GameObject player, GameObject Respawn_1, GameObject Respawn_2)
+    void Instplayer(GameObject player, GameObject AI, GameObject Respawn_1, GameObject Respawn_2)
     {
         Instantiate(player, Respawn_1.transform.position, Respawn_1.transform.rotation);
+        Instantiate(AI, Respawn_2.transform.position, Respawn_2.transform.rotation);
     }
 }
