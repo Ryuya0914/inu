@@ -12,6 +12,8 @@ public class Flag : MonoBehaviour
     [SerializeField] MeshRenderer Mren;
     // コライダ
     [SerializeField] CapsuleCollider Ccol;
+    // どこ以下の高さに落ちたら拠点に戻るか
+    [SerializeField] float under = -3.5f;
 
 
     void Start() {
@@ -27,9 +29,17 @@ public class Flag : MonoBehaviour
 
     // 指定した場所に旗を落とす
     public void Drop(Vector3 pos) {
-        transform.position = pos;
-        EnableOnOff(true);
-        state = 1;
+        if (pos.y <= under) {
+            transform.position = startPos;
+            EnableOnOff(true);
+            state = 0;
+
+        } else {
+            transform.position = pos;
+            EnableOnOff(true);
+            state = 1;
+
+        }
     }
 
     // 旗を拠点に戻す

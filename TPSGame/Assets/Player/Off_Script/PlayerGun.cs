@@ -76,7 +76,7 @@ public class PlayerGun : MonoBehaviour
 
         } else {
             // カメラの向いている方向　×　射程 - 弾の発射位置
-            vec = (Camera.main.transform.forward * Pdata.ShootRange) - startpos;
+            vec = (cameraT.forward * Pdata.ShootRange) + raypos - (gameObject.transform.position + startpos);
         }
 
         vec = vec.normalized;
