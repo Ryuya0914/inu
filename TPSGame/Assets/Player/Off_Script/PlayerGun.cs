@@ -112,16 +112,18 @@ public class PlayerGun : MonoBehaviour
         }
     }
 
-    float checktime = 0.1f;
+
     IEnumerator ReloadAmmo() {
         float time = 0;
         while(nowammo <= 0) {
             if (time >= Pdata.BulletReloadSpeed) {
                 ResetAmmo();
                 yield break;
+            } else {
+                S_Pdirector.AmmoUpdate((time / Pdata.BulletReloadSpeed) * Odata.MaxAmmo);
             }
-            yield return new WaitForSeconds(checktime);
-            time += checktime;
+            yield return new WaitForEndOfFrame();
+            time += Time.deltaTime;
         }
         yield break;
     }

@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour
 {
     [SerializeField] Canvas Pcanvas;
+    [SerializeField] Image cross;
     [SerializeField] Image ammo;
     [SerializeField] Image life;
+    [SerializeField] Text countText2;
+    [SerializeField] Text countText;
 
     // プレイヤのUIの切り替え(アクティブ化)
     public void CursorSet() { 
@@ -16,7 +19,9 @@ public class PlayerUI : MonoBehaviour
         // カーソルを動かないようにする
         Cursor.lockState = CursorLockMode.Locked;
         // プレイヤのUIを表示する
-        Pcanvas.enabled = true;
+        cross.enabled = true;
+        ammo.enabled = true;
+        life.enabled = true;
 
 
     }
@@ -28,7 +33,9 @@ public class PlayerUI : MonoBehaviour
         // カーソルを動くようにする
         Cursor.lockState = CursorLockMode.None;
         // プレイヤのUIを非表示にする
-        Pcanvas.enabled = false;
+        cross.enabled = false;
+        ammo.enabled = false;
+        life.enabled = false;
 
     }
 
@@ -40,6 +47,31 @@ public class PlayerUI : MonoBehaviour
     // ライフのUIの更新
     public void LifeUIUpdate(float f) {
         life.fillAmount = f;
+    }
+
+
+    // 死亡時にカウントダウンする
+    public void RespawnCount(float time) {
+        StartCoroutine(nameof(CountDown), time);
+    }
+
+    IEnumerator CountDown(int time) {
+        int nowtime = time;
+        countText2.enabled = true;       // 秒数のテキストを表示する
+        countText.enabled = true;       // 秒数のテキストを表示する
+        while(true) {
+            if (nowtime > 0) {
+                countText.text = time.ToString();
+            } else {
+                countText2.enabled = false;     // 秒数のテキストを非表示にする
+                countText.enabled = false;      // 秒数のテキストを非表示にする
+
+                break;
+            }
+            time--;
+            yield return new WaitForSeconds(1.0f);
+
+        }
     }
 
 }

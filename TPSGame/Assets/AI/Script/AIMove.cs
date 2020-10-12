@@ -94,7 +94,7 @@ public class AIMove : MonoBehaviour {
             RandCount++;
         }
         
-        for (int i = 0; i < GoRayVectors.Length; i++) {
+        for (int i = 0; i < GoRayVectors.Length/2; i++) {
             // Rayを飛ばすオブジェクトの向きを変える
             RayPosParent.transform.LookAt(RayPosParent.transform.position + destVec);
             RayPosParent.transform.Rotate(new Vector3(0, GoRayVectors[ramd,i]));
@@ -107,7 +107,7 @@ public class AIMove : MonoBehaviour {
                 }
                 break;
             } else {
-                nowMoveVec = Vector3.zero;
+                nowMoveVec = destVec;
             }
         }
     }
