@@ -229,7 +229,7 @@ public class AIDirector : MonoBehaviour
     }
 
     // AIを動かす(試合が始まった時に呼んでもらう)
-    public void AISetActive() {
+    public void AActive() {
         ChangeState((int)AIState.GOFLAG);
     }
 

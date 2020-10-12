@@ -38,6 +38,7 @@ public class Off_StageDirector_2 : MonoBehaviour
 
     void Start()
     {
+
         //タグの種類ごとに配列にどーーーん
         S_objpos = GameObject.FindGameObjectsWithTag("Small_Item");
         M_objpos = GameObject.FindGameObjectsWithTag("Medium_Item");
@@ -58,6 +59,7 @@ public class Off_StageDirector_2 : MonoBehaviour
         respawn_2 = GameObject.Find("Respawn2");
         //プレイヤーの配置
         Instplayer(player, AI, respawn_1, respawn_2);
+        Invoke("Active", 3.0f);
     }
 
     //乱数作るやつ
@@ -147,5 +149,11 @@ public class Off_StageDirector_2 : MonoBehaviour
     {
         Instantiate(player, Respawn_1.transform.position, Respawn_1.transform.rotation);
         Instantiate(AI, Respawn_2.transform.position, Respawn_2.transform.rotation);
+    }
+
+    void Active()
+    {
+        GameObject.Find("Player_02(Clone)").GetComponent<PlayerDirector>().PActive();
+        GameObject.Find("AI(Clone)").GetComponent<AIDirector>().AActive();
     }
 }
