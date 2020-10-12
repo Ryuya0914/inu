@@ -11,6 +11,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] Image life;
     [SerializeField] Text countText2;
     [SerializeField] Text countText;
+    [SerializeField] Text flagLabel;
+    
 
     // プレイヤのUIの切り替え(アクティブ化)
     public void CursorSet() { 
@@ -73,19 +75,30 @@ public class PlayerUI : MonoBehaviour
 
         }
     }
-
-
+    
     // 旗が敵に取られた時に呼び出される
-    public void FlagGetLavel() {
+    public void FlagGetLavelOn() {
 
+        StartCoroutine(nameof(FlagGetLabelOnOff));
+    }
 
+    public void FlagGetLavelOff() {
 
+        StopCoroutine(nameof(FlagGetLabelOnOff));
     }
 
 
     // 一定秒数後に旗が取られた表示を消す
-    void FlagGetLavelOff() {
+    IEnumerator FlagGetLabelOnOff() {
+        while(true) {
+            if (flagLabel.enabled == true) {
+                    flagLabel.enabled = false;
+            } else {
+                    flagLabel.enabled = true;
+            }
+            yield return new WaitForSeconds(0.5f);
 
+        }
     }
 
 }

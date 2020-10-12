@@ -14,6 +14,7 @@ public class Flag : MonoBehaviour
     [SerializeField] CapsuleCollider Ccol;
     // どこ以下の高さに落ちたら拠点に戻るか
     [SerializeField] float under = -3.5f;
+    
 
 
     void Start() {
@@ -26,6 +27,7 @@ public class Flag : MonoBehaviour
         EnableOnOff(false);
         state = 2;
     }
+
 
     // 指定した場所に旗を落とす
     public void Drop(Vector3 pos) {
