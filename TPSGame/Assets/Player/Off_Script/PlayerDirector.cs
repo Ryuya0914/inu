@@ -63,7 +63,6 @@ public class PlayerDirector : MonoBehaviour
     void Start() {
         StartPos = transform.position;  // リスポーン地点を設定
         S_Pflag.NameSet(FlagName[0], FlagName[1], ZoneName[0], ZoneName[1]);        // 敵と味方の旗を教える
-        PActive();      // 試合開始時に呼んでもらう
     }
 
 
