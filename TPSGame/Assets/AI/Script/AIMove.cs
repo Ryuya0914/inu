@@ -10,9 +10,9 @@ public class AIMove : MonoBehaviour {
 
     
     // 移動する方向に関する数値
-    Transform destinationPos;     // 現在の目的地
+    Vector3 destinationPos;     // 現在の目的地
     Vector3 nowMoveVec = Vector3.zero;  // 現在進む方向
-    float searchInterval = 0.8f;        // 経路を探索する間隔
+    [SerializeField] float searchInterval = 0.8f;        // 経路を探索する間隔
 
     // Ray飛ばす用
     [SerializeField] GameObject RayPosParent;   // Rayを飛ばす位置のオブジェクトをAIオブジェクト中心に回転させる用
@@ -35,14 +35,18 @@ public class AIMove : MonoBehaviour {
     // オブジェクトデータ変更
     public void SetOdata(ObjectData data) {
         this.Odata = data;
-        int ObjNum = data.ObjectNum;
-        if(20 <= ObjNum && ObjNum <= 29) {
-            RayPosParent.transform.localScale = rayposScales[0];
-        } else if(30 <= ObjNum && ObjNum <= 39) {
-            RayPosParent.transform.localScale = rayposScales[1];
-        } else if(40 <= ObjNum && ObjNum <= 49) {
-            RayPosParent.transform.localScale = rayposScales[2];
-        }
+        //RayPosParent.transform.localScale = rayposScales[data.ObjSizeNum];
+        Transform t = RayPosParent.transform.GetChild(0);
+        t.transform.localPosition = data.AImoveLayPos;
+        t.transform.localScale = data.AImoveLayScale;
+        //int ObjNum = data.ObjectNum;
+        //if(20 <= ObjNum && ObjNum <= 29) {
+        //    RayPosParent.transform.localScale = rayposScales[0];
+        //} else if(30 <= ObjNum && ObjNum <= 39) {
+        //    RayPosParent.transform.localScale = rayposScales[1];
+        //} else if(40 <= ObjNum && ObjNum <= 49) {
+        //    RayPosParent.transform.localScale = rayposScales[2];
+        //}
 
     }
 
@@ -56,15 +60,20 @@ public class AIMove : MonoBehaviour {
         int num = S_Adire.GetAIState;
         if(num == 1 || num == 2 || num == 4) {
             // 加速度を使って移動させる
-            rb.velocity = nowMoveVec * Odata.MoveSpeed;
+            Vector3 v = nowMoveVec * Odata.MoveSpeed;
+            v.y = rb.velocity.y;
+            rb.velocity = v;
         }
     }
 
 
     // 目的地を変更
     public void SetDestPos(Transform vec) {
+        destinationPos = vec.position;
+    }   
+    // 目的地を変更
+    public void SetDestPos(Vector3 vec) {
         destinationPos = vec;
-        //SearchMovevec();        // 新しい経路を探索
     }
 
 
@@ -81,7 +90,7 @@ public class AIMove : MonoBehaviour {
         //}
 
         // 目的地へのベクトルを作成
-        Vector3 destVec = destinationPos.position - transform.position;
+        Vector3 destVec = destinationPos - transform.position;
         destVec.y = 0f;
         destVec = destVec.normalized;
 
@@ -126,6 +135,7 @@ public class AIMove : MonoBehaviour {
             // Rayを飛ばす
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, rayRange, layermask)) {
+                //if (hit.collider.tag != "Ground")
                 return false;
             }
 

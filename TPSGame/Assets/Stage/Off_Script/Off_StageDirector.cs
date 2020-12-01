@@ -41,6 +41,7 @@ public class Off_StageDirector : MonoBehaviour
         Instobj(L_obj_1, L_objpos, L_rnd);
         //プレイヤーの配置
         Instplayer(player, respawn_1, respawn_2);
+        Invoke(nameof(Active), 2.0f);
     }
 
     //乱数作るやつ
@@ -80,5 +81,12 @@ public class Off_StageDirector : MonoBehaviour
     void Instplayer(GameObject player, GameObject Respawn_1, GameObject Respawn_2)
     {
         Instantiate(player, Respawn_1.transform.position, Respawn_1.transform.rotation);
+    }
+
+
+    void Active() {
+        GameObject.Find("Player_01(Clone)").GetComponent<PlayerDirector>().PActive();
+        //GameObject.Find("AI_01(Clone)").GetComponent<AIDirector>().AActive();
+        //GameObject.Find("AI_01").GetComponent<AIDirector>().AActive();
     }
 }

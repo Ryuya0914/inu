@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class AIMoveTest : MonoBehaviour
 {
-    [SerializeField] AIDirector[] S_Adire;
+    List<int> lis;
 
-
+    void Start() {
+        lis = new List<int> { };
+        lis.Add(1);
+        lis.Add(1);
+    }
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Y)) {
-            for(int i = 0; i < S_Adire.Length; i++) {
-                S_Adire[i].ChangeState(1);
-            }
+            Debug.Log(lis.Capacity + " : " + lis.Count);
 
         }
 

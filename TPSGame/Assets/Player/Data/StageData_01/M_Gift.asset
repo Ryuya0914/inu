@@ -16,8 +16,11 @@ MonoBehaviour:
   MaxLife: 180
   MaxAmmo: 10
   shootDamage: 35
+  ObjSizeNum: 0
   MoveSpeed: 3
   JumpPower: 4
   cameraOffsetY: {x: 0, y: 0.7, z: 0}
   cameraOffsetZ: {x: 0, y: 0, z: -0.5}
   BulletOffset: {x: 0, y: 0.2, z: 0.6}
+  AImoveLayPos: {x: 0, y: 0, z: 0.024}
+  AImoveLayScale: {x: 0.26, y: 0.26, z: 0.26}

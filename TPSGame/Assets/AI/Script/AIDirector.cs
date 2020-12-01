@@ -22,13 +22,13 @@ public class AIDirector : MonoBehaviour
     AIFlag S_Aflag;
     AIGun S_Agun;
     PlayerDirector S_Pdire;
-    Off_StageDirector_2 unnti;
+    AIRouteSearch S_Asearch;
+    //Off_StageDirector_2 unnti;
 
 
     // 接敵判定フィールド
     bool F_findEnemy = false;               // 敵を見つけているかどうか
     public bool Get_findEnemyFlag { get { return this.F_findEnemy; } }
-    string PlayerName = "Player_02(Clone)";         // プレイヤの名前
     Transform T_Player;                             // プレイヤのtransform
     [SerializeField] Transform MyObject;            // 変身するオブジェクトたち
     float visibleRange = 30f;                      // AIがプレイヤを発見することが出来る距離
@@ -36,6 +36,13 @@ public class AIDirector : MonoBehaviour
     float lostTime = 3f;                            // プレイヤが見えなくなってからあきらめるまでの時間
     float nowLostTime = 0;                          // 現在見失い続けている時間
     [SerializeField] LayerMask layermask;           // 当たり判定取得用のlayer 
+
+    // 移動ルートフィールド
+    Vector3 GoalPos;
+    Vector3 WayPoint;
+
+
+
 
     // その他
     [SerializeField] PlayerData Pdata;
@@ -50,11 +57,14 @@ public class AIDirector : MonoBehaviour
         S_Amove = GetComponent<AIMove>();
         S_Aflag = GetComponent<AIFlag>();
         S_Agun = GetComponent<AIGun>();
+        S_Asearch = GetComponent<AIRouteSearch>();
         
 
         RespawnPos = transform.position;            // リスポーン地点取得
         Invoke(nameof(GetPlayer), 0.5f);              // プレイヤを取得
-        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+        //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+
+        Invoke(nameof(AActive), 1.0f);
     }
 
     void Update()
@@ -69,12 +79,16 @@ public class AIDirector : MonoBehaviour
                 if(SearchPlayer()) {                // プレイヤを探す
                     SearchPlayer_Find();
                 }
+                CheckWayPoint();
+
 
                 break;
             case AIState.GOHOME:
                 if(SearchPlayer()) {                // プレイヤを探す
                     SearchPlayer_Find();
                 }
+
+                CheckWayPoint();
 
                 break; 
             case AIState.FIGHT:
@@ -84,6 +98,7 @@ public class AIDirector : MonoBehaviour
                     ChangeState((int)nextState);
                     break;
                 }
+                S_Amove.SetDestPos(T_Player);   // 目的地を変更
                 if(!SearchPlayer()) {               // プレイヤを探す
                     nowLostTime += Time.deltaTime;
                     if (nowLostTime > lostTime) {       // 一定秒数以上見失い続けていたら
@@ -118,7 +133,10 @@ public class AIDirector : MonoBehaviour
                 if (F_findEnemy) {    // プレイヤと接敵していたら状態を移行しない
                     nextState = (AIState)newState;
                 } else {
-                    S_Amove.SetDestPos(S_Aflag.GetDestination());   // 目的地を変更
+                    GoalPos = S_Aflag.GetDestination().position;
+                    WayPoint = S_Asearch.SearchRoute(1);
+                    S_Amove.SetDestPos(WayPoint);
+                    CheckWayPoint();
 
                     // ステートを切り替える
                     nowState = (AIState)newState;
@@ -130,7 +148,10 @@ public class AIDirector : MonoBehaviour
                 if(F_findEnemy) {    // プレイヤと接敵していたら状態を移行しない
                     nextState = (AIState)newState;
                 } else {
-                    S_Amove.SetDestPos(S_Aflag.GetDestination());   // 目的地を変更
+                    GoalPos = S_Aflag.GetDestination().position;
+                    WayPoint = S_Asearch.SearchRoute(0);
+                    S_Amove.SetDestPos(WayPoint);
+                    CheckWayPoint();
 
                     // ステートを切り替える
                     nowState = (AIState)newState;
@@ -142,6 +163,8 @@ public class AIDirector : MonoBehaviour
 
                 S_Amove.SetDestPos(T_Player);   // 目的地を変更
                 S_Agun.SetPlayerT = T_Player;
+
+
 
                 // ステートを切り替える
                 nowState = (AIState)newState;
@@ -159,7 +182,7 @@ public class AIDirector : MonoBehaviour
 
                 SearchPlayer_Lost();
                 S_Aflag.LostFlag(); // 旗を落とす
-                unnti.addA(-1);
+                //unnti.addA(-1);
                 // ステートを切り替える
                 nowState = (AIState)newState;
                 break;
@@ -171,7 +194,7 @@ public class AIDirector : MonoBehaviour
 
     // プレイヤのTransformを取得
     void GetPlayer() {
-        T_Player = GameObject.Find(PlayerName).transform;   // 名前からプレイヤを取得
+        T_Player = GameObject.FindGameObjectWithTag("PlayerParent").transform;
         S_Pdire = T_Player.GetComponent<PlayerDirector>();
     }
 
@@ -232,6 +255,21 @@ public class AIDirector : MonoBehaviour
     // AIを動かす(試合が始まった時に呼んでもらう)
     public void AActive() {
         ChangeState((int)AIState.GOFLAG);
+    }
+
+
+    // 中間地点までの距離を調べ、近かったら次の中間地点を設定
+    void CheckWayPoint() {
+        Vector3 v = WayPoint - transform.position;
+        if(v.magnitude <= 2.0f) {
+            Transform t = S_Asearch.GetDestinationT();
+            if(t != null) {
+                WayPoint = t.position;
+                S_Amove.SetDestPos(WayPoint);
+            } else {
+                S_Amove.SetDestPos(GoalPos);
+            }
+        }
     }
 
 }

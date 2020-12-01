@@ -63,14 +63,14 @@ public class PlayerUI : MonoBehaviour
         countText.enabled = true;       // 秒数のテキストを表示する
         while(true) {
             if (nowtime > 0) {
-                countText.text = time.ToString();
+                countText.text = nowtime.ToString();
             } else {
                 countText2.enabled = false;     // 秒数のテキストを非表示にする
                 countText.enabled = false;      // 秒数のテキストを非表示にする
 
-                break;
+                yield break;
             }
-            time--;
+            nowtime--;
             yield return new WaitForSeconds(1.0f);
 
         }
@@ -85,6 +85,7 @@ public class PlayerUI : MonoBehaviour
     public void FlagGetLavelOff() {
 
         StopCoroutine(nameof(FlagGetLabelOnOff));
+        flagLabel.enabled = false;
     }
 
 

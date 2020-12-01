@@ -19,7 +19,7 @@ public class AIFlag : MonoBehaviour {
     GameObject O_myZone;
     GameObject O_EneFlag;
 
-    Off_StageDirector_2 unnti;
+    //Off_StageDirector_2 unnti;
     PlayerUI S_Pui;
 
     void Start()
@@ -29,7 +29,7 @@ public class AIFlag : MonoBehaviour {
         // 敵の旗と自身の陣地のゲームオブジェクト取得
         Invoke(nameof(GetMyObj), 1.0f);
 
-        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+        //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
 
         S_Pui = GameObject.Find("PlayerCanvas").GetComponent<PlayerUI>();
 
@@ -86,7 +86,7 @@ public class AIFlag : MonoBehaviour {
     // 得点取得
     void GetPoint() {
         // 得点を得たことを通知
-        unnti.addA(3);
+        //unnti.addA(3);
         // 旗をなくす
         ReturnFlag();
     }
@@ -117,7 +117,6 @@ public class AIFlag : MonoBehaviour {
                 if(col.GetComponent<Flag>().state == 1) {// 道中に旗が落ちているなら
                     int num = S_Adire.GetAIState;
                     if(num != 3) {
-                        S_Pui.FlagGetLavelOn();
                         GetFlag(col.gameObject);
                     }
                 }
@@ -126,8 +125,10 @@ public class AIFlag : MonoBehaviour {
             if(myFlag == null) {
                 if(col.GetComponent<Flag>().state != 2) {// 旗を誰も持っていないなら
                     int num = S_Adire.GetAIState;
-                    if(num != 3)
+                    if(num != 3) {
+                        S_Pui.FlagGetLavelOn();
                         GetFlag(col.gameObject);
+                    }
                 }
             }
         }
