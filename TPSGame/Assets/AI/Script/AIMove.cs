@@ -7,7 +7,6 @@ using UnityEngine;
 public class AIMove : MonoBehaviour {
     // オブジェクトのデータ
     [SerializeField] ObjectData Odata;
-
     
     // 移動する方向に関する数値
     Vector3 destinationPos;     // 現在の目的地
@@ -15,39 +14,19 @@ public class AIMove : MonoBehaviour {
     [SerializeField] float searchInterval = 0.8f;        // 経路を探索する間隔
 
     // Ray飛ばす用
-    [SerializeField] GameObject RayPosParent;   // Rayを飛ばす位置のオブジェクトをAIオブジェクト中心に回転させる用
-    [SerializeField] Transform[] raypos = new Transform[3];      // Rayを飛ばす位置にゲームオブジェクトを設置
-    [SerializeField] float rayRange = 2.0f;     // Rayの長さ                                                                       シリアライズ後で消す
+    [SerializeField] AIObjectData aiOData;
     [SerializeField] LayerMask layermask;       // Rayの衝突するオブジェクトを制限
-    float[,] GoRayVectors = new float[,] { 
-        { 0, 45, -45, 90, -90, 135, -135, 180 }, 
-        { 0, -45, 45, -90, 90, -135, 135, 180 } 
-    };
-    
+    float[] rayVectors = new float[] { 0f, 45f, -45f, 90f, -90f, 135f, -135f, 180f };
+
     // その他
     AIDirector S_Adire;
     Rigidbody rb;                       // 移動時に使う
     [SerializeField] GameObject myObjects;
 
-    // オブジェクトが変わった時にrayを飛ばすオブジェクトの位置を変えるよう
-    [SerializeField] Vector3[] rayposScales;
-
     // オブジェクトデータ変更
-    public void SetOdata(ObjectData data) {
+    public void SetOdata(ObjectData data, AIObjectData data2) {
         this.Odata = data;
-        //RayPosParent.transform.localScale = rayposScales[data.ObjSizeNum];
-        Transform t = RayPosParent.transform.GetChild(0);
-        t.transform.localPosition = data.AImoveLayPos;
-        t.transform.localScale = data.AImoveLayScale;
-        //int ObjNum = data.ObjectNum;
-        //if(20 <= ObjNum && ObjNum <= 29) {
-        //    RayPosParent.transform.localScale = rayposScales[0];
-        //} else if(30 <= ObjNum && ObjNum <= 39) {
-        //    RayPosParent.transform.localScale = rayposScales[1];
-        //} else if(40 <= ObjNum && ObjNum <= 49) {
-        //    RayPosParent.transform.localScale = rayposScales[2];
-        //}
-
+        this.aiOData = data2;
     }
 
     void Start() {
@@ -81,68 +60,80 @@ public class AIMove : MonoBehaviour {
     int ramd = 0;
     //進む方向を決めるメソッド
     public void SearchMovevec() {
-        //// かくかく移動を軽減するために、最低2回同じ方向に進むようにする
-        //if(SameVecCount <= 1) {
-        //    if(GoRay(RayPosParent.transform.forward)) {
-        //        SameVecCount++;
-        //        return;
-        //    }
-        //}
 
-        // 目的地へのベクトルを作成
-        Vector3 destVec = destinationPos - transform.position;
-        destVec.y = 0f;
-        destVec = destVec.normalized;
-
-
+        // 経路探索時に右と左どちらを優先して調べるか決める
         if (RandCount > 3) {
             // ランダムで正面の障害物を確かめた後に左右どちらから調べるかを決める
-            ramd = Random.Range(0, 2);
+            ramd = Random.Range(0, 2) -1;
             RandCount = 0;
         } else {
             RandCount++;
         }
-        
-        for (int i = 0; i < GoRayVectors.Length/2; i++) {
-            // Rayを飛ばすオブジェクトの向きを変える
-            RayPosParent.transform.LookAt(RayPosParent.transform.position + destVec);
-            RayPosParent.transform.Rotate(new Vector3(0, GoRayVectors[ramd,i]));
-            //Debug.Log(RayPosParent.transform.rotation);
-            if(GoRay()) {  // 指定した方向に障害物がないか調べる     
-                nowMoveVec = RayPosParent.transform.forward;
-                if(!S_Adire.Get_findEnemyFlag) { // 敵を見つけていないとき
-                    // 移動する方向を向く
-                    myObjects.transform.LookAt(transform.position + nowMoveVec);
+
+
+        // 目的地へのベクトルを作成
+        Vector3 forwardVec = destinationPos - transform.position;
+        // 右が0度左回り 弧度法
+        float angleNow = Mathf.Atan2(forwardVec.z, forwardVec.x) * Mathf.Rad2Deg;
+
+        for(int i = 0; i < rayVectors.Length; i++) {
+            // 現在の方向から角度を変えて、ラジアンに変換する
+            float angle = (angleNow + rayVectors[i] * ramd) * Mathf.Deg2Rad;
+
+            // Rayを飛ばす方向
+            Vector3 RayAngle = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
+
+            // 現在の方向から角度を変えて、ラジアンに変換する
+            float anglePos = (angleNow + rayVectors[i] * ramd - 90f) * Mathf.Deg2Rad;
+
+            // Rayの左右の方向
+            Vector3 RayPosAngle = new Vector3(Mathf.Cos(anglePos), 0f, Mathf.Sin(anglePos));
+       
+            bool f = true;
+
+            for(int j = 0; j < aiOData.pos.Length; j++) {
+                // Rayを飛ばす
+                RaycastHit hit;
+                Vector3 boxpos = transform.position + RayPosAngle * aiOData.pos[j].x + RayAngle * aiOData.pos[j].z + Vector3.up * aiOData.pos[j].y;
+                if(Physics.BoxCast(boxpos, aiOData.size[j] / 2f, RayAngle, out hit, myObjects.transform.localRotation * Quaternion.Euler(0, -rayVectors[i] * ramd, 0), aiOData.rayLength[j], layermask)) {
+                    if (!(hit.normal.y > 0.1f)) {
+                        f = false;
+
+                        {
+                            Color _color = new Color(1.0f, 0.1f, 0.1f);
+                            Debug.DrawRay(boxpos, RayAngle * hit.distance, _color, 1.0f);
+                            Debug.DrawRay(boxpos + RayPosAngle * aiOData.size[j].x / 2f + RayAngle * hit.distance + Vector3.up * aiOData.size[j].y / 2f, -RayPosAngle * aiOData.size[j].x, _color, 1.0f);
+                            Debug.DrawRay(boxpos + RayPosAngle * aiOData.size[j].x / 2f + RayAngle * hit.distance - Vector3.up * aiOData.size[j].y / 2f, -RayPosAngle * aiOData.size[j].x, _color, 1.0f);
+                        }
+
+                        break;
+                    }
+
+                } else {
+
+                    {
+                        Color _color = new Color(0.1f, 0.1f, 0.1f);
+                        Debug.DrawRay(boxpos, RayAngle * aiOData.rayLength[j], _color, 1.0f);
+                        Debug.DrawRay(boxpos + RayPosAngle * aiOData.size[j].x / 2f + RayAngle * aiOData.rayLength[j] + Vector3.up * aiOData.size[j].y / 2f, -RayPosAngle * aiOData.size[j].x, _color, 1.0f);
+                        Debug.DrawRay(boxpos + RayPosAngle * aiOData.size[j].x / 2f + RayAngle * aiOData.rayLength[j] - Vector3.up * aiOData.size[j].y / 2f, -RayPosAngle * aiOData.size[j].x, _color, 1.0f);
+                    }
                 }
+                
+            }
+
+            if(f) {
+                // オブジェクトの角度を変える
+                nowMoveVec = RayAngle;
+                if (!S_Adire.Get_findEnemyFlag)
+                    myObjects.transform.LookAt(transform.position + nowMoveVec);
                 break;
-            } else {
-                nowMoveVec = destVec;
-            }
-        }
-    }
-
-
-    // Rayを飛ばして障害物がないか調べる
-    bool GoRay() {
-        // Rayを飛ばす方向にRayposオブジェクトを移動させる
-
-        for (int i = 0; i < raypos.Length; i++) {
-            // Rayを作成
-            Ray ray = new Ray(raypos[i].position, raypos[i].forward);
-            // デバッグ用にRayを可視化
-            Debug.DrawRay(ray.origin, raypos[i].forward * rayRange, Color.red, 0.6f);                                                               // 後で消す
-
-            // Rayを飛ばす
-            RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, rayRange, layermask)) {
-                //if (hit.collider.tag != "Ground")
-                return false;
             }
 
         }
-        // 障害物がなければtrueを返す
-        return true;
+
     }
+    
+
 
     IEnumerator ReSearchRoute() {
         while(true) {

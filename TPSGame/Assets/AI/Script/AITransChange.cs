@@ -24,6 +24,7 @@ public class AITransChange : MonoBehaviour
     AIMove S_Amove;         // 移動スクリプト
     AIGun S_Agun;           // 射撃スクリプト
     AILife S_Alife;         // ライフスクリプト
+    [SerializeField] AIObjectData S_aiOData;
 
 
     void Start() {
@@ -50,7 +51,7 @@ public class AITransChange : MonoBehaviour
     public void SetOdata(ObjectData odata) {
         Odata = odata;
         S_Adire.SetOdata = odata;
-        S_Amove.SetOdata(odata);
+        S_Amove.SetOdata(odata, S_aiOData);
         S_Agun.SetOdata(odata);
         S_Alife.SetOdata(odata);
         F_Change = false;               // 変身出来なくする
@@ -105,7 +106,6 @@ public class AITransChange : MonoBehaviour
                         return null;
                     }
                     hitObj = hitObj.parent.transform;    // オブジェクトデータが見つからなかったときは親オブジェクトを探す
-                    i++;
                 }
             }
         }
@@ -128,6 +128,7 @@ public class AITransChange : MonoBehaviour
         ObjectList[mynum].SetActive(false);
         ObjectList[listnum].SetActive(true);
         mynum = listnum;                    // 自身のオブジェクト番号更新
+        S_aiOData = ObjectList[listnum].GetComponent<AIObjectData>();
         SetOdata(OdataList[listnum]);
     }
 

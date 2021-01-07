@@ -20,7 +20,7 @@ public class AIRouteSearch : MonoBehaviour
         // シーン上のルートポイントを全取得
         SetPoints();
         // フィールドの初期化
-        myRoute = new List<int> { };
+        myRoute = new List<int>();
         myRouteCount = 0;
     }
 
@@ -123,10 +123,40 @@ public class AIRouteSearch : MonoBehaviour
         }
     }
 
-    // 経路を作る(world座標指定)
-    void SearchRoute(Vector3 goalPos) {
+    //// 経路を作る(world座標指定)
+    //Vector3 SearchRoute(Vector3 goalPos) {
+    //    // 自分の場所から一番近いPointを探す
+    //    int myPointNum = GetNearPoint(transform.position);
+    //    // 目的地に一番近いPointを探す
+    //    int goalPointNum = GetNearPoint(goalPos);
 
-    }
+
+    //    // 保持していたルートが使いまわせないか調べる
+    //    if(myRoute.Count > 0) {
+    //        int Gnum = myRoute.IndexOf(goalPointNum);
+    //        int Snum = myRoute.IndexOf(myPointNum);
+
+    //        // 要素が見つかったら
+    //        if(num != -1) {
+    //            myRouteCount = 0;
+                
+    //        }
+
+    //        if(myRoute.LastIndexOf(0) == goalPosP) {    // 今回の目的地と前回の目的地が一緒だったら
+    //            for(int i = 0; i < myRoute.Count; i++) {
+    //                if(myRoute[i] == myPPos) {
+    //                    myRouteCount = i;
+    //                    return PointT[myRoute[myRouteCount]].position;
+    //                }
+    //            }
+    //        }
+    //    }
+
+
+
+
+
+    //}
 
     // 目的地を返す
     public Transform GetDestinationT() {
