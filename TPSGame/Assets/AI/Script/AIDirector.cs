@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIDirector : MonoBehaviour
-{
-    // AIの状態一覧
-    enum AIState {
+public class AIDirector : MonoBehaviour {
+    // AIの状態関係 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    delegate void ChangeFlagEvent(bool flag);
+
+    // 状態
+    public enum AIState {
         WAIT,       // 待機中
         GOFLAG,     // 敵の旗を目指す
         GOHOME,     // 自分の陣地に帰る
@@ -15,7 +17,27 @@ public class AIDirector : MonoBehaviour
     // AIの現在の状態
     AIState nowState = AIState.WAIT;
     AIState nextState = AIState.GOFLAG;
+
+    // 敵
+    ChangeFlagEvent ChangeFindEnemyFlag;
+    void RegisterEvent_ChangeFindEnemyFlag(ChangeFlagEvent _event) {
+        ChangeFindEnemyFlag += _event;
+    }
+    bool m_findEnemyFlag = false;
+    public bool FindEnemyFlag { get { return this.m_findEnemyFlag; } set { ChangeFindEnemyFlag(value); } }
+    void SetFindEnemyFlag(bool flag) { m_findEnemyFlag = flag; }
+    
+    // 旗
+    ChangeFlagEvent ChangeHaveFlag;
+    bool m_haveFlag = false;
+    public bool HaveFlag { get { return this.m_haveFlag; } set { ChangeHaveFlag(value); } }
+    void SetHaveFlag(bool flag) { m_haveFlag = flag; }
+
+
     public int GetAIState { get { return (int)nowState; } }
+
+    
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
     // スクリプト
     AIMove S_Amove;
@@ -40,7 +62,6 @@ public class AIDirector : MonoBehaviour
     // 移動ルートフィールド
     Vector3 GoalPos;
     Vector3 WayPoint;
-
 
 
 
@@ -134,7 +155,7 @@ public class AIDirector : MonoBehaviour
                     nextState = (AIState)newState;
                 } else {
                     GoalPos = S_Aflag.GetDestination().position;
-                    WayPoint = S_Asearch.SearchRoute(1);
+                    WayPoint = S_Asearch.SearchRoute(GoalPos);
                     S_Amove.SetDestPos(WayPoint);
                     CheckWayPoint();
 
@@ -149,7 +170,7 @@ public class AIDirector : MonoBehaviour
                     nextState = (AIState)newState;
                 } else {
                     GoalPos = S_Aflag.GetDestination().position;
-                    WayPoint = S_Asearch.SearchRoute(0);
+                    WayPoint = S_Asearch.SearchRoute(GoalPos);
                     S_Amove.SetDestPos(WayPoint);
                     CheckWayPoint();
 

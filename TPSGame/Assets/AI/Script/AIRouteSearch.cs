@@ -8,10 +8,11 @@ public class AIRouteSearch : MonoBehaviour
     public Transform[] PointT;
     public AIMovePoint[] S_AImoveP;
     public float[] myMoveCost;
+    bool[] myMoveFlag;
 
 
     // 決定した経路を管理する
-    List<int> myRoute;          // ルートを配列に格納しておく
+    public List<int> myRoute;          // ルートを配列に格納しておく
     int myRouteCount;       // 現在配列の何番目に来ているか
     
     
@@ -32,6 +33,7 @@ public class AIRouteSearch : MonoBehaviour
         PointT = new Transform[obj.Length];
         S_AImoveP = new AIMovePoint[obj.Length];
         myMoveCost = new float[obj.Length];
+        myMoveFlag = new bool[obj.Length];
 
         // チェックポイントの情報を保存しておく
         for(int i = 0; i < obj.Length; i++) {
@@ -123,40 +125,143 @@ public class AIRouteSearch : MonoBehaviour
         }
     }
 
-    //// 経路を作る(world座標指定)
-    //Vector3 SearchRoute(Vector3 goalPos) {
-    //    // 自分の場所から一番近いPointを探す
-    //    int myPointNum = GetNearPoint(transform.position);
-    //    // 目的地に一番近いPointを探す
-    //    int goalPointNum = GetNearPoint(goalPos);
+    // 経路を作る(world座標指定)
+    public Vector3 SearchRoute(Vector3 goalPos) {
+        // 自分の場所から一番近いPointを探す
+        int myPointNum = GetNearPoint(transform.position);
+        // 目的地に一番近いPointを探す
+        int goalPointNum = GetNearPoint(goalPos);
+
+        // 目的地と現在位置が同じか調べる
+        if(myPointNum == goalPointNum) {
+            // 初期化
+            myRoute.Clear();
+            myRouteCount = 0;
+            // 一番最初の目的地を自分の近くのpointにする
+            myRoute.Add(myPointNum);
+            return PointT[myRoute[myRouteCount]].position;
+        }
 
 
-    //    // 保持していたルートが使いまわせないか調べる
-    //    if(myRoute.Count > 0) {
-    //        int Gnum = myRoute.IndexOf(goalPointNum);
-    //        int Snum = myRoute.IndexOf(myPointNum);
+        // 保持していたルートが使いまわせないか調べる
+        if(myRoute.Count > 0) {
+            int Gnum = myRoute.IndexOf(goalPointNum);
+            int Snum = myRoute.IndexOf(myPointNum);
 
-    //        // 要素が見つかったら
-    //        if(num != -1) {
-    //            myRouteCount = 0;
-                
-    //        }
+            // 要素が見つかったら
+            if(Gnum != -1 && Snum != -1 && Snum < Gnum) {
+                myRouteCount = Snum;
+                if(myRoute.Count > Gnum + 1) {
+                    myRoute.RemoveRange(Gnum + 1, myRoute.Count - Gnum - 1);
+                    return PointT[myRoute[myRouteCount]].position;
+                }
+            }
+        }
 
-    //        if(myRoute.LastIndexOf(0) == goalPosP) {    // 今回の目的地と前回の目的地が一緒だったら
-    //            for(int i = 0; i < myRoute.Count; i++) {
-    //                if(myRoute[i] == myPPos) {
-    //                    myRouteCount = i;
-    //                    return PointT[myRoute[myRouteCount]].position;
-    //                }
-    //            }
-    //        }
-    //    }
+        // 経路を作る
 
+        // 初期化
+        myRoute.Clear();
+        myRouteCount = 0;
+        int i = 0;
+        for(i = 0; i < myMoveCost.Length; i++) {
+            myMoveCost[i] = -1;
+            myMoveFlag[i] = true;
+        }
 
+        int num = Search(myPointNum, goalPointNum, myPointNum, 0);
+        myRoute.Insert(0, num);
 
+        // 一番最初の目的地を自分の近くのpointにする
+        myRoute.Insert(0, myPointNum);
 
+        return PointT[myRoute[0]].position;
+        
+    }
 
-    //}
+    int Search(int startpoint, int goalpoint, int pointnum, float nowlength) {
+        // 最終目的地のposition
+        Vector3 gpos = PointT[goalpoint].position;
+
+        // 開始point
+        Vector3 spos = PointT[pointnum].position;
+        // pointから進めるpointとその距離,移動コストをまとめる
+        int num = S_AImoveP[pointnum].GoBlue.Length + S_AImoveP[pointnum].GoRed.Length;
+        int[] nextnums = new int[num];
+        float[] nextlengh = new float[num];
+        float[] nextcost = new float[num];
+        bool[] pointflag = new bool[num];
+        int i = 0;
+        for(; i < S_AImoveP[pointnum].GoBlue.Length; i++) {
+            pointflag[i] = false;
+            nextnums[i] = S_AImoveP[pointnum].GoBlue[i].MyNumber;
+            if(nextnums[i] == startpoint || !myMoveFlag[nextnums[i]]) {
+                nextlengh[i] = -1;
+                nextcost[i] = -1;
+                continue;
+            } else if (nextnums[i] == goalpoint) {
+                return nextnums[i];
+            }
+            Vector3 ppos = PointT[nextnums[i]].position;
+
+            nextlengh[i] = (ppos - spos).sqrMagnitude + nowlength;
+            nextcost[i] = (gpos - ppos).sqrMagnitude + nextlengh[i];
+            if(myMoveCost[nextnums[i]] == -1 || myMoveCost[nextnums[i]] > nextcost[i]) {
+                myMoveCost[nextnums[i]] = nextcost[i];
+                pointflag[i] = true;
+            }
+        }
+        for(int j = 0; j < S_AImoveP[pointnum].GoRed.Length; j++) {
+            pointflag[i + j] = false;
+            nextnums[i + j] = S_AImoveP[pointnum].GoRed[j].MyNumber;
+            if(nextnums[i + j] == startpoint || !myMoveFlag[nextnums[i + j]]) {
+                nextlengh[i] = -1;
+                nextcost[i] = -1;
+                continue;
+            } else if(nextnums[i + j] == goalpoint) {
+                return nextnums[i + j];
+            }
+            Vector3 ppos = PointT[nextnums[i + j]].position;
+
+            nextlengh[i + j] = (ppos - spos).sqrMagnitude + nowlength;
+            nextcost[i + j] = (gpos - ppos).sqrMagnitude + nextlengh[i + j];
+            if(myMoveCost[nextnums[i + j]] == -1 || myMoveCost[nextnums[i + j]] >= nextcost[i + j]) {
+                myMoveCost[nextnums[i + j]] = nextcost[i + j];
+                pointflag[i + j] = true;
+            }
+        }
+        
+        // 結果から次のpointを選択する
+        List<int> list = new List<int>();
+        for (i = 0; i < nextnums.Length; i++) {
+            if(pointflag[i]) {
+                list.Add(i);
+            }
+        }
+        for (i = 1; i < list.Count; i++) {
+            for (int j = 1; j < list.Count; j++) {
+                if(nextcost[list[j]] < nextcost[list[j - 1]]) {
+                    int n = list[j];
+                    list[j] = list[j - 1];
+                    list[j - 1] = n;
+                }
+            }
+
+        }
+        
+        while (list.Count > 0) {
+            int n = Search(startpoint, goalpoint, nextnums[list[0]], nextlengh[list[0]]);
+            if (n != -1) {
+                myRoute.Insert(0, n);
+                return nextnums[list[0]];
+            } else {
+                list.RemoveAt(0);
+            }
+        }
+        myMoveFlag[pointnum] = false;
+        return -1;
+
+    }
 
     // 目的地を返す
     public Transform GetDestinationT() {

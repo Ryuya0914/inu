@@ -7,8 +7,8 @@ public class AIFlag : MonoBehaviour {
     AIDirector S_Adire;     // ディレクタースクリプト  
 
     // 陣地のタグ
-    string[] flagName = new string[] { "Flag_2", "Flag_1" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
-    string[] zoneName = new string[] { "Zone_2", "Zone_1" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
+    string[] flagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
+    string[] zoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
 
     // 持っている旗のゲームオブジェクト(nullのときは持っていない)
     GameObject myFlag = null;
