@@ -23,18 +23,20 @@ public class AILife : MonoBehaviour
         RespawnPos = transform.position;        // リスポーン地点取得
     }
 
+    // 現在のHPを返す
+    public int GetHP() {
+        return mylife;
+    }
+
+    // 死んだときの処理
+    public void Dead() {
+        S_effect.EffectPlay(transform.position);
+    }
+
 
     // HPを減らす
     void DecreaseHP(int damage) {
-        if (mylife <= 0) {      // もともとHPが0以下だったら無視
-            return;
-        }
         mylife -= damage * 100 / Odata.MaxLife;
-        if (mylife <= 0) {       // HPが0以下になったら
-            S_Adire.ChangeState(3);     // AIのステート切り替え
-            S_effect.EffectPlay(transform.position);
-            Invoke(nameof(Respawn), Pdata.RespawnTime);     // 一定時間後に生き返らせる
-        }
     }
 
     // HP全回復
@@ -44,10 +46,9 @@ public class AILife : MonoBehaviour
 
 
     // 生き返る処理
-    void Respawn() {
+    public void Respawn() {
         transform.position = RespawnPos;    // リスポーン地点へ移動
         RecoveryHP();                       // HP回復させる
-        S_Adire.ChangeState(1);             // ステートを旗を取得に切り替える
     }
     
 

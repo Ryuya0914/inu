@@ -23,6 +23,9 @@ TagManager:
   - siro
   - kuro
   - AI
+  - AI_CheckPoint
+  - PlayerParent
+  - AIWall
   layers:
   - Default
   - TransparentFX
@@ -38,7 +41,7 @@ TagManager:
   - PlayerLeg
   - Ground
   - Wall
-  - 
+  - Slope
   - Object
   - NonObject
   - 
@@ -49,7 +52,7 @@ TagManager:
   - Flag
   - 
   - AI
-  - 
+  - AIWall
   - 
   - 
   - 

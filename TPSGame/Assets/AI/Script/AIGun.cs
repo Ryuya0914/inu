@@ -14,9 +14,7 @@ public class AIGun : MonoBehaviour
     [SerializeField] List<GameObject> bullets;      // 弾のリスト
     int bulletoffset = 0;                           // リストの何番目の弾を使うか
     float ShootInterval = 0.5f;                     // 射撃の間隔
-    Transform PlayerT;                              // プレイヤのTransform
-    public Transform SetPlayerT { set { this.PlayerT = value; } }
-
+    bool m_shootIntervalFlag = true;
     // その他
     AIDirector S_Adire;
     [SerializeField] GameObject MyObject;
@@ -25,9 +23,7 @@ public class AIGun : MonoBehaviour
     void Start()
     {
         S_Adire = GetComponent<AIDirector>();   // ディレクタスクリプト取得
-        Pdata = S_Adire.GetPData;               // プレイヤデータ取得
         bullets[0].transform.parent.transform.parent = null;    // 弾丸がプレイヤに合わせて動かないようにする
-        StartCoroutine(nameof(ShootUpdate));    // 一定間隔で射撃
     }
 
 
@@ -37,30 +33,24 @@ public class AIGun : MonoBehaviour
         ResetAmmo();
     }
 
-    IEnumerator ShootUpdate() {
-        while(true) {
-            yield return new WaitForSeconds(ShootInterval);
-
-            if (PlayerT != null) {
-                // 自身の オブジェクトを敵の方向に向ける
-                Vector3 Ppos = PlayerT.position;
-                Ppos.y = MyObject.transform.position.y;
-                MyObject.transform.LookAt(Ppos);
-                // 弾丸を撃つ
-                ShootBullet();
-            }
-        }
+    void ShootUpdate() {
+        // 弾丸を撃てるようにする
+        m_shootIntervalFlag = true;
     }
+    
 
 
     
-    public int ShootBullet() {
+    public int SelectBullet(Vector3 _vec) {
         // 弾薬が無かったら発射しない
-        if(nowammo <= 0)
+        if(nowammo <= 0 || !m_shootIntervalFlag)
             return 0;
 
         // 発射する
-        Shoot(bullets[bulletoffset].transform);
+        Shoot(bullets[bulletoffset].transform, _vec);
+        m_shootIntervalFlag = false;
+        Invoke(nameof(ShootUpdate), ShootInterval);
+
 
         // 次の弾丸を指定
         bulletoffset++;
@@ -78,23 +68,23 @@ public class AIGun : MonoBehaviour
 
 
     // 弾丸を発射する
-    void Shoot(Transform t) {
+    void Shoot(Transform t, Vector3 _vec) {
         Rigidbody b = t.GetComponent<Rigidbody>();  // 弾丸のrigidbody取得
         b.velocity = Vector3.zero;                  // 弾丸を停止させる
 
         // 弾丸の位置を設定
-        Vector3 startPosOffset = new Vector3(MyObject.transform.forward.x * Odata.BulletOffset.z, Odata.BulletOffset.y, MyObject.transform.forward.z * Odata.BulletOffset.z);   // 発射offset
-        Vector3 shootVec = PlayerT.position;
-        shootVec.y += 0.5f;
-        shootVec -= MyObject.transform.position + startPosOffset;     // 飛ばす方向
-        shootVec = shootVec.normalized;
+        Vector3 _forward = (_vec - MyObject.transform.position).normalized;
+        Vector3 startPosOffset = new Vector3(_forward.x * Odata.BulletOffset.z, Odata.BulletOffset.y, _forward.z * Odata.BulletOffset.z);   // 発射offset
+        _vec.y += 0.5f;
+        _vec -= MyObject.transform.position + startPosOffset;     // 飛ばす方向
+        _vec = _vec.normalized;
         t.position = gameObject.transform.position + startPosOffset;  // world座標上の弾丸の発射位置
 
 
         // 弾丸を飛ばす
         b.gameObject.SetActive(true);                                   // 弾丸を表示
         b.GetComponent<Bullet>().GetSetDamage = Odata.shootDamage;      // 弾丸にダメージを付与
-        Vector3 force = shootVec * Pdata.BulletSpeed;                        // 飛ばす力を計算
+        Vector3 force = _vec * Pdata.BulletSpeed;                        // 飛ばす力を計算
         b.AddForce(force);                                              // 飛ばす
     }
 

@@ -45,7 +45,7 @@ public class PlayerDirector : MonoBehaviour
     string[] FlagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
     string[] ZoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
 
-    Off_StageDirector_2 unnti;
+    //Off_StageDirector_2 unnti;
 
     void Awake()
     {
@@ -63,7 +63,7 @@ public class PlayerDirector : MonoBehaviour
     void Start() {
         StartPos = transform.position;  // リスポーン地点を設定
         S_Pflag.NameSet(FlagName[0], FlagName[1], ZoneName[0], ZoneName[1]);        // 敵と味方の旗を教える
-        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+        //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
     }
 
 
@@ -197,13 +197,13 @@ public class PlayerDirector : MonoBehaviour
         S_Pui.RespawnCount(Pdata.RespawnTime);
         Invoke(nameof(PlayerRespawn), Pdata.RespawnTime);
 
-        unnti.addP(-1);
+        //unnti.addP(-1);
     }
 
     // リスポーン
     void PlayerRespawn() {
-        S_Pflag.FlagGetFlag = true;     // 旗を拾えるようにする
         transform.position = StartPos;  // リスポーン位置に移動
+        S_Pflag.FlagGetFlag = true;     // 旗を拾えるようにする
         S_Plife.RecoveryHP();           // HP回復
         S_Pgun.ResetAmmo();             // 弾丸をもとに戻す
         PActive();                      // 動けるようにする

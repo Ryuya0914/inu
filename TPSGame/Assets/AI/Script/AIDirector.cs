@@ -2,236 +2,426 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIDirector : MonoBehaviour
-{
-    // AIの状態一覧
-    enum AIState {
+public class AIDirector : MonoBehaviour {
+    // AIの状態関係 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    public enum AIState {                                               // AIの状態一覧
         WAIT,       // 待機中
-        GOFLAG,     // 敵の旗を目指す
-        GOHOME,     // 自分の陣地に帰る
+        WALKSTART,  // 歩く準備
+        WALK,       // 歩く
+        WALKGOAL,   // 目的地にたどり着いたとき
         DEAD,       // 死んだとき
-        FIGHT       // 戦ってるとき
+        RESPAWN     // 生き返る最中
     }
-    // AIの現在の状態
-    AIState nowState = AIState.WAIT;
-    AIState nextState = AIState.GOFLAG;
-    public int GetAIState { get { return (int)nowState; } }
+    public delegate void ChangeStateEvent(AIState _state);
+    public delegate void ChangeFlagEvent(bool flag);
+
+    // 状態
+    ChangeStateEvent ChangeState;                                       // ステートが変わった時に呼び出すデリゲート
+    public void RegisterEvent_ChangeState(ChangeStateEvent _event) {    // デリゲートにメソッドを追加する
+        ChangeState += _event;
+    }
+    AIState m_nowState = AIState.WAIT;                                     // 現在のステート
+    public AIState NowState { get { return this.m_nowState; } set { ChangeState(value); } }    // ステートのゲッタ―セッター
+    void SetNowState(AIState _state) { m_nowState = _state; }
+
+    // 敵
+    ChangeFlagEvent ChangeFindEnemyFlag;
+    public void RegisterEvent_ChangeFindEnemyFlag(ChangeFlagEvent _event) {
+        ChangeFindEnemyFlag += _event;
+    }
+    bool m_findEnemyFlag = false;
+    public bool FindEnemyFlag { get { return this.m_findEnemyFlag; } set { ChangeFindEnemyFlag(value); } }
+    void SetFindEnemyFlag(bool flag) { m_findEnemyFlag = flag; m_nowEnemyLostTime = 0f; }
+
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 移動関係 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    AIMove S_Amove;
+    AIRouteSearch S_Asearch;
+
+    List<Vector3> m_route = new List<Vector3>();    // 移動ルート
+    int m_routeIndex = 0;                           // 現在の移動ルート番号
+    Vector3 m_movePosition = Vector3.zero;             // 現在向かっている場所
+
+    Vector3 m_moveVec = Vector3.forward;   // 動く方向
+    float m_searchMoveVecInterval = 0.6f;  // 移動方向を調べる間隔
+    float m_nowMoveTime = 0;               // 同じ方向に動いている時間
+
+    float PointSize = 10f;  // pointに到達した判定を取る長さ(半径)
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 敵関係＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    Transform[] m_enemyT;           // ステージ上のすべての敵
+    Transform m_fightingEnemy;      // 現在戦っている敵
+    bool m_enemyChaseFlag = false;  // 敵を追いかけるか
+
+    float m_nowEnemyLostTime = 0f;  // 現在敵を見失っている時間
+    float m_enemyLostTime = 0f;     // 敵を追うのをあきらめる時間 
+    float visibleRange = 30f;       // AIがプレイヤを発見することが出来る距離
+    [SerializeField] float visibleAngle = 60f;      // AIの視野の広さ
+    [SerializeField] LayerMask layermask;           // 当たり判定取得用のlayer 
+    [SerializeField] Transform MyObject;            // 変身するオブジェクトたち
+
+
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // ライフ関係＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    float m_respawnTime = 5.0f;             // 生き返るまでの時間
+    float m_nowRespawnTime = 0.0f;          // 死んでから経過した時間
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 変身関係＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    float m_transInterval = 7.0f;
+    float m_nowTransInterval = 0.0f;
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+
 
     // スクリプト
-    AIMove S_Amove;
     AIFlag S_Aflag;
     AIGun S_Agun;
     PlayerDirector S_Pdire;
-    Off_StageDirector_2 unnti;
+    AILife S_Alife;
+    AITransChange S_Atrans;
+
+    //Off_StageDirector_2 unnti;
 
 
-    // 接敵判定フィールド
-    bool F_findEnemy = false;               // 敵を見つけているかどうか
-    public bool Get_findEnemyFlag { get { return this.F_findEnemy; } }
-    string PlayerName = "Player_02(Clone)";         // プレイヤの名前
-    Transform T_Player;                             // プレイヤのtransform
-    [SerializeField] Transform MyObject;            // 変身するオブジェクトたち
-    float visibleRange = 30f;                      // AIがプレイヤを発見することが出来る距離
-    [SerializeField] float visibleAngle = 60f;      // AIの視野の広さ
-    float lostTime = 3f;                            // プレイヤが見えなくなってからあきらめるまでの時間
-    float nowLostTime = 0;                          // 現在見失い続けている時間
-    [SerializeField] LayerMask layermask;           // 当たり判定取得用のlayer 
+    // 移動ルートフィールド
+    Vector3 GoalPos;
+    Vector3 WayPoint;
+
+
 
     // その他
     [SerializeField] PlayerData Pdata;
     public PlayerData GetPData { get { return this.Pdata; } }
     ObjectData Odata;
     public ObjectData SetOdata { set { this.Odata = value; } }
-    Vector3 RespawnPos;
 
-
-    void Start()
-    {
+    void Awake() {
         S_Amove = GetComponent<AIMove>();
         S_Aflag = GetComponent<AIFlag>();
         S_Agun = GetComponent<AIGun>();
+        S_Asearch = GetComponent<AIRouteSearch>();
+        S_Alife = GetComponent<AILife>();
+        S_Atrans = GetComponent<AITransChange>();
+
+
+        RegisterEvent_ChangeState(SetNowState);
+        RegisterEvent_ChangeFindEnemyFlag(SetFindEnemyFlag);
+        S_Aflag.RegisterEvent_ChangeHaveFlag(ChangeFlagState);
+
+
+    }
+
+    void Start() {
+
         
-
-        RespawnPos = transform.position;            // リスポーン地点取得
         Invoke(nameof(GetPlayer), 0.5f);              // プレイヤを取得
-        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+        //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+
+        Invoke(nameof(AActive), 1.5f);
+        
     }
 
-    void Update()
-    {
-        if(Input.GetKey(KeyCode.H)) {
-            Debug.DrawLine(transform.position, Vector3.Normalize(T_Player.position - transform.position) * visibleRange + transform.position);
+
+    // 毎フレーム処理 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    void Update() {
+        switch(m_nowState) {
+            case AIState.WAIT:
+                WaitUpdate();
+                break;
+
+            case AIState.WALKSTART:
+                WalkStartUpdate();
+                break;
+            
+            case AIState.WALK:
+                WalkUpdate();
+                break;
+            
+            case AIState.WALKGOAL:
+                WalkGoalUpdate();
+                break;
+            
+            case AIState.DEAD:
+                DeadUpdate();
+                break;
+            
+            case AIState.RESPAWN:
+                RespawnUpdate();
+                break;
+            
+        }
+
+    }
+
+    // 待機中
+    void WaitUpdate() {
+        // ゲーム開始したら動くようにする
+        //NowState = AIState.WALKSTART;
+    }
+
+    // 歩く準備
+    void WalkStartUpdate() { 
+        // 生きているか
+        if (!CheckMyLife()) {
+            S_Alife.Dead();
+            NowState = AIState.DEAD;
+            return;
+        }
+        m_nowMoveTime = m_searchMoveVecInterval;
+        // 敵が見えているか
+        if(FindEnemyFlag || CheckFindEnemy()) {
+            // 敵までの位置を特定
+            if(CheckEnemyPoint()) {
+                m_nowState = AIState.WALK;
+                return;
+            }
+        }
+        // 目的地を設定
+        CreateRoute();
+        m_nowState = AIState.WALK;
+
+    }  
+
+    // 歩く
+    void WalkUpdate() {
+        // 生きているか
+        if(!CheckMyLife()) {
+            S_Alife.Dead();
+            NowState = AIState.DEAD;
+            return;
+        }
+
+        // 一定間隔で変身するようにする
+        m_nowTransInterval += Time.deltaTime;
+        if (m_nowTransInterval > m_transInterval) {
+            // 変身させる
+            if (S_Atrans.TransChange()) m_nowTransInterval = 0f;
+        }
+
+        // 一定間隔で移動方向を設定
+        m_nowMoveTime += Time.deltaTime;
+        if (m_nowMoveTime >= m_searchMoveVecInterval) {
+            m_moveVec = S_Amove.SearchMovevec(m_route[m_routeIndex]);
+            m_nowMoveTime = 0f;
+        }
+
+        // 敵が見えているか
+        if(FindEnemyFlag) { // 敵を見つけているか
+            if(m_enemyChaseFlag) {  // 敵を追いかけているか
+                if(!FightEnemy()) { // 敵を見失っていないか
+                    NowState = AIState.WALKSTART;
+                    return;
+                }
+                S_Agun.SelectBullet(m_fightingEnemy.position);
+            }
+        } else {
+            if(CheckFindEnemy()) {
+                NowState = AIState.WALKSTART;
+                return;
+            }
+        }
+
+        // 目的地にたどり着いたか
+        if(CheckWayPoint()) {
+            NowState = AIState.WALKGOAL;
+            return;
         }
 
 
-        switch(nowState) {
-            case AIState.GOFLAG:
-                if(SearchPlayer()) {                // プレイヤを探す
-                    SearchPlayer_Find();
-                }
 
+    }
+
+    // 目的地にたどり着いたとき
+    void WalkGoalUpdate() {
+        // 生きているか
+        if(!CheckMyLife()) {
+            S_Alife.Dead();
+            NowState = AIState.DEAD;
+            return;
+        }
+        // 次の目的地に移動させる
+        m_routeIndex++;
+        if (m_routeIndex < m_route.Count) {
+            m_nowMoveTime = m_searchMoveVecInterval;    // 移動方向を決定させるため
+            m_movePosition = m_route[m_routeIndex];
+            NowState = AIState.WALK;
+            return;
+        }
+
+        NowState = AIState.WALKSTART;
+    }   
+
+    // 死んだとき
+    void DeadUpdate() {
+        m_nowRespawnTime += Time.deltaTime;
+        if(m_nowRespawnTime > m_respawnTime) {
+            m_nowRespawnTime = 0f;
+            NowState = AIState.RESPAWN;
+        }
+    }       
+
+    // 生き返るとき
+    void RespawnUpdate() { 
+        S_Alife.Respawn();
+        NowState = AIState.WALKSTART;
+    }
+
+
+    //  ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 一定間隔毎処理 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    void FixedUpdate() {
+        switch(m_nowState) {
+            case AIState.WALK:
+                WalkFixedUpdate();
                 break;
-            case AIState.GOHOME:
-                if(SearchPlayer()) {                // プレイヤを探す
-                    SearchPlayer_Find();
-                }
+            default:
+                S_Amove.FixedWalk(Vector3.zero);
+                break;
+        }
 
-                break; 
-            case AIState.FIGHT:
-                if (S_Pdire.PState == 2) {          // プレイヤが死んだとき
-                    nowLostTime = 0f;
-                    SearchPlayer_Lost();
-                    ChangeState((int)nextState);
-                    break;
-                }
-                if(!SearchPlayer()) {               // プレイヤを探す
-                    nowLostTime += Time.deltaTime;
-                    if (nowLostTime > lostTime) {       // 一定秒数以上見失い続けていたら
-                        nowLostTime = 0f;
-                        SearchPlayer_Lost();
-                        ChangeState((int)nextState);    // 状態を切り替える
+    }
+
+    // 歩く
+    void WalkFixedUpdate() {
+        if(FindEnemyFlag) {
+            MyObject.transform.LookAt(transform.position + m_fightingEnemy.position);
+        } else {
+            MyObject.transform.LookAt(transform.position + m_moveVec);
+        }
+        // 移動させる
+        S_Amove.FixedWalk(m_moveVec);
+    }
+    
+
+    //  ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+
+    // 現在の状態をチェックする＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 目的地までの距離
+    bool CheckWayPoint() {
+        Vector3 vec = m_route[m_routeIndex] - transform.position;
+        if(vec.sqrMagnitude < PointSize * PointSize) {
+            return true;
+        }
+        return false;
+    }
+
+    // 敵が見えているか
+    bool CheckFindEnemy() {
+        for (int i = 0; i < m_enemyT.Length; ++i) {
+            // AIからプレイヤまでのベクトル
+            Vector3 vec = m_enemyT[i].position - MyObject.position;
+
+            // プレイヤまでの距離が一定以内だったら
+            if(visibleRange >= vec.sqrMagnitude) {
+                // AIの視界内にプレイヤがいるかどうか
+                if(Vector3.Angle(MyObject.forward, vec) <= visibleAngle) {
+                    // プレイヤと自身の間に障害物があるか調べる
+                    if(Physics.Linecast(MyObject.position + Odata.BulletOffset, m_enemyT[i].position + new Vector3(0, 1f, 0), layermask.value)) {
+                        continue;
                     }
-                } else {
-                    nowLostTime = 0f;
+                    m_fightingEnemy = m_enemyT[i];
+                    FindEnemyFlag = true;
+                    return true;
                 }
-
-                break;
-            case AIState.WAIT:
-
-                
-                break;
-            case AIState.DEAD:
-
-                
-                break;            
+            }
         }
 
+        return false;
+    } 
+    // 敵を見失っていないか
+    bool CheckLostEnemy(Vector3 enemypos) {
+        // AIからプレイヤまでのベクトル
+        Vector3 vec = enemypos - MyObject.position;
+
+        // プレイヤまでの距離が一定以内だったら
+        if(visibleRange >= vec.sqrMagnitude) {
+            // AIの視界内にプレイヤがいるかどうか
+            if(Vector3.Angle(MyObject.forward, vec) <= visibleAngle) {
+                // プレイヤと自身の間に障害物があるか調べる
+                if(Physics.Linecast(MyObject.position + Odata.BulletOffset, enemypos + new Vector3(0, 1f, 0), layermask.value)) {
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 敵との位置関係
+    bool CheckEnemyPoint() {
+        List<Vector3> _list = S_Asearch.CheckSideBySide(MyObject.position, m_fightingEnemy.position);
+        if (_list.Count > 0) {
+            _list.Add(m_fightingEnemy.position);
+            m_route.Clear();
+            m_route.AddRange(_list);
+            m_enemyChaseFlag = true;
+            return true;
+        }
+        m_enemyChaseFlag = false;
+        return false;
+    }
+
+    // 生きているか
+    public bool CheckMyLife() {
+        return (S_Alife.GetHP() > 0);
+    }
+    
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // その他処理 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 移動ルートを作る
+    void CreateRoute() {
+        List<Vector3> _list = S_Asearch.SearchRoute(S_Aflag.GetDestination());
+        m_route.Clear();
+        m_route = _list;
+        m_routeIndex = 0;
+    }
+        
+    // 移動中に敵を追いかけているときの処理
+    bool FightEnemy() {
+        if(!CheckLostEnemy(m_fightingEnemy.position)) {  // 敵を見失っていないか
+            m_nowEnemyLostTime += Time.deltaTime;
+            if(m_nowEnemyLostTime > m_enemyLostTime) { // 一定秒数以上見失っているか
+                FindEnemyFlag = false;
+                m_fightingEnemy = null;
+                return false;
+            }
+            return true;
+        } else {
+            m_nowEnemyLostTime = 0f;
+            return true;
+        }
 
     }
 
 
-    // ステートが切り替わった時に行う処理
-    public void ChangeState(int newState) {
-
-        switch((AIState)newState) {
-            case AIState.GOFLAG:
-                if (F_findEnemy) {    // プレイヤと接敵していたら状態を移行しない
-                    nextState = (AIState)newState;
-                } else {
-                    S_Amove.SetDestPos(S_Aflag.GetDestination());   // 目的地を変更
-
-                    // ステートを切り替える
-                    nowState = (AIState)newState;
-                }
-
-                break;
-
-            case AIState.GOHOME:
-                if(F_findEnemy) {    // プレイヤと接敵していたら状態を移行しない
-                    nextState = (AIState)newState;
-                } else {
-                    S_Amove.SetDestPos(S_Aflag.GetDestination());   // 目的地を変更
-
-                    // ステートを切り替える
-                    nowState = (AIState)newState;
-                }
-                break;
-
-            case AIState.FIGHT:
-                nextState = nowState;
-
-                S_Amove.SetDestPos(T_Player);   // 目的地を変更
-                S_Agun.SetPlayerT = T_Player;
-
-                // ステートを切り替える
-                nowState = (AIState)newState;
-                break;
-
-            case AIState.WAIT:
-                S_Agun.SetPlayerT = null;
-
-                // ステートを切り替える
-                nowState = (AIState)newState;
-                break;
-
-            case AIState.DEAD:
-                nextState = AIState.GOFLAG;
-
-                SearchPlayer_Lost();
-                S_Aflag.LostFlag(); // 旗を落とす
-                unnti.addA(-1);
-                // ステートを切り替える
-                nowState = (AIState)newState;
-                break;
-        }
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 状態が変わった時の処理＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    void ChangeFlagState(AIFlag.AIFlagState _state) {
 
     }
+    // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 
 
     // プレイヤのTransformを取得
     void GetPlayer() {
-        T_Player = GameObject.Find(PlayerName).transform;   // 名前からプレイヤを取得
-        S_Pdire = T_Player.GetComponent<PlayerDirector>();
-    }
-
-
-    // プレイヤを探す
-    bool SearchPlayer() {
-        // AIからプレイヤまでのベクトル
-        Vector3 vec = T_Player.position - MyObject.position;
-
-        // プレイヤまでの距離が一定以内だったら
-        if(visibleRange >= Mathf.Sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)) {
-            // AIの視界内にプレイヤがいるかどうか
-            if (Vector3.Angle(MyObject.forward, vec) <= visibleAngle) {
-                // プレイヤと自身の間に障害物があるか調べる
-                if (Physics.Linecast(transform.position + Odata.BulletOffset, T_Player.position + new Vector3(0, 1f, 0), layermask.value)) {
-                    return false;
-                }
-
-                return true;
-            }
+        // tagから取得
+        GameObject[] _obj1 = GameObject.FindGameObjectsWithTag("PlayerParent");
+        // 配列を初期化
+        m_enemyT = new Transform[_obj1.Length];
+        // for文でしまっていく
+        for (int i = 0; i < _obj1.Length; ++i) {
+            m_enemyT[i] = _obj1[i].transform;
         }
-        
-        return false;
+        //S_Pdire = T_Player.GetComponent<PlayerDirector>();
     }
 
-    // プレイヤを見つけた時
-    void SearchPlayer_Find() {
-        F_findEnemy = true;             // プレイヤ発見フラグをオンにする
-
-        ChangeState((int)AIState.FIGHT);// 状態を切り替える
 
 
-        //int selectAct = Random.Range(0, 3); // 次の行動をランダムで決める
-        //switch(selectAct) {
-        //    case 0:     // 戦う
-        //        ChangeState((int)AIState.FIGHT);
-        //        break;
-        //    case 1:     // 止まる
-        //        ChangeState((int)AIState.WAIT);
-        //        break;
-        //    case 2:     // 無視する
-
-        //        break;
-        //}
-
-
-
+    void AActive() {
+        NowState = AIState.WALKSTART;
     }
 
-    // プレイヤを見失ったとき
-    void SearchPlayer_Lost() {
-        F_findEnemy = false;            // プレイヤ発見フラグを消す
-        S_Agun.SetPlayerT = null;       // プレイヤを撃たないようにする
-
-
-    }
-
-    // AIを動かす(試合が始まった時に呼んでもらう)
-    public void AActive() {
-        ChangeState((int)AIState.GOFLAG);
-    }
 
 }

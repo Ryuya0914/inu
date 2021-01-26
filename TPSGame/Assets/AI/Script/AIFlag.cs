@@ -2,13 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIFlag : MonoBehaviour { 
-    
+public class AIFlag : MonoBehaviour {
+
+    // 旗の状態関係 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    public enum AIFlagState {
+        NONE,   // 旗を持っていないとき
+        MINE,   // 自分の陣地の旗を持っているとき
+        OTHER   // 敵の陣地の旗を持っているとき
+    }
+    public delegate void ChangeHaveEvent(AIFlagState _state);
+
+    ChangeHaveEvent ChangeHaveFlag;
+    public void RegisterEvent_ChangeHaveFlag(ChangeHaveEvent _event) {
+        ChangeHaveFlag += _event;
+    }
+    AIFlagState m_haveFlag = 0;
+    public AIFlagState HaveFlag { get { return this.m_haveFlag; } set { ChangeHaveFlag(value); } }
+    void SetHaveFlag(AIFlagState _flag) { m_haveFlag = _flag; }
+    // 旗の状態関係 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+
     AIDirector S_Adire;     // ディレクタースクリプト  
 
     // 陣地のタグ
-    string[] flagName = new string[] { "Flag_2", "Flag_1" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
-    string[] zoneName = new string[] { "Zone_2", "Zone_1" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
+    string[] flagName = new string[] { "Flag_1", "Flag_2" };    // 敵と自分の旗の区別をするためのタグ     　0:自分側, 1:敵側
+    string[] zoneName = new string[] { "Zone_1", "Zone_2" };    // 敵と自分の陣地の区別をするためのタグ     0:自分側, 1:敵側
 
     // 持っている旗のゲームオブジェクト(nullのときは持っていない)
     GameObject myFlag = null;
@@ -19,7 +37,7 @@ public class AIFlag : MonoBehaviour {
     GameObject O_myZone;
     GameObject O_EneFlag;
 
-    Off_StageDirector_2 unnti;
+    //Off_StageDirector_2 unnti;
     PlayerUI S_Pui;
 
     void Start()
@@ -29,7 +47,7 @@ public class AIFlag : MonoBehaviour {
         // 敵の旗と自身の陣地のゲームオブジェクト取得
         Invoke(nameof(GetMyObj), 1.0f);
 
-        unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+        //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
 
         S_Pui = GameObject.Find("PlayerCanvas").GetComponent<PlayerUI>();
 
@@ -44,7 +62,7 @@ public class AIFlag : MonoBehaviour {
 
     // 旗を取得
     void GetFlag(GameObject f) {
-
+        
         // エフェクト再生
         S_effect[0].EffectPlay(transform.position);
         S_effect[1].EffectPlay(Vector3.zero);
@@ -52,12 +70,13 @@ public class AIFlag : MonoBehaviour {
         myFlag = f;
         f.GetComponent<Flag>().Take();
 
-        S_Adire.ChangeState(2);
+        //S_Adire.ChangeState(2);
     }
 
     // 旗を落とす
     public void LostFlag() {
-        if(myFlag != null) {
+        if(HaveFlag != AIFlagState.NONE) {
+            HaveFlag = AIFlagState.NONE;
             S_Pui.FlagGetLavelOff();
 
             // エフェクト停止
@@ -71,7 +90,9 @@ public class AIFlag : MonoBehaviour {
 
     // 旗を拠点に戻す
     void ReturnFlag() {
-        if(myFlag != null) {
+        if(HaveFlag != AIFlagState.NONE) {
+            HaveFlag = AIFlagState.NONE;
+
             S_Pui.FlagGetLavelOff();
             // エフェクト停止
             S_effect[1].EffectStop();
@@ -79,58 +100,72 @@ public class AIFlag : MonoBehaviour {
             myFlag.GetComponent<Flag>().ResetPos();
             myFlag = null;
 
-            S_Adire.ChangeState(1);
+           // S_Adire.ChangeState(1);
         }
     }
 
     // 得点取得
     void GetPoint() {
         // 得点を得たことを通知
-        unnti.addA(3);
+        //unnti.addA(3);
         // 旗をなくす
         ReturnFlag();
     }
 
 
     // 目的地を返すメソッド
-    public Transform GetDestination() {
-        if (myFlag == null) {   // 旗を持っていなかったら旗の位置を返す
-            return O_EneFlag.transform;
-        } else {                // 旗を持っていたら自分の陣地の位置を返す
-            return O_myZone.transform;
+    public Vector3 GetDestination() {
+        Vector3 _pos = Vector3.zero;
+        switch(HaveFlag) {
+            case AIFlagState.NONE:
+                _pos = O_EneFlag.transform.position;
+
+                break;
+            case AIFlagState.MINE:
+                _pos = O_myZone.transform.position;
+                break;
+            case AIFlagState.OTHER:
+                _pos = O_myZone.transform.position;
+                break;
         }
+
+        return _pos;
     }
 
 
 
     // 陣地,旗の当たり判定取得
     void OnTriggerEnter(Collider col) {
-        if(col.tag == zoneName[0]) {           // 自分側の陣地
-            if(myFlag != null) {  // 旗を持っていた時
-                if(myFlag.tag == flagName[0])
-                    ReturnFlag();   // 自分の旗を自分の陣地に戻す
-                else if(myFlag.tag == flagName[1])
-                    GetPoint();     // 敵の旗を持ってきたのでポイントゲット
-            }
-        } else if(col.tag == flagName[0]) {    // 自分側の旗
-            if(myFlag == null) {
-                if(col.GetComponent<Flag>().state == 1) {// 道中に旗が落ちているなら
-                    int num = S_Adire.GetAIState;
-                    if(num != 3) {
-                        S_Pui.FlagGetLavelOn();
+        if(S_Adire.NowState == AIDirector.AIState.WALK || S_Adire.NowState == AIDirector.AIState.WALKSTART || S_Adire.NowState == AIDirector.AIState.WALKGOAL) {
+            if(col.tag == zoneName[0]) {           // 自分側の陣地
+                switch(HaveFlag) {
+                    case AIFlagState.MINE:
+                        ReturnFlag();   // 自分の旗を自分の陣地に戻す
+                        break;
+                    case AIFlagState.OTHER:
+                        GetPoint();     // 敵の旗を持ってきたのでポイントゲット
+                        break;
+                }
+
+            } else if(col.tag == flagName[0]) {    // 自分側の旗
+                if(HaveFlag == AIFlagState.NONE) {
+                    if(col.GetComponent<Flag>().state == 1) {// 道中に旗が落ちているなら
+                        HaveFlag = AIFlagState.MINE;
                         GetFlag(col.gameObject);
                     }
                 }
-            }
-        } else if(col.tag == flagName[1]) {    // 敵側の旗
-            if(myFlag == null) {
-                if(col.GetComponent<Flag>().state != 2) {// 旗を誰も持っていないなら
-                    int num = S_Adire.GetAIState;
-                    if(num != 3)
+
+            } else if(col.tag == flagName[1]) {    // 敵側の旗
+                if(HaveFlag == AIFlagState.NONE) {
+                    if(col.GetComponent<Flag>().state != 2) {// 旗を誰も持っていないなら
+                        S_Pui.FlagGetLavelOn();
+                        HaveFlag = AIFlagState.OTHER;
                         GetFlag(col.gameObject);
+
+                    }
                 }
             }
         }
     }
-    
+
 }

@@ -596,7 +596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3964912065184335888, guid: 9e0f2b2326494b34984a4286383f67b1, type: 3}
-  AI: {fileID: 8994504994947489096, guid: e960ec27b4763804e906fc6c528c00c6, type: 3}
+  AI: {fileID: 3913686880251722907, guid: dd0df77b7d322a243b2bfb14942576e6, type: 3}
   S_obj_1:
   - {fileID: 1686816378449919711, guid: 0c6a175b76a577b4d855ac59f3408849, type: 3}
   - {fileID: 4933324424270232340, guid: 3264cfcee9b86bf4ca0bcac0683c231d, type: 3}
@@ -1145,11 +1145,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4672913201715121873, guid: e960ec27b4763804e906fc6c528c00c6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3426612672834415722, guid: e960ec27b4763804e906fc6c528c00c6,
         type: 3}
       propertyPath: S_effect
@@ -1174,6 +1169,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4672913201715121873, guid: e960ec27b4763804e906fc6c528c00c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4838098275249662344, guid: e960ec27b4763804e906fc6c528c00c6,
         type: 3}
