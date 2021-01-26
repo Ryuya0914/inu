@@ -88,7 +88,7 @@ public class Off_StageDirector_2 : MonoBehaviour
             }
             R.SetActive(true);
             GameObject.Find("Player_02(Clone)").GetComponent<PlayerDirector>().PNonActive();
-            GameObject.Find("AI(Clone)").GetComponent<AIDirector>().ChangeState(0);
+            GameObject.Find("AI(Clone)").GetComponent<AIDirector>().NowState = AIDirector.AIState.WAIT;
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 SceneManager.LoadScene("Title");
@@ -189,7 +189,7 @@ public class Off_StageDirector_2 : MonoBehaviour
     void Active()
     {
         GameObject.Find("Player_02(Clone)").GetComponent<PlayerDirector>().PActive();
-        GameObject.Find("AI_02(Clone)").GetComponent<AIDirector>().AActive();
+        GameObject.Find("AI_02(Clone)").GetComponent<AIDirector>().NowState = AIDirector.AIState.WALKSTART;
     }
 
     void Rscore()
