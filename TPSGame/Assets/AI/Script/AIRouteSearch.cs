@@ -45,16 +45,6 @@ public class AIRouteSearch : MonoBehaviour
             myMoveCost[num] = 0f;               // コスト
         }
 
-        // 配列を初期化
-        //points = new Point[obj.Length];
-        //// チェックポイントの情報を保存しておく
-        //for (int i = 0; i < points.Length; i++) {
-        //    AIMovePoint scr = obj[i].GetComponent<AIMovePoint>();       // スクリプト
-        //    int num = scr.MyNumber;                                     // そのポイントに振り分けられた番号
-        //    // Pointを番号順になるように配列に格納
-        //    points[num].PointT = obj[i].transform;           // ポイントの座標
-        //    points[num].S_AImoveP = scr;                                // ポイントのスクリプト
-        //}
     }
     
 
@@ -73,10 +63,38 @@ public class AIRouteSearch : MonoBehaviour
         return nearPNum;
     }
 
+    // 二つの地点がpointで隣り合っているか調べる
+    public List<Vector3> CheckSideBySide(Vector3 _vec0, Vector3 _vec1) {
+        int num0 = GetNearPoint(_vec0);
+        int num1 = GetNearPoint(_vec1);
+        List<Vector3> _list = new List<Vector3>();
+        
+        if (num0 == num1) {
+            _list.Add(PointT[num0].position);
+        }
+        
+        for (int i = 0; i < S_AImoveP[num0].GoBlue.Length; i++) {
+            if(S_AImoveP[num0].GoBlue[i].MyNumber == num1) {
+                _list.Add(PointT[num0].position);
+                _list.Add(PointT[num1].position);
+                return _list;
+            }
+        }
+        for (int i = 0; i < S_AImoveP[num0].GoRed.Length; i++) {
+            if (S_AImoveP[num0].GoRed[i].MyNumber == num1) {
+                _list.Add(PointT[num0].position);
+                _list.Add(PointT[num1].position);
+                return _list;
+            }
+        }
 
+        return _list;
+    }
 
     // 経路を作る(Pointの番号指定)    0:赤に行くとき、1:青に行くとき
-    public Vector3 SearchRoute(int num) {
+    public List<Vector3> SearchRoute(int num) {
+        List<Vector3> _route = new List<Vector3>();
+
         // 自分の場所から一番近いPointを探す
         int myPPos = GetNearPoint(transform.position);
 
@@ -86,8 +104,10 @@ public class AIRouteSearch : MonoBehaviour
             if (myRoute.LastIndexOf(0) == num) {    // 今回の目的地と前回の目的地が一緒だったら
                 for(int i = 0; i < myRoute.Count; i++) {
                     if(myRoute[i] == myPPos) {
-                        myRouteCount = i;
-                        return PointT[myRoute[myRouteCount]].position;
+                        for (int j = i; j < myRoute.Count; j++) {
+                            _route.Add(PointT[myRoute[j]].position);
+                        }
+                        return _route;
                     }
                 }
             }
@@ -106,7 +126,10 @@ public class AIRouteSearch : MonoBehaviour
         while(true) {
             // 目的地まで探索出来たら終了する
             if (S_AImoveP[myRoute[con]].MyNumber == num) {
-                return PointT[myRoute[myRouteCount]].position;
+                for (int i = 0; i < myRoute.Count; i++) {
+                    _route.Add(PointT[myRoute[i]].position);
+                }
+                return _route;
             }
 
             // 目的地別にルートを探す
@@ -126,7 +149,9 @@ public class AIRouteSearch : MonoBehaviour
     }
 
     // 経路を作る(world座標指定)
-    public Vector3 SearchRoute(Vector3 goalPos) {
+    public List<Vector3> SearchRoute(Vector3 goalPos) {
+        List<Vector3> _route = new List<Vector3>();
+
         // 自分の場所から一番近いPointを探す
         int myPointNum = GetNearPoint(transform.position);
         // 目的地に一番近いPointを探す
@@ -139,7 +164,11 @@ public class AIRouteSearch : MonoBehaviour
             myRouteCount = 0;
             // 一番最初の目的地を自分の近くのpointにする
             myRoute.Add(myPointNum);
-            return PointT[myRoute[myRouteCount]].position;
+            for(int j = 0; j < myRoute.Count; j++) {
+                _route.Add(PointT[myRoute[j]].position);
+            }
+            _route.Add(goalPos);
+            return _route;
         }
 
 
@@ -149,12 +178,12 @@ public class AIRouteSearch : MonoBehaviour
             int Snum = myRoute.IndexOf(myPointNum);
 
             // 要素が見つかったら
-            if(Gnum != -1 && Snum != -1 && Snum < Gnum) {
-                myRouteCount = Snum;
-                if(myRoute.Count > Gnum + 1) {
-                    myRoute.RemoveRange(Gnum + 1, myRoute.Count - Gnum - 1);
-                    return PointT[myRoute[myRouteCount]].position;
+            if(Gnum != -1 && Snum != -1 && Snum <= Gnum) {
+                for(int j = Snum; j <= Gnum; j++) {
+                    _route.Add(PointT[myRoute[j]].position);
                 }
+                _route.Add(goalPos);
+                return _route;
             }
         }
 
@@ -175,8 +204,12 @@ public class AIRouteSearch : MonoBehaviour
         // 一番最初の目的地を自分の近くのpointにする
         myRoute.Insert(0, myPointNum);
 
-        return PointT[myRoute[0]].position;
         
+        for(int j = 0; j < myRoute.Count; j++) {
+            _route.Add(PointT[myRoute[j]].position);
+        }
+        _route.Add(goalPos);
+        return _route;
     }
 
     int Search(int startpoint, int goalpoint, int pointnum, float nowlength) {
@@ -263,14 +296,6 @@ public class AIRouteSearch : MonoBehaviour
 
     }
 
-    // 目的地を返す
-    public Transform GetDestinationT() {
-        myRouteCount++;
-        if (myRouteCount >= myRoute.Count) {
-            return null;
-        }
-        return PointT[myRoute[myRouteCount]];
-    }
 
 
 }

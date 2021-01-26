@@ -69,11 +69,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b30375204c8415a4bb9cd461b0d96617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyObject: {fileID: 6969769766247952028}
   visibleAngle: 60
   layermask:
     serializedVersion: 2
     m_Bits: 4304897
+  MyObject: {fileID: 6969769766247952028}
   Pdata: {fileID: 11400000, guid: b26f868362e950442a9d86dc180f5e13, type: 2}
 --- !u!114 &697501579004464390
 MonoBehaviour:
@@ -88,7 +88,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Odata: {fileID: 11400000, guid: 5eb80a50162e59f40a30a25c8479df0f, type: 2}
-  searchInterval: 0.6
   aiOData: {fileID: 4532459120725216598}
   layermask:
     serializedVersion: 2
@@ -189,6 +188,7 @@ MonoBehaviour:
   PointT: []
   S_AImoveP: []
   myMoveCost: []
+  myRoute: 
 --- !u!1001 &512555314801893971
 PrefabInstance:
   m_ObjectHideFlags: 0

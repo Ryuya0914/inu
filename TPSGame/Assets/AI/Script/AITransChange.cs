@@ -11,8 +11,6 @@ public class AITransChange : MonoBehaviour
 
     // 変身に関するフィールド
     [SerializeField] int mynum = 0;     // 現在変身中のオブジェクトの番号(リストの中の番号)
-    bool F_Change = true;               // 変身できるフラグ
-    float ReChangeTime = 10f;           // 変身する頻度
 
     // Rayに関するフィールド
     [SerializeField] LayerMask mask;    // layer
@@ -34,17 +32,8 @@ public class AITransChange : MonoBehaviour
         S_Alife = GetComponent<AILife>();         // ライフスクリプト取得
         RegisterObj();      // 変身するオブジェクトをリストに格納
         SetOdata(OdataList[mynum]);
-        StartCoroutine(nameof(ChangeUpdate));
     }
 
-    IEnumerator ChangeUpdate() {
-        while(true) {
-            yield return new WaitForSeconds(1.0f);
-            if(F_Change && (S_Adire.GetAIState == 1 || S_Adire.GetAIState == 2)) {      // 変身できるときかつ待機中でも死んでいるときでもないとき
-                TransChange();
-            }
-        }
-    }
 
 
     // オブジェクトデータ更新
@@ -54,17 +43,11 @@ public class AITransChange : MonoBehaviour
         S_Amove.SetOdata(odata, S_aiOData);
         S_Agun.SetOdata(odata);
         S_Alife.SetOdata(odata);
-        F_Change = false;               // 変身出来なくする
-        Invoke(nameof(Reload), ReChangeTime);
-    }
-
-    void Reload() {
-        F_Change = true;
     }
 
 
     // 変身
-    public void TransChange() {
+    public bool TransChange() {
         // rayを飛ばして変身したいオブジェクトの取得
         ObjectData _data = null;
         for(int i = 0; i < 4; i++) {
@@ -75,8 +58,10 @@ public class AITransChange : MonoBehaviour
             int listnum = SearchList(_data);    // リストの何番目にあるか探す
             if(listnum >= 0) {
                 ChangeObject(listnum);              // 実際に変身する
+                return true;
             }
         }
+        return false;
     }
 
     // rayを飛ばす

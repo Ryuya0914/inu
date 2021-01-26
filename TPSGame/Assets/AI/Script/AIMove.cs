@@ -7,11 +7,6 @@ using UnityEngine;
 public class AIMove : MonoBehaviour {
     // オブジェクトのデータ
     [SerializeField] ObjectData Odata;
-    
-    // 移動する方向に関する数値
-    Vector3 destinationPos;     // 現在の目的地
-    Vector3 nowMoveVec = Vector3.zero;  // 現在進む方向
-    [SerializeField] float searchInterval = 0.8f;        // 経路を探索する間隔
 
     // Ray飛ばす用
     [SerializeField] AIObjectData aiOData;
@@ -32,39 +27,25 @@ public class AIMove : MonoBehaviour {
     void Start() {
         S_Adire = GetComponent<AIDirector>();
         rb = GetComponent<Rigidbody>(); // rigidbodyを取得
-        StartCoroutine(nameof(ReSearchRoute));  // 経路を一定間隔で再探索するコルーチンをスタートする
     }
 
-    void FixedUpdate() {
-        int num = S_Adire.GetAIState;
-        if(num == 1 || num == 2 || num == 4) {
-            // 加速度を使って移動させる
-            Vector3 v = nowMoveVec * Odata.MoveSpeed;
-            v.y = rb.velocity.y;
-            rb.velocity = v;
-        }
+    public void FixedWalk(Vector3 _vec) {
+        // 加速度を使って移動させる
+        Vector3 v = _vec * Odata.MoveSpeed;
+        v.y = rb.velocity.y;
+        rb.velocity = v;
+
     }
-
-
-    // 目的地を変更
-    public void SetDestPos(Transform vec) {
-        destinationPos = vec.position;
-    }   
-    // 目的地を変更
-    public void SetDestPos(Vector3 vec) {
-        destinationPos = vec;
-    }
-
 
     int RandCount = 0;
     int ramd = 0;
     //進む方向を決めるメソッド
-    public void SearchMovevec() {
+    public Vector3 SearchMovevec(Vector3 _pos) {
 
         // 経路探索時に右と左どちらを優先して調べるか決める
         if (RandCount > 3) {
             // ランダムで正面の障害物を確かめた後に左右どちらから調べるかを決める
-            ramd = Random.Range(0, 2) -1;
+            ramd = (Random.Range(0, 2) * 2) -1;
             RandCount = 0;
         } else {
             RandCount++;
@@ -72,7 +53,9 @@ public class AIMove : MonoBehaviour {
 
 
         // 目的地へのベクトルを作成
-        Vector3 forwardVec = destinationPos - transform.position;
+        Vector3 forwardVec = (_pos - transform.position);
+        forwardVec.y = 0f;
+        forwardVec = forwardVec.normalized;
         // 右が0度左回り 弧度法
         float angleNow = Mathf.Atan2(forwardVec.z, forwardVec.x) * Mathf.Rad2Deg;
 
@@ -123,28 +106,15 @@ public class AIMove : MonoBehaviour {
 
             if(f) {
                 // オブジェクトの角度を変える
-                nowMoveVec = RayAngle;
-                if (!S_Adire.Get_findEnemyFlag)
-                    myObjects.transform.LookAt(transform.position + nowMoveVec);
-                break;
+                return RayAngle;
             }
 
         }
 
+
+        return Vector3.forward;
+
     }
     
-
-
-    IEnumerator ReSearchRoute() {
-        while(true) {
-            // 経路を探索する
-            int num = S_Adire.GetAIState;
-            if(num == 1 || num == 2 || num == 4) SearchMovevec();
-            // 何秒待つか決める
-            float waitTime = searchInterval + (Random.Range(-1, 2) / 10);
-            // 一定秒数まつ
-            yield return new WaitForSeconds(waitTime);
-        }
-    }
-
+    
 }
