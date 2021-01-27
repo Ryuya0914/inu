@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
+    string[] tagNames = new string[] { "Player", "AI" };
 
     int damage = 0;
 
@@ -16,8 +17,13 @@ public class Bullet : MonoBehaviour
 
     // プレイヤ以外と接触した場合は消す
     void OnTriggerEnter(Collider col) {
-        if (col.tag != "Player") {
-            gameObject.SetActive(false);
+        for(int i = 0; i < tagNames.Length; ++i) {
+            if(col.tag == tagNames[i]) {
+                return;
+            }
+
         }
+        gameObject.SetActive(false);
+
     }
 }

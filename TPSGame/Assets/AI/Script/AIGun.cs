@@ -13,7 +13,7 @@ public class AIGun : MonoBehaviour
     int nowammo = 0;                                // 現在の弾薬数
     [SerializeField] List<GameObject> bullets;      // 弾のリスト
     int bulletoffset = 0;                           // リストの何番目の弾を使うか
-    float ShootInterval = 0.5f;                     // 射撃の間隔
+    float ShootInterval = 1.0f;                     // 射撃の間隔
     bool m_shootIntervalFlag = true;
     // その他
     AIDirector S_Adire;
@@ -23,6 +23,7 @@ public class AIGun : MonoBehaviour
     void Start()
     {
         S_Adire = GetComponent<AIDirector>();   // ディレクタスクリプト取得
+        Pdata = S_Adire.GetPData;
         bullets[0].transform.parent.transform.parent = null;    // 弾丸がプレイヤに合わせて動かないようにする
     }
 

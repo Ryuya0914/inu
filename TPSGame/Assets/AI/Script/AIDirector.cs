@@ -38,8 +38,8 @@ public class AIDirector : MonoBehaviour {
     AIMove S_Amove;
     AIRouteSearch S_Asearch;
 
-    List<Vector3> m_route = new List<Vector3>();    // 移動ルート
-    int m_routeIndex = 0;                           // 現在の移動ルート番号
+    public List<Vector3> m_route = new List<Vector3>();    // 移動ルート
+    public int m_routeIndex = 0;                           // 現在の移動ルート番号
     Vector3 m_movePosition = Vector3.zero;             // 現在向かっている場所
 
     Vector3 m_moveVec = Vector3.forward;   // 動く方向
@@ -239,6 +239,7 @@ public class AIDirector : MonoBehaviour {
             NowState = AIState.DEAD;
             return;
         }
+
         // 次の目的地に移動させる
         m_routeIndex++;
         if (m_routeIndex < m_route.Count) {
@@ -247,9 +248,16 @@ public class AIDirector : MonoBehaviour {
             NowState = AIState.WALK;
             return;
         }
+        if (m_routeIndex >= m_route.Count) {
+            m_routeIndex = m_route.Count - 1;
+            if(m_enemyChaseFlag) {
+                NowState = AIState.WALK;
+                return;
+            }
+        }
 
         NowState = AIState.WALKSTART;
-    }   
+    }
 
     // 死んだとき
     void DeadUpdate() {
@@ -356,6 +364,7 @@ public class AIDirector : MonoBehaviour {
             m_route.Clear();
             m_route.AddRange(_list);
             m_enemyChaseFlag = true;
+            m_routeIndex = 0;
             return true;
         }
         m_enemyChaseFlag = false;

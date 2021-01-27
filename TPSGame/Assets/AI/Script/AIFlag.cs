@@ -40,12 +40,16 @@ public class AIFlag : MonoBehaviour {
     //Off_StageDirector_2 unnti;
     PlayerUI S_Pui;
 
-    void Start()
-    {
+    void Awake() {
         // 自身のスクリプトを取得
         S_Adire = GetComponent<AIDirector>();
+
+    }
+
+    void Start()
+    {
         // 敵の旗と自身の陣地のゲームオブジェクト取得
-        Invoke(nameof(GetMyObj), 1.0f);
+        Invoke(nameof(GetMyObj), 0.5f);
 
         //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
 

@@ -134,7 +134,7 @@ MonoBehaviour:
   mynum: 3
   mask:
     serializedVersion: 2
-    m_Bits: 110592
+    m_Bits: 126976
   S_aiOData: {fileID: 4532459120725216598}
 --- !u!114 &250877052991961836
 MonoBehaviour:
@@ -405,7 +405,7 @@ PrefabInstance:
     - target: {fileID: 5211945790213266736, guid: c5dd9be5c28744d40a0d3833c16381ea,
         type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 4660547055432767504, guid: c5dd9be5c28744d40a0d3833c16381ea,
         type: 3}
@@ -535,7 +535,7 @@ PrefabInstance:
     - target: {fileID: 7628274171136033742, guid: c5dd9be5c28744d40a0d3833c16381ea,
         type: 3}
       propertyPath: layer.m_Bits
-      value: 110592
+      value: 33665024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5dd9be5c28744d40a0d3833c16381ea, type: 3}

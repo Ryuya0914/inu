@@ -65,12 +65,13 @@ public class AIRouteSearch : MonoBehaviour
 
     // 二つの地点がpointで隣り合っているか調べる
     public List<Vector3> CheckSideBySide(Vector3 _vec0, Vector3 _vec1) {
+        List<Vector3> _list = new List<Vector3>();
+
         int num0 = GetNearPoint(_vec0);
         int num1 = GetNearPoint(_vec1);
-        List<Vector3> _list = new List<Vector3>();
         
         if (num0 == num1) {
-            _list.Add(PointT[num0].position);
+            _list.Add(_vec1);
         }
         
         for (int i = 0; i < S_AImoveP[num0].GoBlue.Length; i++) {

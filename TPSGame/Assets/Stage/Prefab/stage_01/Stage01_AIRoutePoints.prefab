@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7511735895964240337}
   m_Layer: 0
-  m_Name: RoutePoints
+  m_Name: Stage01_AIRoutePoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1353,6 +1353,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1418617422417000014, guid: 5c1c53bcde09db04f8487235d9f6e478,
         type: 3}
+      propertyPath: GoBlue.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418617422417000014, guid: 5c1c53bcde09db04f8487235d9f6e478,
+        type: 3}
       propertyPath: MyNumber
       value: 19
       objectReference: {fileID: 0}
@@ -1782,6 +1787,11 @@ PrefabInstance:
     - target: {fileID: 3870879430650753287, guid: 5c1c53bcde09db04f8487235d9f6e478,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418617422417000014, guid: 5c1c53bcde09db04f8487235d9f6e478,
+        type: 3}
+      propertyPath: GoRed.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1418617422417000014, guid: 5c1c53bcde09db04f8487235d9f6e478,

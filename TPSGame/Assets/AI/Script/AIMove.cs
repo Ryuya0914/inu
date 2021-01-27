@@ -24,10 +24,11 @@ public class AIMove : MonoBehaviour {
         this.aiOData = data2;
     }
 
-    void Start() {
+    void Awake() {
         S_Adire = GetComponent<AIDirector>();
         rb = GetComponent<Rigidbody>(); // rigidbodyを取得
     }
+
 
     public void FixedWalk(Vector3 _vec) {
         // 加速度を使って移動させる

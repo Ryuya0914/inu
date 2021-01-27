@@ -23,8 +23,8 @@ public class AIMoveTest : MonoBehaviour {
         float angleNow = Mathf.Atan2(forwardVec.z, forwardVec.x) * Mathf.Rad2Deg;
 
 
-        //int i = 0;
-        for(int i = 0; i < rayVectors.Length; i++) {
+        int i = 0;
+        //for(; i < rayVectors.Length; i++) {
 
             // 現在の方向から角度を変えて、ラジアンに変換する
             float angle = (angleNow + rayVectors[i]) * Mathf.Deg2Rad;
@@ -63,6 +63,6 @@ public class AIMoveTest : MonoBehaviour {
 
 
             }
-        }
+        //}
     }
 }
