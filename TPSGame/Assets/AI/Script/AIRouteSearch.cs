@@ -100,19 +100,19 @@ public class AIRouteSearch : MonoBehaviour
         int myPPos = GetNearPoint(transform.position);
 
 
-        // 保持していたルートが使いまわせないか調べる
-        if(myRoute.Count > 0) {
-            if (myRoute.LastIndexOf(0) == num) {    // 今回の目的地と前回の目的地が一緒だったら
-                for(int i = 0; i < myRoute.Count; i++) {
-                    if(myRoute[i] == myPPos) {
-                        for (int j = i; j < myRoute.Count; j++) {
-                            _route.Add(PointT[myRoute[j]].position);
-                        }
-                        return _route;
-                    }
-                }
-            }
-        }
+        //// 保持していたルートが使いまわせないか調べる
+        //if(myRoute.Count > 0) {
+        //    if (myRoute.LastIndexOf(0) == num) {    // 今回の目的地と前回の目的地が一緒だったら
+        //        for(int i = 0; i < myRoute.Count; i++) {
+        //            if(myRoute[i] == myPPos) {
+        //                for (int j = i; j < myRoute.Count; j++) {
+        //                    _route.Add(PointT[myRoute[j]].position);
+        //                }
+        //                return _route;
+        //            }
+        //        }
+        //    }
+        //}
 
 
         // 初期化

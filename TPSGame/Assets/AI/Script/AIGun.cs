@@ -13,7 +13,7 @@ public class AIGun : MonoBehaviour
     int nowammo = 0;                                // 現在の弾薬数
     [SerializeField] List<GameObject> bullets;      // 弾のリスト
     int bulletoffset = 0;                           // リストの何番目の弾を使うか
-    float ShootInterval = 1.0f;                     // 射撃の間隔
+    float ShootInterval = 0.8f;                     // 射撃の間隔
     bool m_shootIntervalFlag = true;
     // その他
     AIDirector S_Adire;
@@ -44,7 +44,9 @@ public class AIGun : MonoBehaviour
     
     public int SelectBullet(Vector3 _vec) {
         // 弾薬が無かったら発射しない
-        if(nowammo <= 0 || !m_shootIntervalFlag)
+        if(nowammo <= 0)
+            return 0;
+        if(!m_shootIntervalFlag)
             return 0;
 
         // 発射する
