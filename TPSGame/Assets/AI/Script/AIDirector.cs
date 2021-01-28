@@ -309,7 +309,7 @@ public class AIDirector : MonoBehaviour {
     bool CheckWayPoint() {
         Vector3 vec = m_route[m_routeIndex] - transform.position;
         if ((m_route.Count-1) == m_routeIndex) {
-            if(vec.sqrMagnitude < PointSize) {
+            if(vec.sqrMagnitude < 0.1f) {
                 return true;
             }
         } else if (vec.sqrMagnitude < PointSize * PointSize) {

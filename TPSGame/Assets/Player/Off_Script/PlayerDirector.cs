@@ -204,6 +204,7 @@ public class PlayerDirector : MonoBehaviour
 
     // リスポーン
     void PlayerRespawn() {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         transform.position = StartPos;  // リスポーン位置に移動
         S_Pflag.FlagGetFlag = true;     // 旗を拾えるようにする
         S_Plife.RecoveryHP();           // HP回復
