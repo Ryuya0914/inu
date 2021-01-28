@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 75749638}
   - component: {fileID: 75749639}
   m_Layer: 0
-  m_Name: Off_StageDirector
+  m_Name: Stage_Director
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1043,6 +1043,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7ce1044d93317748ac5896e90fc902f, type: 3}
