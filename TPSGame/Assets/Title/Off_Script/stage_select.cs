@@ -8,7 +8,11 @@ public class stage_select : MonoBehaviour
 {
     [SerializeField] GameObject credit;
 
-    public void Off_select()
+    public void Off_select1()
+    {
+        SceneManager.LoadScene("Off_Stage");
+    }
+    public void Off_select2()
     {
         SceneManager.LoadScene("Off_Stage_2");
     }
