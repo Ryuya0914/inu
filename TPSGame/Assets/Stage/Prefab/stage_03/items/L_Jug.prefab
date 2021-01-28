@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 5580392786321171003}
   - component: {fileID: 5571225105647723509}
   - component: {fileID: 5615303238745746879}
+  - component: {fileID: 1105483624609737589}
   m_Layer: 15
   m_Name: L_Jug
-  m_TagString: Large_Item
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,3 +92,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.73522586, y: 0.86189586, z: 0.73522586}
   m_Center: {x: 0, y: 0.43094793, z: 0.000000059604645}
+--- !u!114 &1105483624609737589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5550441373305410189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 11302ddd1cb9cbf43b13151513698719, type: 2}

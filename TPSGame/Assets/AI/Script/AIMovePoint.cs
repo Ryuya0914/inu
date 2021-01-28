@@ -8,6 +8,12 @@ public class AIMovePoint : MonoBehaviour
     public AIMovePoint[] GoRed;         // 青から赤の陣地へのルート
     public AIMovePoint[] GoBlue;        // 赤から青の陣地へのルート
     
+    
+
+    void Start() {
+        GetComponent<MeshRenderer>().enabled = false;
+    }
+
 
     // ルートを可視化する処理
     void OnDrawGizmosSelected() {
@@ -28,6 +34,9 @@ public class AIMovePoint : MonoBehaviour
                 Gizmos.DrawRay(transform.position + vec2.normalized * 0.5f, vec);
             }
         }
+
+        Gizmos.color = new Color(0.1f, 1.0f, 0.1f);
+        Gizmos.DrawWireSphere(transform.position, 2.0f);
 
     }
 

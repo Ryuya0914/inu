@@ -22,7 +22,6 @@ public class AIDirector : MonoBehaviour {
     }
     AIState m_nowState = AIState.WAIT;                                     // 現在のステート
     public AIState NowState { get { return this.m_nowState; } set { ChangeState(value); } }    // ステートのゲッタ―セッター
-    void SetNowState(AIState _state) { m_nowState = _state; }
 
     // 敵
     ChangeFlagEvent ChangeFindEnemyFlag;
@@ -38,15 +37,15 @@ public class AIDirector : MonoBehaviour {
     AIMove S_Amove;
     AIRouteSearch S_Asearch;
 
-    public List<Vector3> m_route = new List<Vector3>();    // 移動ルート
-    public int m_routeIndex = 0;                           // 現在の移動ルート番号
+    List<Vector3> m_route = new List<Vector3>();    // 移動ルート
+    int m_routeIndex = 0;                           // 現在の移動ルート番号
     Vector3 m_movePosition = Vector3.zero;             // 現在向かっている場所
 
     Vector3 m_moveVec = Vector3.forward;   // 動く方向
     float m_searchMoveVecInterval = 0.6f;  // 移動方向を調べる間隔
     float m_nowMoveTime = 0;               // 同じ方向に動いている時間
 
-    float PointSize = 10f;  // pointに到達した判定を取る長さ(半径)
+    [SerializeField] float PointSize = 2f;  // pointに到達した判定を取る長さ(半径)
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 敵関係＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     Transform[] m_enemyT;           // ステージ上のすべての敵
@@ -56,7 +55,7 @@ public class AIDirector : MonoBehaviour {
     float m_nowEnemyLostTime = 0f;  // 現在敵を見失っている時間
     float m_enemyLostTime = 0f;     // 敵を追うのをあきらめる時間 
     float visibleRange = 30f;       // AIがプレイヤを発見することが出来る距離
-    [SerializeField] float visibleAngle = 60f;      // AIの視野の広さ
+    float visibleAngle = 60f;      // AIの視野の広さ
     [SerializeField] LayerMask layermask;           // 当たり判定取得用のlayer 
     [SerializeField] Transform MyObject;            // 変身するオブジェクトたち
 
@@ -163,7 +162,6 @@ public class AIDirector : MonoBehaviour {
     void WalkStartUpdate() { 
         // 生きているか
         if (!CheckMyLife()) {
-            S_Alife.Dead();
             NowState = AIState.DEAD;
             return;
         }
@@ -186,7 +184,6 @@ public class AIDirector : MonoBehaviour {
     void WalkUpdate() {
         // 生きているか
         if(!CheckMyLife()) {
-            S_Alife.Dead();
             NowState = AIState.DEAD;
             return;
         }
@@ -213,6 +210,7 @@ public class AIDirector : MonoBehaviour {
                     return;
                 }
                 S_Agun.SelectBullet(m_fightingEnemy.position);
+                
             }
         } else {
             if(CheckFindEnemy()) {
@@ -235,7 +233,6 @@ public class AIDirector : MonoBehaviour {
     void WalkGoalUpdate() {
         // 生きているか
         if(!CheckMyLife()) {
-            S_Alife.Dead();
             NowState = AIState.DEAD;
             return;
         }
@@ -249,13 +246,14 @@ public class AIDirector : MonoBehaviour {
             return;
         }
         if (m_routeIndex >= m_route.Count) {
-            m_routeIndex = m_route.Count - 1;
             if(m_enemyChaseFlag) {
+                m_routeIndex = m_route.Count - 1;
+                m_route[m_routeIndex] = m_fightingEnemy.position;
                 NowState = AIState.WALK;
                 return;
             }
         }
-
+        m_routeIndex = 0;
         NowState = AIState.WALKSTART;
     }
 
@@ -308,7 +306,11 @@ public class AIDirector : MonoBehaviour {
     // 目的地までの距離
     bool CheckWayPoint() {
         Vector3 vec = m_route[m_routeIndex] - transform.position;
-        if(vec.sqrMagnitude < PointSize * PointSize) {
+        if ((m_route.Count-1) == m_routeIndex) {
+            if(vec.sqrMagnitude < PointSize * PointSize / 3) {
+                return true;
+            }
+        } if (vec.sqrMagnitude < PointSize * PointSize) {
             return true;
         }
         return false;
@@ -380,7 +382,15 @@ public class AIDirector : MonoBehaviour {
     // その他処理 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 移動ルートを作る
     void CreateRoute() {
-        List<Vector3> _list = S_Asearch.SearchRoute(S_Aflag.GetDestination());
+        List<Vector3> _list = new List<Vector3>();
+        int num = S_Aflag.GetDestination();
+        if (num == 2) {
+            _list = S_Asearch.SearchRoute(S_Aflag.O_EneFlag.transform.position);
+        } else if (num >= 0) {
+            _list = S_Asearch.SearchRoute(num);
+        }
+
+
         m_route.Clear();
         m_route = _list;
         m_routeIndex = 0;
@@ -407,8 +417,43 @@ public class AIDirector : MonoBehaviour {
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 状態が変わった時の処理＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     void ChangeFlagState(AIFlag.AIFlagState _state) {
+        if (m_enemyChaseFlag) return;
+
+        NowState = AIState.WALKSTART;
 
     }
+    void SetNowState(AIState _state) { 
+        m_nowState = _state;
+        switch(_state) {
+            case AIState.WAIT:
+
+                break;
+            case AIState.WALKSTART:
+
+                break;
+            case AIState.WALK:
+
+                break;
+            case AIState.WALKGOAL:
+
+                break;
+            case AIState.DEAD:
+                S_Aflag.LostFlag();
+                S_Alife.Dead();
+
+
+                break;
+            case AIState.RESPAWN:
+
+                break;
+
+
+
+        }
+        
+    }
+
+
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
 
