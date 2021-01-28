@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6542804780097580706}
   m_Layer: 15
   m_Name: Chest_2_7
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 6542944330811097358}
   m_Layer: 15
   m_Name: Chest
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -191,9 +191,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6500329260489080892}
+  - component: {fileID: 4666742888155499513}
   m_Layer: 15
   m_Name: L_Chest
-  m_TagString: Large_Item
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -214,3 +215,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4666742888155499513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6495115073003173280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: a8d8c77e69cf32b4abde5cb6cf41e243, type: 2}

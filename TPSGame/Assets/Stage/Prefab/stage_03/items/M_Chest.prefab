@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 23069637886558693}
   - component: {fileID: 33878384514865781}
   - component: {fileID: 54249748223759631}
+  - component: {fileID: 9030277496233759997}
   m_Layer: 15
   m_Name: M_Chest
-  m_TagString: Medium_Item
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12568747129024783}
-  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children: []
@@ -91,3 +92,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.1766264, y: 0.82578504, z: 0.83920336}
   m_Center: {x: 0, y: 0.41289246, z: -0.000000029802322}
+--- !u!114 &9030277496233759997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12568747129024783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: 16b6723752ddb9a4d92824cdf75f022a, type: 2}

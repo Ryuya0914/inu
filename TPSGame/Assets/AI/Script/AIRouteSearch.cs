@@ -19,7 +19,7 @@ public class AIRouteSearch : MonoBehaviour
     void Start()
     {        
         // シーン上のルートポイントを全取得
-        SetPoints();
+        Invoke(nameof(SetPoints), 0.5f);
         // フィールドの初期化
         myRoute = new List<int>();
         myRouteCount = 0;
@@ -123,10 +123,11 @@ public class AIRouteSearch : MonoBehaviour
         myRoute.Add(myPPos);
 
         int con = 0;
+        bool _flag = false;
         // 経路を探索する
         while(true) {
             // 目的地まで探索出来たら終了する
-            if (S_AImoveP[myRoute[con]].MyNumber == num) {
+            if (S_AImoveP[myRoute[con]].MyNumber == num || _flag) {
                 for (int i = 0; i < myRoute.Count; i++) {
                     _route.Add(PointT[myRoute[i]].position);
                 }
@@ -136,10 +137,18 @@ public class AIRouteSearch : MonoBehaviour
             // 目的地別にルートを探す
             if (num == 0) {         // 赤へ行くとき
                 AIMovePoint p = S_AImoveP[myRoute[con]];
+                if (p.GoRed.Length == 0) {
+                    _flag = true;
+                    continue;
+                }
                 int n = Random.Range(0, p.GoRed.Length);
                 myRoute.Add(p.GoRed[n].MyNumber);
             } else if (num == 1) {  // 青へ行くとき
                 AIMovePoint p = S_AImoveP[myRoute[con]];
+                if(p.GoBlue.Length == 0) {
+                    _flag = true;
+                    continue;
+                }
                 int n = Random.Range(0, p.GoBlue.Length);
                 myRoute.Add(p.GoBlue[n].MyNumber);
             }

@@ -34,8 +34,9 @@ public class AIFlag : MonoBehaviour {
     [SerializeField] EffectController[] S_effect;
 
     // 敵の旗と自分の陣地のゲームオブジェクト
-    GameObject O_myZone;
-    GameObject O_EneFlag;
+    public GameObject O_myZone;
+    public GameObject O_EneFlag;
+    Flag m_enemyFlag;
 
     //Off_StageDirector_2 unnti;
     PlayerUI S_Pui;
@@ -43,7 +44,7 @@ public class AIFlag : MonoBehaviour {
     void Awake() {
         // 自身のスクリプトを取得
         S_Adire = GetComponent<AIDirector>();
-
+        RegisterEvent_ChangeHaveFlag(SetHaveFlag);
     }
 
     void Start()
@@ -61,6 +62,7 @@ public class AIFlag : MonoBehaviour {
     void GetMyObj() {
         O_myZone = GameObject.FindGameObjectWithTag(zoneName[0]);
         O_EneFlag = GameObject.FindGameObjectWithTag(flagName[1]);
+        m_enemyFlag = O_EneFlag.GetComponent<Flag>();
     }
 
 
@@ -118,22 +120,21 @@ public class AIFlag : MonoBehaviour {
 
 
     // 目的地を返すメソッド
-    public Vector3 GetDestination() {
-        Vector3 _pos = Vector3.zero;
+    public int GetDestination() {
+
+    
         switch(HaveFlag) {
             case AIFlagState.NONE:
-                _pos = O_EneFlag.transform.position;
-
-                break;
+                if (m_enemyFlag.state == 0) return 1;
+                return 2;
             case AIFlagState.MINE:
-                _pos = O_myZone.transform.position;
-                break;
+                return 0;
+                
             case AIFlagState.OTHER:
-                _pos = O_myZone.transform.position;
-                break;
+                return 0;
         }
 
-        return _pos;
+        return -1;
     }
 
 

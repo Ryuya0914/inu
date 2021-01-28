@@ -64,6 +64,8 @@ public class PlayerDirector : MonoBehaviour
         StartPos = transform.position;  // リスポーン地点を設定
         S_Pflag.NameSet(FlagName[0], FlagName[1], ZoneName[0], ZoneName[1]);        // 敵と味方の旗を教える
         //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
+
+        Invoke(nameof(PActive), 2.0f);
     }
 
 

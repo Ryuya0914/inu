@@ -12,6 +12,7 @@ public class Flag : MonoBehaviour
     [SerializeField] MeshRenderer Mren;
     // コライダ
     [SerializeField] CapsuleCollider Ccol;
+    [SerializeField] BoxCollider Bcol;
     // どこ以下の高さに落ちたら拠点に戻るか
     [SerializeField] float under = -3.5f;
     
@@ -54,7 +55,8 @@ public class Flag : MonoBehaviour
     // 見た目と当たり判定のオンオフ切り替え
     void EnableOnOff(bool b) {
         Mren.enabled = b;
-        Ccol.enabled = b;
+        if (Ccol != null) Ccol.enabled = b;
+        if (Bcol != null) Bcol.enabled = b;
     }
 
 }

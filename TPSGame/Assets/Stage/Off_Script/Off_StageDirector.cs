@@ -85,7 +85,7 @@ public class Off_StageDirector : MonoBehaviour
 
 
     void Active() {
-        GameObject.Find("Player_01(Clone)").GetComponent<PlayerDirector>().PActive();
+        //GameObject.Find("Player_01(Clone)").GetComponent<PlayerDirector>().PActive();
         //GameObject.Find("AI_01(Clone)").GetComponent<AIDirector>().AActive();
         //GameObject.Find("AI_01").GetComponent<AIDirector>().AActive();
     }

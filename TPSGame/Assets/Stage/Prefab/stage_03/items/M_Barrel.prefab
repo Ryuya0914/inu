@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 7002897906647326479}
   - component: {fileID: 6992048438732042901}
   - component: {fileID: 7042902500880506813}
+  - component: {fileID: 5627750475505542306}
   m_Layer: 15
   m_Name: M_Barrel
-  m_TagString: Medium_Item
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,3 +92,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6940854, y: 0.8965685, z: 0.6870222}
   m_Center: {x: 0.00000020861626, y: 0.4482843, z: 0.00000008940697}
+--- !u!114 &5627750475505542306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016361759055114109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4776e60a0587f554c8f98182a6a8a9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyOdata: {fileID: 11400000, guid: c6d2b417204b6464b91f6f58096f52c0, type: 2}
