@@ -70,7 +70,8 @@ public class AIDirector : MonoBehaviour {
     float m_transInterval = 7.0f;
     float m_nowTransInterval = 0.0f;
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-
+    bool checkpointgoalFlag = false;
+    bool checkpointgoalFlag2 = false;
 
 
     // スクリプト
@@ -222,7 +223,7 @@ public class AIDirector : MonoBehaviour {
         }
 
         // 目的地にたどり着いたか
-        if(CheckWayPoint()) {
+        if(CheckWayPoint() && checkpointgoalFlag) {
             NowState = AIState.WALKGOAL;
             return;
         }
@@ -233,6 +234,8 @@ public class AIDirector : MonoBehaviour {
 
     // 目的地にたどり着いたとき
     void WalkGoalUpdate() {
+        checkpointgoalFlag = false;
+        checkpointgoalFlag2 = false;
         // 生きているか
         if(!CheckMyLife()) {
             NowState = AIState.DEAD;
@@ -303,14 +306,26 @@ public class AIDirector : MonoBehaviour {
 
     //  ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-
+    void GoalPoint() {
+        checkpointgoalFlag = true;
+    }
     // 現在の状態をチェックする＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 目的地までの距離
     bool CheckWayPoint() {
+
         Vector3 vec = m_route[m_routeIndex] - transform.position;
         if ((m_route.Count-1) == m_routeIndex) {
-            return false;
+            if (vec.sqrMagnitude < PointSize) {
+                if(!checkpointgoalFlag2) {
+                    Invoke(nameof(GoalPoint), 2.0f);
+                }
+                checkpointgoalFlag2 = true;
+                
+                return true;
+            }
+            
         } else if (vec.sqrMagnitude < PointSize * PointSize) {
+            checkpointgoalFlag = true;
             return true;
         }
         return false;
