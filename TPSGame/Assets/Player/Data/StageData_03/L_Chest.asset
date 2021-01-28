@@ -19,8 +19,8 @@ MonoBehaviour:
   ObjSizeNum: 0
   MoveSpeed: 5
   JumpPower: 6
-  cameraOffsetY: {x: 0, y: 2.34, z: 0}
-  cameraOffsetZ: {x: 0, y: 0, z: -4.21}
-  BulletOffset: {x: 0, y: 3, z: 2}
+  cameraOffsetY: {x: 0, y: 1.88, z: 0}
+  cameraOffsetZ: {x: 0, y: 0, z: -3.23}
+  BulletOffset: {x: 0, y: 1, z: 1}
   AImoveLayPos: {x: 0, y: 0, z: 0}
   AImoveLayScale: {x: 0, y: 0, z: 0}

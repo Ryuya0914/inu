@@ -49,16 +49,16 @@ public class PlayerTransChange : MonoBehaviour
     // rayを飛ばす
     ObjectData GoRay() {
         // rayのスタート地点
-        Vector3 raypos = CameraT.position + (CameraT.forward * -Odata.cameraOffsetZ.z * 1.7f);
+        Vector3 raypos = CameraT.position + (CameraT.forward * -Odata.cameraOffsetZ.z * 1.3f);
         // rayを作成
         Ray ray = new Ray(raypos, CameraT.forward);
 
 // rayを可視化
-        //Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.green, Pdata.RayRange);
+        Debug.DrawRay(ray.origin, ray.direction.normalized * Pdata.RayRange, Color.green, Pdata.RayRange);
 
         RaycastHit hit;
         // rayの衝突判定
-        if (Physics.Raycast(ray, out hit, Pdata.RayRange /*, mask.value*/)) {
+        if (Physics.Raycast(ray, out hit, Pdata.RayRange , mask.value)) {
             if (hit.collider.tag != "Object") return null;  // 当たったオブジェクトが変身できるやつじゃなかったら変身しない
             GameObject hitObj = hit.collider.gameObject;
             for (int i = 0; i < 3; i++) {
