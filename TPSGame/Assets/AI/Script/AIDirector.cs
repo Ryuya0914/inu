@@ -30,7 +30,17 @@ public class AIDirector : MonoBehaviour {
     }
     public bool m_findEnemyFlag = false;
     public bool FindEnemyFlag { get { return this.m_findEnemyFlag; } set { ChangeFindEnemyFlag(value); } }
-    void SetFindEnemyFlag(bool flag) { m_findEnemyFlag = flag; m_nowEnemyLostTime = 0f; }
+    void SetFindEnemyFlag(bool flag) { 
+        m_findEnemyFlag = flag;
+        m_nowEnemyLostTime = 0f;
+        if(!flag) {
+            m_fightingEnemy = null;
+            m_fightingEnemyDirector = null;
+            m_enemyChaseFlag = false;
+
+        }
+
+    }
 
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 移動関係 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
