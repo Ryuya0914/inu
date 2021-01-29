@@ -30,15 +30,6 @@ public class Off_StageDirector_2 : MonoBehaviour
     [SerializeField] GameObject[] GW_obj_1;
     [SerializeField] GameObject[] GB_obj_1;
     [SerializeField] GameObject[] respawn_obj;
-    [SerializeField] GameObject R;
-
-    [SerializeField] Text playerscore;
-    [SerializeField] Text AIscore;
-    [SerializeField] Text playerR;
-    [SerializeField] Text AIR;
-    [SerializeField] Text WL;
-    int Pscore = 0;
-    int Ascore = 0;
 
     int[] S_rnd;
     int[] M_rnd;
@@ -74,30 +65,6 @@ public class Off_StageDirector_2 : MonoBehaviour
         Invoke("Active", 3.0f);
     }
 
-    void Update()
-    {
-        score();
-        if (Pscore >= 7 || Ascore >= 7)
-        {
-            Rscore();
-            if (Pscore > Ascore)
-            {
-                WL.text = "YOU WIN";
-            }
-            else
-            {
-                WL.text = "YOU LOSE";
-            }
-            R.SetActive(true);
-            GameObject.Find("Player_02(Clone)").GetComponent<PlayerDirector>().PNonActive();
-            GameObject.Find("AI(Clone)").GetComponent<AIDirector>().NowState = AIDirector.AIState.WAIT;
-            if (Input.GetKeyDown(KeyCode.F1))
-            {
-                SceneManager.LoadScene("Title");
-            }
-        
-        }
-    }
 
     //乱数作るやつ
     void objrnd()
@@ -203,27 +170,5 @@ public class Off_StageDirector_2 : MonoBehaviour
     {
         GameObject.Find("Player_02(Clone)").GetComponent<PlayerDirector>().PActive();
         GameObject.Find("AI_02(Clone)").GetComponent<AIDirector>().NowState = AIDirector.AIState.WALKSTART;
-    }
-
-    void Rscore()
-    {
-        playerR.text = "プレイヤー:" + Pscore.ToString();
-        AIR.text = "AI:" + Ascore.ToString();
-    }
-
-    void score()
-    {
-        playerscore.text = Pscore.ToString();
-        AIscore.text = Ascore.ToString();
-    }
-
-    public void addP(int p)
-    {
-        Pscore += p;
-    }
-
-    public void addA(int a)
-    {
-        Ascore += a;
     }
 }

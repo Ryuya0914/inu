@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Stage/Off_Stage_2.unity
     guid: 97c67e116d015e644af155b22b0acb0c
+  - enabled: 1
+    path: Assets/Stage/Off_Stage_3.unity
+    guid: 753dae5220c0a45469fa4b84c2eb433a
   m_configObjects: {}

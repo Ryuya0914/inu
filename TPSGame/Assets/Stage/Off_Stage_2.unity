@@ -512,6 +512,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3510578088161465079, guid: b7ce1044d93317748ac5896e90fc902f,
         type: 3}
       propertyPath: m_Text
@@ -532,21 +547,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3510578088596737114, guid: b7ce1044d93317748ac5896e90fc902f,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7ce1044d93317748ac5896e90fc902f, type: 3}
 --- !u!1 &515817693
@@ -559,6 +559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 515817694}
   - component: {fileID: 515817695}
+  - component: {fileID: 515817696}
   m_Layer: 0
   m_Name: Stage_Director
   m_TagString: Untagged
@@ -645,6 +646,18 @@ MonoBehaviour:
   respawn_obj:
   - {fileID: 6046014484235219257, guid: 22de4d2dc8d45054899c339e57fd731b, type: 3}
   - {fileID: 1982912209651874672, guid: a6a311f6789bf26469ccd237fe2eac5e, type: 3}
+--- !u!114 &515817696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515817693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e7c079805f9c404a8deb0cb4259669a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   R: {fileID: 146435902}
   playerscore: {fileID: 1327278022}
   AIscore: {fileID: 1464782832}

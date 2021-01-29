@@ -38,10 +38,7 @@ public class AIFlag : MonoBehaviour {
     public GameObject O_EneFlag;
     Flag m_enemyFlag;
 
-    GameObject unnti;
-    Off_StageDirector _1;
-    Off_StageDirector_2 _2;
-    int stage = 0;
+    Score unnti;
 
     PlayerUI S_Pui;
 
@@ -59,18 +56,7 @@ public class AIFlag : MonoBehaviour {
         // 敵の旗と自身の陣地のゲームオブジェクト取得
         Invoke(nameof(GetMyObj), 0.5f);
 
-        unnti = GameObject.Find("Stage_Director");
-
-        if (unnti != null) {
-            if(unnti.GetComponent<Off_StageDirector>()) {
-                _1 = unnti.GetComponent<Off_StageDirector>();
-                stage = 1;
-            } else if(unnti.GetComponent<Off_StageDirector_2>()) {
-                _2 = unnti.GetComponent<Off_StageDirector_2>();
-                stage = 2;
-            }
-        }
-
+        unnti = GameObject.Find("Stage_Director").GetComponent<Score>();
 
         S_Pui = GameObject.Find("PlayerCanvas").GetComponent<PlayerUI>();
 
@@ -131,21 +117,10 @@ public class AIFlag : MonoBehaviour {
     // 得点取得
     void GetPoint() {
         // 得点を得たことを通知
-        if (stage == 1)
-        {
-            if (m_team.m_teamColor == TeamScript.TeamColor.REDTEAM) {
-                _1.addA(3);
-            } else {
-                _1.addP(3);
-            }
-        }
-        if (stage == 2)
-        {
-            if(m_team.m_teamColor == TeamScript.TeamColor.REDTEAM) {
-                _2.addA(3);
-            } else {
-                _2.addP(3);
-            }
+        if (m_team.m_teamColor == TeamScript.TeamColor.REDTEAM) {
+            unnti.addA(3);
+        } else {
+            unnti.addP(3);
         }
         // 旗をなくす
         ReturnFlag();

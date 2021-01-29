@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 75749638}
   - component: {fileID: 75749639}
+  - component: {fileID: 75749640}
   m_Layer: 0
   m_Name: Stage_Director
   m_TagString: Untagged
@@ -173,6 +174,18 @@ MonoBehaviour:
   - {fileID: 1000014260480130, guid: a4874b582284b594b930fed42c1671be, type: 3}
   - {fileID: 9193199801252609263, guid: b9e780c1a302d1f428b4085943186dc2, type: 3}
   - {fileID: 2426278600949577008, guid: 2c6fbc9e79edffd4e8039e5b4f75698d, type: 3}
+--- !u!114 &75749640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75749637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e7c079805f9c404a8deb0cb4259669a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   R: {fileID: 1353311786}
   playerscore: {fileID: 715699416}
   AIscore: {fileID: 715699415}
