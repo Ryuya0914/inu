@@ -34,6 +34,11 @@ public class stage_select : MonoBehaviour
 
     void Start() {
         SetUI();
+        // マウスカーソルを表示
+        Cursor.visible = true;
+        // カーソルを動くようにする
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
     // CPUの人数変更

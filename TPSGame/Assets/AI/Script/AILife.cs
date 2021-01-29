@@ -16,12 +16,20 @@ public class AILife : MonoBehaviour
     AIDirector S_Adire;         // ディレクタスクリプト
     Vector3 RespawnPos;         // リスポーン地点
     [SerializeField] EffectController S_effect;
+    TeamScript m_team;
 
     void Start() {
         S_Adire = GetComponent<AIDirector>();   // ディレクタ取得
         Pdata = S_Adire.GetPData;
         RespawnPos = transform.position;        // リスポーン地点取得
+        
+        Invoke(nameof(SetTeam), 0.5f);
     }
+   
+    void SetTeam() {
+        m_team = GetComponent<TeamScript>();
+    }
+
 
     // 現在のHPを返す
     public int GetHP() {
@@ -55,7 +63,9 @@ public class AILife : MonoBehaviour
     // 弾との当たり判定
     void OnTriggerEnter(Collider col) {
         if(col.tag == "Bullet") {
-            DecreaseHP(col.gameObject.GetComponent<Bullet>().GetSetDamage);
+            if (col.GetComponent<Bullet>().m_myTeam.m_teamColor != m_team.m_teamColor) {
+                DecreaseHP(col.gameObject.GetComponent<Bullet>().GetSetDamage);
+            }
             col.gameObject.SetActive(false);    // 弾を消す
         } else if(col.tag == "UnderGround") {  // 奈落に落ちた時死ぬ機能
             DecreaseHP(1000);

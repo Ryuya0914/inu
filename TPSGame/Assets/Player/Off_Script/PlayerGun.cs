@@ -25,7 +25,16 @@ public class PlayerGun : MonoBehaviour
     void Start() {
         // 弾丸がプレイヤに合わせて動かないようにする
         bullets[0].transform.parent.transform.parent = null;
+        Invoke(nameof(SetTeam), 0.5f);
     }
+
+    void SetTeam() {
+        TeamScript team = GetComponent<TeamScript>();
+        for(int i = 0; i < bullets.Count; ++i) {
+            bullets[i].GetComponent<Bullet>().m_myTeam = team;
+        }
+    }
+
 
     public int ShootBullet() {
         // 弾薬が無かったら発射しない

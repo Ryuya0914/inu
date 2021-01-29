@@ -13,8 +13,17 @@ public class PlayerLife : MonoBehaviour
     }
 
     [SerializeField] PlayerDirector S_Pdirector;
-
+    TeamScript m_team;
     int mylife = 100;
+
+    void Start() {
+        Invoke(nameof(SetTeam), 0.5f);
+    }
+
+    void SetTeam() {
+        m_team = GetComponent<TeamScript>();
+    }
+
 
     // HPを減らす
     void DecreaseHP(int damage) {
@@ -38,7 +47,9 @@ public class PlayerLife : MonoBehaviour
     // 弾との当たり判定
     void OnTriggerEnter(Collider col) {
         if(col.tag == "Bullet") {
-            DecreaseHP(col.gameObject.GetComponent<Bullet>().GetSetDamage);
+            if (col.GetComponent<Bullet>().m_myTeam.m_teamColor != m_team.m_teamColor) {
+                DecreaseHP(col.gameObject.GetComponent<Bullet>().GetSetDamage);
+            }
             col.gameObject.SetActive(false);    // 弾を消す
         } else if (col.tag == "UnderGround") {  // 奈落に落ちた時死ぬ機能
             DecreaseHP(1000);
