@@ -314,7 +314,9 @@ public class AIDirector : MonoBehaviour {
     // 歩く
     void WalkFixedUpdate() {
         if(FindEnemyFlag) {
-            MyObject.transform.LookAt(m_fightingEnemy.position);
+            Vector3 _vec = m_fightingEnemy.position;
+            _vec.y = MyObject.transform.position.y;
+            MyObject.transform.LookAt(_vec);
         } else {
             MyObject.transform.LookAt(transform.position + m_moveVec);
         }
