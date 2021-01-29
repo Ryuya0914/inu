@@ -17,12 +17,14 @@ public class AILife : MonoBehaviour
     Vector3 RespawnPos;         // リスポーン地点
     [SerializeField] EffectController S_effect;
     TeamScript m_team;
+    AudioSource audio;
+    [SerializeField] AudioClip clip;
 
     void Start() {
         S_Adire = GetComponent<AIDirector>();   // ディレクタ取得
         Pdata = S_Adire.GetPData;
         RespawnPos = transform.position;        // リスポーン地点取得
-        
+        audio = GetComponent<AudioSource>();
         Invoke(nameof(SetTeam), 0.5f);
     }
    
@@ -44,6 +46,7 @@ public class AILife : MonoBehaviour
 
     // HPを減らす
     void DecreaseHP(int damage) {
+        audio.PlayOneShot(clip);
         mylife -= damage * 100 / Odata.MaxLife;
     }
 
