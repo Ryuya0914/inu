@@ -6,13 +6,15 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
     string[] tagNames = new string[] { "Player", "AI" };
-
+    public TeamScript m_myTeam;
     int damage = 0;
+
 
     public int GetSetDamage { 
         get { return this.damage; }
         set { this.damage = value;} 
     }
+
 
 
     // プレイヤ以外と接触した場合は消す

@@ -25,6 +25,14 @@ public class AIGun : MonoBehaviour
         S_Adire = GetComponent<AIDirector>();   // ディレクタスクリプト取得
         Pdata = S_Adire.GetPData;
         bullets[0].transform.parent.transform.parent = null;    // 弾丸がプレイヤに合わせて動かないようにする
+        Invoke(nameof(SetTeam), 0.5f);
+    }
+
+    void SetTeam() {
+        TeamScript team = GetComponent<TeamScript>();
+        for (int i = 0; i < bullets.Count; ++i) {
+            bullets[i].GetComponent<Bullet>().m_myTeam = team;
+        }
     }
 
 
