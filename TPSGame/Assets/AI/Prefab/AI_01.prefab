@@ -78,7 +78,7 @@ MonoBehaviour:
   PointSize: 2
   m_fightingEnemy: {fileID: 0}
   m_enemyChaseFlag: 0
-  visibleRange: 30
+  visibleRange: 15
   layermask:
     serializedVersion: 2
     m_Bits: 4304897
@@ -220,16 +220,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6465731290996343959}
     m_Modifications:
-    - target: {fileID: 1902543789472332224, guid: 767c9f317c8116547babf97cec4b9497,
-        type: 3}
-      propertyPath: m_Name
-      value: MyEffects
-      objectReference: {fileID: 0}
-    - target: {fileID: 1902543789472332224, guid: 767c9f317c8116547babf97cec4b9497,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 541718958204901615, guid: 767c9f317c8116547babf97cec4b9497,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -285,6 +275,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902543789472332224, guid: 767c9f317c8116547babf97cec4b9497,
+        type: 3}
+      propertyPath: m_Name
+      value: MyEffects
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902543789472332224, guid: 767c9f317c8116547babf97cec4b9497,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 767c9f317c8116547babf97cec4b9497, type: 3}
 --- !u!114 &3635663416760560428 stripped
@@ -336,11 +336,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6465731290996343959}
     m_Modifications:
-    - target: {fileID: 2365336501228211911, guid: c5dd9be5c28744d40a0d3833c16381ea,
-        type: 3}
-      propertyPath: m_Name
-      value: MyObjects_1
-      objectReference: {fileID: 0}
     - target: {fileID: 3316421009491931642, guid: c5dd9be5c28744d40a0d3833c16381ea,
         type: 3}
       propertyPath: m_IsActive
@@ -350,6 +345,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2365336501228211911, guid: c5dd9be5c28744d40a0d3833c16381ea,
+        type: 3}
+      propertyPath: m_Name
+      value: MyObjects_1
       objectReference: {fileID: 0}
     - target: {fileID: 416711758491221542, guid: c5dd9be5c28744d40a0d3833c16381ea,
         type: 3}
@@ -654,11 +654,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6465731290996343959}
     m_Modifications:
-    - target: {fileID: 3057716480185120946, guid: 182691039d9c37b45befa3f8ed56f64f,
-        type: 3}
-      propertyPath: m_Name
-      value: BulletParent
-      objectReference: {fileID: 0}
     - target: {fileID: 8872722672426350286, guid: 182691039d9c37b45befa3f8ed56f64f,
         type: 3}
       propertyPath: m_IsActive
@@ -678,6 +673,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3057716480185120946, guid: 182691039d9c37b45befa3f8ed56f64f,
+        type: 3}
+      propertyPath: m_Name
+      value: BulletParent
       objectReference: {fileID: 0}
     - target: {fileID: 284763071931900344, guid: 182691039d9c37b45befa3f8ed56f64f,
         type: 3}

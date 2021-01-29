@@ -198,6 +198,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4336721063606880933, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
+        type: 3}
+      propertyPath: m_Text
+      value: AI
+      objectReference: {fileID: 0}
     - target: {fileID: 4336721065124459546, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -303,11 +308,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4336721063606880933, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
-        type: 3}
-      propertyPath: m_Text
-      value: AI
-      objectReference: {fileID: 0}
     - target: {fileID: 4336721065347338889, guid: 656f3c7dd2a6d0446bd3f02b46c4ffa9,
         type: 3}
       propertyPath: m_Text
@@ -401,6 +401,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Point_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510578088161465079, guid: b7ce1044d93317748ac5896e90fc902f,
+        type: 3}
+      propertyPath: m_Text
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3510578087731283118, guid: b7ce1044d93317748ac5896e90fc902f,
         type: 3}
@@ -526,11 +531,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3510578088161465079, guid: b7ce1044d93317748ac5896e90fc902f,
-        type: 3}
-      propertyPath: m_Text
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3510578088161465072, guid: b7ce1044d93317748ac5896e90fc902f,
         type: 3}
