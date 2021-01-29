@@ -15,6 +15,7 @@ public class Score : MonoBehaviour
     [SerializeField] Text WL;
     int Pscore = 0;
     int Ascore = 0;
+    bool back = false;
     void Start()
     {
         
@@ -35,7 +36,13 @@ public class Score : MonoBehaviour
                 WL.text = "YOU LOSE";
             }
             R.SetActive(true);
+            back = true;
         }
+        if (back == true) 
+        {
+            if(Input.GetKey(KeyCode.F1)) SceneManager.LoadScene("Title");
+        }
+
     }
 
     void Rscore()
