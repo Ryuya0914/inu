@@ -16,6 +16,11 @@ public class stage_select : MonoBehaviour
     {
         SceneManager.LoadScene("Off_Stage_2");
     }
+    public void Off_select3()
+    {
+        SceneManager.LoadScene("Off_Stage_3");
+    }
+
 
     public void Credit()
     {
@@ -26,4 +31,33 @@ public class stage_select : MonoBehaviour
     {
         credit.SetActive(false);
     }
+
+    void Start() {
+        SetUI();
+    }
+
+    // CPUの人数変更
+    int num = 1;
+    [SerializeField] Text uitext;
+    public void SetUI() {
+        uitext.text = "Lv." + num.ToString();
+    }
+    public void AddCPU() {
+        num = (num < 9) ? num+1 : num;
+
+        SetUI();
+        SetCPU();
+    }
+    public void DecreasCPU() {
+        num = (num > 1) ? num-1 : num;
+        
+        SetUI();
+        SetCPU();
+    }
+    public void SetCPU() {
+        Off_StageDirector.AINum = num;
+        Off_StageDirector_2.AINum = num;
+    }
+
+
 }

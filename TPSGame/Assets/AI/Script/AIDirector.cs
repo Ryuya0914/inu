@@ -30,12 +30,13 @@ public class AIDirector : MonoBehaviour {
     }
     public bool m_findEnemyFlag = false;
     public bool FindEnemyFlag { get { return this.m_findEnemyFlag; } set { ChangeFindEnemyFlag(value); } }
-    void SetFindEnemyFlag(bool flag) { 
+    void SetFindEnemyFlag(bool flag) {
         m_findEnemyFlag = flag;
         m_nowEnemyLostTime = 0f;
         if(!flag) {
             m_fightingEnemy = null;
-            m_fightingEnemyDirector = null;
+            m_fightingEnemyPDirector = null;
+            m_fightingEnemyAIDirector = null;
             m_enemyChaseFlag = false;
 
         }
@@ -58,10 +59,12 @@ public class AIDirector : MonoBehaviour {
     [SerializeField] float PointSize = 2f;  // pointに到達した判定を取る長さ(半径)
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 敵関係＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-    Transform[] m_enemyT;           // ステージ上のすべての敵
+    List<Transform> m_enemyT = new List<Transform>();           // ステージ上のすべての敵
     public Transform m_fightingEnemy;      // 現在戦っている敵
-    PlayerDirector m_fightingEnemyDirector;
+    PlayerDirector m_fightingEnemyPDirector = null;
+    AIDirector m_fightingEnemyAIDirector = null;
     public bool m_enemyChaseFlag = false;  // 敵を追いかけるか
+
 
     float m_nowEnemyLostTime = 0f;  // 現在敵を見失っている時間
     float m_enemyLostTime = 4f;     // 敵を追うのをあきらめる時間 
@@ -90,7 +93,7 @@ public class AIDirector : MonoBehaviour {
     PlayerDirector S_Pdire;
     AILife S_Alife;
     AITransChange S_Atrans;
-
+    TeamScript S_Team;
     //Off_StageDirector_2 unnti;
 
 
@@ -113,7 +116,7 @@ public class AIDirector : MonoBehaviour {
         S_Asearch = GetComponent<AIRouteSearch>();
         S_Alife = GetComponent<AILife>();
         S_Atrans = GetComponent<AITransChange>();
-
+        S_Team = GetComponent<TeamScript>();
 
         RegisterEvent_ChangeState(SetNowState);
         RegisterEvent_ChangeFindEnemyFlag(SetFindEnemyFlag);
@@ -124,12 +127,12 @@ public class AIDirector : MonoBehaviour {
 
     void Start() {
 
-        
+
         Invoke(nameof(GetPlayer), 0.5f);              // プレイヤを取得
         //unnti = GameObject.Find("Stage_Director").GetComponent<Off_StageDirector_2>();
 
         Invoke(nameof(AActive), 1.5f);
-        
+
     }
 
 
@@ -143,23 +146,23 @@ public class AIDirector : MonoBehaviour {
             case AIState.WALKSTART:
                 WalkStartUpdate();
                 break;
-            
+
             case AIState.WALK:
                 WalkUpdate();
                 break;
-            
+
             case AIState.WALKGOAL:
                 WalkGoalUpdate();
                 break;
-            
+
             case AIState.DEAD:
                 DeadUpdate();
                 break;
-            
+
             case AIState.RESPAWN:
                 RespawnUpdate();
                 break;
-            
+
         }
 
     }
@@ -171,9 +174,9 @@ public class AIDirector : MonoBehaviour {
     }
 
     // 歩く準備
-    void WalkStartUpdate() { 
+    void WalkStartUpdate() {
         // 生きているか
-        if (!CheckMyLife()) {
+        if(!CheckMyLife()) {
             NowState = AIState.DEAD;
             return;
         }
@@ -190,7 +193,7 @@ public class AIDirector : MonoBehaviour {
         CreateRoute();
         m_nowState = AIState.WALK;
 
-    }  
+    }
 
     // 歩く
     void WalkUpdate() {
@@ -202,14 +205,15 @@ public class AIDirector : MonoBehaviour {
 
         // 一定間隔で変身するようにする
         m_nowTransInterval += Time.deltaTime;
-        if (m_nowTransInterval > m_transInterval) {
+        if(m_nowTransInterval > m_transInterval) {
             // 変身させる
-            if (S_Atrans.TransChange()) m_nowTransInterval = 0f;
+            if(S_Atrans.TransChange())
+                m_nowTransInterval = 0f;
         }
 
         // 一定間隔で移動方向を設定
         m_nowMoveTime += Time.deltaTime;
-        if (m_nowMoveTime >= m_searchMoveVecInterval) {
+        if(m_nowMoveTime >= m_searchMoveVecInterval) {
             m_moveVec = S_Amove.SearchMovevec(m_route[m_routeIndex]);
             m_nowMoveTime = 0f;
         }
@@ -221,10 +225,11 @@ public class AIDirector : MonoBehaviour {
                     NowState = AIState.WALKSTART;
                     return;
                 }
-                S_Agun.SelectBullet(m_fightingEnemy.position);
-                
-                
+
+
             }
+            S_Agun.SelectBullet(m_fightingEnemy.position);
+
         } else {
             if(CheckFindEnemy()) {
                 NowState = AIState.WALKSTART;
@@ -234,6 +239,10 @@ public class AIDirector : MonoBehaviour {
 
         // 目的地にたどり着いたか
         if(CheckWayPoint() && checkpointgoalFlag) {
+            NowState = AIState.WALKGOAL;
+            return;
+        }
+        if(checkpointgoalFlag) {
             NowState = AIState.WALKGOAL;
             return;
         }
@@ -254,13 +263,13 @@ public class AIDirector : MonoBehaviour {
 
         // 次の目的地に移動させる
         m_routeIndex++;
-        if (m_routeIndex < m_route.Count) {
+        if(m_routeIndex < m_route.Count) {
             m_nowMoveTime = m_searchMoveVecInterval;    // 移動方向を決定させるため
             m_movePosition = m_route[m_routeIndex];
             NowState = AIState.WALK;
             return;
         }
-        if (m_routeIndex >= m_route.Count) {
+        if(m_routeIndex >= m_route.Count) {
             if(m_enemyChaseFlag) {
                 m_routeIndex = m_route.Count - 1;
                 m_route[m_routeIndex] = m_fightingEnemy.position;
@@ -279,10 +288,10 @@ public class AIDirector : MonoBehaviour {
             m_nowRespawnTime = 0f;
             NowState = AIState.RESPAWN;
         }
-    }       
+    }
 
     // 生き返るとき
-    void RespawnUpdate() { 
+    void RespawnUpdate() {
         S_Alife.Respawn();
         NowState = AIState.WALKSTART;
     }
@@ -305,14 +314,14 @@ public class AIDirector : MonoBehaviour {
     // 歩く
     void WalkFixedUpdate() {
         if(FindEnemyFlag) {
-            MyObject.transform.LookAt(transform.position + m_fightingEnemy.position);
+            MyObject.transform.LookAt(m_fightingEnemy.position);
         } else {
             MyObject.transform.LookAt(transform.position + m_moveVec);
         }
         // 移動させる
         S_Amove.FixedWalk(m_moveVec);
     }
-    
+
 
     //  ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
@@ -324,17 +333,17 @@ public class AIDirector : MonoBehaviour {
     bool CheckWayPoint() {
 
         Vector3 vec = m_route[m_routeIndex] - transform.position;
-        if ((m_route.Count-1) == m_routeIndex) {
-            if (vec.sqrMagnitude < PointSize) {
+        if((m_route.Count - 1) == m_routeIndex) {
+            if(vec.sqrMagnitude < PointSize) {
                 if(!checkpointgoalFlag2) {
                     Invoke(nameof(GoalPoint), 2.0f);
                 }
                 checkpointgoalFlag2 = true;
-                
+
                 return true;
             }
-            
-        } else if (vec.sqrMagnitude < PointSize * PointSize) {
+
+        } else if(vec.sqrMagnitude < PointSize * PointSize) {
             checkpointgoalFlag = true;
             return true;
         }
@@ -343,12 +352,13 @@ public class AIDirector : MonoBehaviour {
 
     // 敵が見えているか
     bool CheckFindEnemy() {
-        for (int i = 0; i < m_enemyT.Length; ++i) {
+        for(int i = 0; i < m_enemyT.Count; ++i) {
             // AIからプレイヤまでのベクトル
             Vector3 vec = m_enemyT[i].position - MyObject.position;
 
             // プレイヤまでの距離が一定以内だったら
-            if(visibleRange >= vec.sqrMagnitude) {
+            if(visibleRange * visibleRange >= vec.sqrMagnitude) {
+                vec.y = 0;
                 // AIの視界内にプレイヤがいるかどうか
                 if(Vector3.Angle(MyObject.forward, vec) <= visibleAngle) {
                     // プレイヤと自身の間に障害物があるか調べる
@@ -356,11 +366,23 @@ public class AIDirector : MonoBehaviour {
                         continue;
                     }
                     m_fightingEnemy = m_enemyT[i];
-                    m_fightingEnemyDirector = m_fightingEnemy.GetComponent<PlayerDirector>();
-                    if (m_fightingEnemyDirector.PState == 2 ||m_fightingEnemyDirector.PState == 3) {
-                        m_fightingEnemy = null;
-                        m_fightingEnemyDirector = null;
-                        continue;
+                    if(m_fightingEnemy.GetComponent<PlayerDirector>()) {
+                        m_fightingEnemyPDirector = m_fightingEnemy.GetComponent<PlayerDirector>();
+                        m_fightingEnemyAIDirector = null;
+                        if(m_fightingEnemyPDirector.PState == 2 || m_fightingEnemyPDirector.PState == 3) {
+                            m_fightingEnemy = null;
+                            m_fightingEnemyPDirector = null;
+                            continue;
+                        }
+
+                    } else if(m_fightingEnemy.GetComponent<AIDirector>()) {
+                        m_fightingEnemyAIDirector = m_fightingEnemy.GetComponent<AIDirector>();
+                        m_fightingEnemyPDirector = null;
+                        if(m_fightingEnemyAIDirector.NowState == AIState.DEAD || m_fightingEnemyAIDirector.NowState == AIState.RESPAWN) {
+                            m_fightingEnemy = null;
+                            m_fightingEnemyAIDirector = null;
+                            continue;
+                        }
                     }
                     FindEnemyFlag = true;
                     return true;
@@ -369,14 +391,15 @@ public class AIDirector : MonoBehaviour {
         }
 
         return false;
-    } 
+    }
     // 敵を見失っていないか
     bool CheckLostEnemy(Vector3 enemypos) {
         // AIからプレイヤまでのベクトル
         Vector3 vec = enemypos - MyObject.position;
 
         // プレイヤまでの距離が一定以内だったら
-        if(visibleRange >= vec.sqrMagnitude) {
+        if(visibleRange * visibleRange >= vec.sqrMagnitude) {
+            vec.y = 0;
             // AIの視界内にプレイヤがいるかどうか
             if(Vector3.Angle(MyObject.forward, vec) <= visibleAngle) {
                 // プレイヤと自身の間に障害物があるか調べる
@@ -392,7 +415,7 @@ public class AIDirector : MonoBehaviour {
     // 敵との位置関係
     bool CheckEnemyPoint() {
         List<Vector3> _list = S_Asearch.CheckSideBySide(MyObject.position, m_fightingEnemy.position);
-        if (_list.Count > 0) {
+        if(_list.Count > 0) {
             _list.Add(m_fightingEnemy.position);
             m_route.Clear();
             m_route.AddRange(_list);
@@ -408,19 +431,19 @@ public class AIDirector : MonoBehaviour {
     public bool CheckMyLife() {
         return (S_Alife.GetHP() > 0);
     }
-    
+
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // その他処理 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 移動ルートを作る
     void CreateRoute() {
         List<Vector3> _list = new List<Vector3>();
         int num = S_Aflag.GetDestination();
-        if (num == 2) {
+        if(num == 2) {
             _list = S_Asearch.SearchRoute(S_Aflag.O_EneFlag.transform.position);
-        } else if (num == 0) {
+        } else if(num == 0) {
             _list = S_Asearch.SearchRoute(num);
             _list.Add(S_Aflag.O_myZone.transform.position);
-        } else if (num == 1) {
+        } else if(num == 1) {
             _list = S_Asearch.SearchRoute(num);
             _list.Add(S_Aflag.O_EneFlag.transform.position);
         }
@@ -430,17 +453,32 @@ public class AIDirector : MonoBehaviour {
         m_route = _list;
         m_routeIndex = 0;
     }
-        
+
     // 移動中に敵を追いかけているときの処理
     bool FightEnemy() {
-        // プレイヤが死んでいるか確認する
-        if (m_fightingEnemyDirector.PState == 2 || m_fightingEnemyDirector.PState == 3) {
-            m_nowEnemyLostTime = 0f;
-            FindEnemyFlag = false;
-            m_fightingEnemy = null;
-            m_fightingEnemyDirector = null;
-            return false;
+        if(m_fightingEnemyPDirector != null) {
+            // プレイヤが死んでいるか確認する
+            if(m_fightingEnemyPDirector.PState == 2 || m_fightingEnemyPDirector.PState == 3) {
+                m_nowEnemyLostTime = 0f;
+                FindEnemyFlag = false;
+                m_fightingEnemy = null;
+                m_fightingEnemyPDirector = null;
+                m_fightingEnemyAIDirector = null;
+                return false;
+            }
+        } else {
+            // プレイヤが死んでいるか確認する
+            if(m_fightingEnemyAIDirector.NowState == AIState.DEAD || m_fightingEnemyAIDirector.NowState == AIState.RESPAWN) {
+                m_nowEnemyLostTime = 0f;
+                FindEnemyFlag = false;
+                m_fightingEnemy = null;
+                m_fightingEnemyPDirector = null;
+                m_fightingEnemyAIDirector = null;
+                return false;
+            }
+
         }
+
 
         if(!CheckLostEnemy(m_fightingEnemy.position)) {  // 敵を見失っていないか
             m_nowEnemyLostTime += Time.deltaTime;
@@ -448,7 +486,8 @@ public class AIDirector : MonoBehaviour {
                 m_nowEnemyLostTime = 0f;
                 FindEnemyFlag = false;
                 m_fightingEnemy = null;
-                m_fightingEnemyDirector = null;
+                m_fightingEnemyPDirector = null;
+                m_fightingEnemyAIDirector = null;
                 return false;
             }
             return true;
@@ -463,12 +502,13 @@ public class AIDirector : MonoBehaviour {
     // ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 状態が変わった時の処理＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     void ChangeFlagState(AIFlag.AIFlagState _state) {
-        if (m_enemyChaseFlag) return;
+        if(m_enemyChaseFlag)
+            return;
 
         NowState = AIState.WALKSTART;
 
     }
-    void SetNowState(AIState _state) { 
+    void SetNowState(AIState _state) {
         m_nowState = _state;
         switch(_state) {
             case AIState.WAIT:
@@ -496,7 +536,7 @@ public class AIDirector : MonoBehaviour {
 
 
         }
-        
+
     }
 
 
@@ -507,21 +547,43 @@ public class AIDirector : MonoBehaviour {
     // プレイヤのTransformを取得
     void GetPlayer() {
         // tagから取得
-        GameObject[] _obj1 = GameObject.FindGameObjectsWithTag("PlayerParent");
-        // 配列を初期化
-        m_enemyT = new Transform[_obj1.Length];
-        // for文でしまっていく
-        for (int i = 0; i < _obj1.Length; ++i) {
-            m_enemyT[i] = _obj1[i].transform;
+        GameObject _obj1 = GameObject.FindGameObjectWithTag("PlayerParent");
+        GameObject[] _obj2 = GameObject.FindGameObjectsWithTag("AIParent");
+
+
+        if(S_Team.m_teamColor != _obj1.GetComponent<TeamScript>().m_teamColor) {
+            m_enemyT.Add(_obj1.transform);
         }
+        for(int i = 0; i < _obj2.Length; ++i) {
+            if(S_Team.m_teamColor != _obj2[i].GetComponent<TeamScript>().m_teamColor) {
+                m_enemyT.Add(_obj2[i].transform);
+
+            }
+        }
+
         //S_Pdire = T_Player.GetComponent<PlayerDirector>();
     }
 
 
-
+    
     void AActive() {
         NowState = AIState.WALKSTART;
     }
+
+
+    void OnDrawGizmosSelected() {
+        Gizmos.color = new Color(1.0f, 0.1f, 0.1f);
+        float forwardAngle = Mathf.Atan2(MyObject.forward.z, MyObject.forward.x) * Mathf.Rad2Deg;
+        float angleRight = (forwardAngle + (visibleAngle / 2)) * Mathf.Deg2Rad;
+        Vector3 RayAngleRight = new Vector3(Mathf.Cos(angleRight), 0f, Mathf.Sin(angleRight));
+        float angleLeft = (forwardAngle - (visibleAngle / 2)) * Mathf.Deg2Rad;
+        Vector3 RayAngleLeft = new Vector3(Mathf.Cos(angleLeft), 0f, Mathf.Sin(angleLeft));
+
+        Gizmos.DrawLine(transform.position, transform.position + MyObject.forward * visibleRange);
+        Gizmos.DrawLine(transform.position, transform.position + RayAngleRight * visibleRange);
+        Gizmos.DrawLine(transform.position, transform.position + RayAngleLeft * visibleRange);
+    }
+
 
 
 }

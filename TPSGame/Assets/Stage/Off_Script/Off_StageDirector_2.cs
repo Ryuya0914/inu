@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Off_StageDirector_2 : MonoBehaviour
 {
+    public static int AINum = 1;
+
     GameObject[] S_objpos;
     GameObject[] M_objpos;
     GameObject[] L_objpos;
@@ -182,9 +184,19 @@ public class Off_StageDirector_2 : MonoBehaviour
     //プレイヤー・カメラ生成
     void Instplayer(GameObject player, GameObject AI, GameObject Respawn_1, GameObject Respawn_2)
     {
-        Instantiate(player, Respawn_1.transform.position, Respawn_1.transform.rotation);
-        Instantiate(AI, Respawn_2.transform.position, Quaternion.identity);
-        
+        GameObject pobj = Instantiate(player, Respawn_1.transform.position, Respawn_1.transform.rotation);
+        pobj.GetComponent<TeamScript>().m_teamColor = TeamScript.TeamColor.BLUETEAM;
+        pobj.GetComponent<PlayerFlag>().SetTeam();
+
+        for(int i = 1; i < AINum; ++i) {
+            GameObject obj = Instantiate(AI, Respawn_1.transform.position, Quaternion.identity);
+            obj.GetComponent<TeamScript>().m_teamColor = TeamScript.TeamColor.BLUETEAM;
+        }
+        for(int i = 0; i < AINum; ++i) {
+            GameObject obj = Instantiate(AI, Respawn_2.transform.position, Quaternion.identity);
+            obj.GetComponent<TeamScript>().m_teamColor = TeamScript.TeamColor.REDTEAM;
+        }
+
     }
 
     void Active()

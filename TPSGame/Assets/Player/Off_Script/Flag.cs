@@ -24,7 +24,9 @@ public class Flag : MonoBehaviour
 
 
     // 取得された時
-    public void Take() {
+    public void Take(Transform _trans) {
+        transform.parent = _trans;
+        transform.localPosition = Vector3.zero;
         EnableOnOff(false);
         state = 2;
     }
@@ -54,6 +56,7 @@ public class Flag : MonoBehaviour
 
     // 見た目と当たり判定のオンオフ切り替え
     void EnableOnOff(bool b) {
+        if (b) transform.parent = null;
         Mren.enabled = b;
         if (Ccol != null) Ccol.enabled = b;
         if (Bcol != null) Bcol.enabled = b;

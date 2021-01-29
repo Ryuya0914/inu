@@ -26,6 +26,7 @@ TagManager:
   - AI_CheckPoint
   - PlayerParent
   - AIWall
+  - AIParent
   layers:
   - Default
   - TransparentFX

@@ -41,13 +41,16 @@ public class AIFlag : MonoBehaviour {
     GameObject unnti;
     Off_StageDirector _1;
     Off_StageDirector_2 _2;
-    int stage;
+    int stage = 0;
 
     PlayerUI S_Pui;
+
+    TeamScript m_team;
 
     void Awake() {
         // 自身のスクリプトを取得
         S_Adire = GetComponent<AIDirector>();
+        m_team = GetComponent<TeamScript>();
         RegisterEvent_ChangeHaveFlag(SetHaveFlag);
     }
 
@@ -57,16 +60,17 @@ public class AIFlag : MonoBehaviour {
         Invoke(nameof(GetMyObj), 0.5f);
 
         unnti = GameObject.Find("Stage_Director");
-        if (unnti.GetComponent<Off_StageDirector>())
-        {
-            _1 = unnti.GetComponent<Off_StageDirector>();
-            stage = 1;
+
+        if (unnti != null) {
+            if(unnti.GetComponent<Off_StageDirector>()) {
+                _1 = unnti.GetComponent<Off_StageDirector>();
+                stage = 1;
+            } else if(unnti.GetComponent<Off_StageDirector_2>()) {
+                _2 = unnti.GetComponent<Off_StageDirector_2>();
+                stage = 2;
+            }
         }
-        else if (unnti.GetComponent<Off_StageDirector_2>())
-        {
-            _2 = unnti.GetComponent<Off_StageDirector_2>();
-            stage = 2;
-        }
+
 
         S_Pui = GameObject.Find("PlayerCanvas").GetComponent<PlayerUI>();
 
@@ -74,8 +78,8 @@ public class AIFlag : MonoBehaviour {
 
     // 旗と陣地のゲームオブジェクトを取得
     void GetMyObj() {
-        O_myZone = GameObject.FindGameObjectWithTag(zoneName[0]);
-        O_EneFlag = GameObject.FindGameObjectWithTag(flagName[1]);
+        O_myZone = GameObject.FindGameObjectWithTag(zoneName[(int)m_team.m_teamColor]);
+        O_EneFlag = GameObject.FindGameObjectWithTag(flagName[1 - (int)m_team.m_teamColor]);
         m_enemyFlag = O_EneFlag.GetComponent<Flag>();
     }
 
@@ -88,7 +92,7 @@ public class AIFlag : MonoBehaviour {
         S_effect[1].EffectPlay(Vector3.zero);
         // 旗の状態を更新
         myFlag = f;
-        f.GetComponent<Flag>().Take();
+        f.GetComponent<Flag>().Take(transform);
 
         //S_Adire.ChangeState(2);
     }
@@ -129,11 +133,19 @@ public class AIFlag : MonoBehaviour {
         // 得点を得たことを通知
         if (stage == 1)
         {
-            _1.addA(3);
+            if (m_team.m_teamColor == TeamScript.TeamColor.REDTEAM) {
+                _1.addA(3);
+            } else {
+                _1.addP(3);
+            }
         }
         if (stage == 2)
         {
-            _2.addA(3);
+            if(m_team.m_teamColor == TeamScript.TeamColor.REDTEAM) {
+                _2.addA(3);
+            } else {
+                _2.addP(3);
+            }
         }
         // 旗をなくす
         ReturnFlag();
@@ -146,13 +158,13 @@ public class AIFlag : MonoBehaviour {
     
         switch(HaveFlag) {
             case AIFlagState.NONE:
-                if (m_enemyFlag.state == 0) return 1;
+                if (m_enemyFlag.state == 0) return 1 - (int)m_team.m_teamColor;
                 return 2;
             case AIFlagState.MINE:
-                return 0;
+                return (int)m_team.m_teamColor;
                 
             case AIFlagState.OTHER:
-                return 0;
+                return (int)m_team.m_teamColor;
         }
 
         return -1;
@@ -163,7 +175,7 @@ public class AIFlag : MonoBehaviour {
     // 陣地,旗の当たり判定取得
     void OnTriggerEnter(Collider col) {
         if(S_Adire.NowState == AIDirector.AIState.WALK || S_Adire.NowState == AIDirector.AIState.WALKSTART || S_Adire.NowState == AIDirector.AIState.WALKGOAL) {
-            if(col.tag == zoneName[0]) {           // 自分側の陣地
+            if(col.tag == zoneName[(int)m_team.m_teamColor]) {           // 自分側の陣地
                 switch(HaveFlag) {
                     case AIFlagState.MINE:
                         ReturnFlag();   // 自分の旗を自分の陣地に戻す
@@ -173,7 +185,7 @@ public class AIFlag : MonoBehaviour {
                         break;
                 }
 
-            } else if(col.tag == flagName[0]) {    // 自分側の旗
+            } else if(col.tag == flagName[(int)m_team.m_teamColor]) {    // 自分側の旗
                 if(HaveFlag == AIFlagState.NONE) {
                     if(col.GetComponent<Flag>().state == 1) {// 道中に旗が落ちているなら
                         HaveFlag = AIFlagState.MINE;
@@ -181,7 +193,7 @@ public class AIFlag : MonoBehaviour {
                     }
                 }
 
-            } else if(col.tag == flagName[1]) {    // 敵側の旗
+            } else if(col.tag == flagName[1 - (int)m_team.m_teamColor]) {    // 敵側の旗
                 if(HaveFlag == AIFlagState.NONE) {
                     if(col.GetComponent<Flag>().state != 2) {// 旗を誰も持っていないなら
                         S_Pui.FlagGetLavelOn();

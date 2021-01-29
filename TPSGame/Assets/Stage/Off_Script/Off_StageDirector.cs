@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class Off_StageDirector : MonoBehaviour
 {
+    public static int AINum = 1;
+
     GameObject[] S_objpos;
     GameObject[] M_objpos;
     GameObject[] L_objpos;
@@ -16,6 +18,7 @@ public class Off_StageDirector : MonoBehaviour
 
     //プレイヤー
     [SerializeField] GameObject player;
+    [SerializeField] GameObject AI;
     //配置するオブジェクト(ステージ1)
     [SerializeField] GameObject[] S_obj_1;
     [SerializeField] GameObject[] M_obj_1;
@@ -53,7 +56,7 @@ public class Off_StageDirector : MonoBehaviour
         Instobj(M_obj_1, M_objpos, M_rnd);
         Instobj(L_obj_1, L_objpos, L_rnd);
         //プレイヤーの配置
-        Instplayer(player, respawn_1, respawn_2);
+        Instplayer(player, AI, respawn_1, respawn_2);
         Invoke(nameof(Active), 2.0f);
     }
 
@@ -108,16 +111,33 @@ public class Off_StageDirector : MonoBehaviour
     }
 
     //プレイヤー・カメラ生成
-    void Instplayer(GameObject player, GameObject Respawn_1, GameObject Respawn_2)
+    void Instplayer(GameObject player, GameObject AI, GameObject Respawn_1, GameObject Respawn_2)
     {
-        Instantiate(player, Respawn_1.transform.position, Respawn_1.transform.rotation);
+        GameObject pobj = Instantiate(player, Respawn_1.transform.position, Respawn_1.transform.rotation);
+        pobj.GetComponent<TeamScript>().m_teamColor = TeamScript.TeamColor.BLUETEAM;
+        pobj.GetComponent<PlayerFlag>().SetTeam();
+        for(int i = 1; i < AINum; ++i) {
+            GameObject obj = Instantiate(AI, Respawn_1.transform.position, Quaternion.identity);
+            obj.GetComponent<TeamScript>().m_teamColor = TeamScript.TeamColor.BLUETEAM;
+        }
+
+        for (int i = 0; i < AINum; ++i) {
+            GameObject obj = Instantiate(AI, Respawn_2.transform.position, Quaternion.identity);
+            obj.GetComponent<TeamScript>().m_teamColor = TeamScript.TeamColor.REDTEAM;
+        }
+
     }
 
 
     void Active() {
-        //GameObject.Find("Player_01(Clone)").GetComponent<PlayerDirector>().PActive();
-        //GameObject.Find("AI_01(Clone)").GetComponent<AIDirector>().AActive();
-        //GameObject.Find("AI_01").GetComponent<AIDirector>().AActive();
+        GameObject[] playerobjs = GameObject.FindGameObjectsWithTag("PlayerParent");
+        foreach (GameObject obj in playerobjs) {
+            obj.GetComponent<PlayerDirector>().PActive();
+        }
+        GameObject[] AIobjs = GameObject.FindGameObjectsWithTag("AIParent");
+        foreach (GameObject obj in AIobjs) {
+            obj.GetComponent<AIDirector>().NowState = AIDirector.AIState.WALKSTART;
+        }
     }
 
     void Rscore()
