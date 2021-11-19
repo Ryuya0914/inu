@@ -18,8 +18,6 @@ public class StrixRoomListGUI : MonoBehaviour {
     private ICollection<RoomInfo> roomInfoCollection;
     private bool isUpdated = false;
 
-    void Start() {
-    }
 
     void OnEnable() {
         page = 0;
@@ -36,6 +34,12 @@ public class StrixRoomListGUI : MonoBehaviour {
         UpdateRoomList();
 
         isUpdated = false;
+    }
+
+    // ルーム一覧から戻る
+    public void OnBackButtonClick() {
+        // サーバーとの通信切断
+        StrixNetwork.instance.DisconnectMasterServer();
     }
 
     public void OnCreateRoomButtonClick() {
@@ -74,7 +78,8 @@ public class StrixRoomListGUI : MonoBehaviour {
     private void CreateRoom() {
         RoomProperties roomProperties = new RoomProperties {
             name = "New Room",
-            capacity = 4,
+            capacity = 10,
+            state = 1,
         };
 
         RoomMemberProperties memberProperties = new RoomMemberProperties {
@@ -137,4 +142,5 @@ public class StrixRoomListGUI : MonoBehaviour {
         OnRoomJoined.Invoke();
         gameObject.SetActive(false);
     }
+
 }

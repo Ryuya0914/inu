@@ -14,19 +14,9 @@ public class StrixRoomListItem : MonoBehaviour
     public Button button;
     public Text text;
 
-    [HideInInspector] 
+    [HideInInspector]
     public StrixRoomListGUI roomList;
-
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
+    
     public void UpdateGUI() {
         text.text = roomInfo.name + " " + roomInfo.memberCount + "/" + roomInfo.capacity;
     }

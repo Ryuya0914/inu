@@ -7,7 +7,7 @@ public class StrixEnterRoom : MonoBehaviour {
     /// <summary>
     /// ルームに参加可能な最大人数
     /// </summary>
-    public int capacity = 4;
+    public int capacity = 10;
 
     /// <summary>
     /// ルーム名
