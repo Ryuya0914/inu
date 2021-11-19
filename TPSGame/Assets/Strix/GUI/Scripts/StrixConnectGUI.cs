@@ -14,8 +14,6 @@ public class StrixConnectGUI : MonoBehaviour {
     public int port = 9122;
     public string applicationId = "00000000-0000-0000-0000-000000000000";
     public Level logLevel = Level.INFO;
-    public InputField playerNameInputField;
-    public Text statusText;
     public Button connectButton;
     public UnityEvent OnConnect;
 
@@ -26,7 +24,6 @@ public class StrixConnectGUI : MonoBehaviour {
 
     void OnEnable()
     {
-        statusText.text = "";
         connectButton.interactable = true;
     }
 
@@ -34,17 +31,17 @@ public class StrixConnectGUI : MonoBehaviour {
         LogManager.Instance.Filter = logLevel;
 
         StrixNetwork.instance.applicationId = applicationId;
-        StrixNetwork.instance.playerName = playerNameInputField.text;
+        StrixNetwork.instance.playerName = "Player";
         StrixNetwork.instance.ConnectMasterServer(host, port, OnConnectCallback, OnConnectFailedCallback);
 
-        statusText.text = "Connecting MasterServer " + host + ":" + port;
+        //statusText.text = "Connecting MasterServer " + host + ":" + port;
 
         connectButton.interactable = false;
     }
 
     private void OnConnectCallback(StrixNetworkConnectEventArgs args)
     {
-        statusText.text = "Connection established";
+        //statusText.text = "Connection established";
 
         OnConnect.Invoke();
 
@@ -58,7 +55,7 @@ public class StrixConnectGUI : MonoBehaviour {
             error = args.cause.Message;
         }
 
-        statusText.text = "Connect " + host + ":" + port + " failed. " + error;
+        //statusText.text = "Connect " + host + ":" + port + " failed. " + error;
         connectButton.interactable = true;
     }
 }
