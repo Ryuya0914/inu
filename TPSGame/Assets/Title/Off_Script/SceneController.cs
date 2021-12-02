@@ -19,16 +19,16 @@ public class SceneController : MonoBehaviour
 
     // ステージの番号を指定してシーン移行
     public void LoadStage(int num) {
-        SceneManager.LoadScene(num+1);
+        SceneManager.LoadScene(num+5);
     }
 
     public void LoadRoby() {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("On_Roby");
     }
 
 
     public void FadeIn() {
-
+        Debug.Log("FadeInStart");
     }
 
     public void FadeOut() {

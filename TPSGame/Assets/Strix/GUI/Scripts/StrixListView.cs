@@ -4,15 +4,6 @@ public class StrixListView : MonoBehaviour
 {
     public GameObject listItemPrefab;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public GameObject AddListItem()
     {
