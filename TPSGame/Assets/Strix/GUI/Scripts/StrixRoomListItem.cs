@@ -12,20 +12,43 @@ public class StrixRoomListItem : MonoBehaviour
 {
     public RoomInfo roomInfo;
     public Button button;
-    public Text text;
+    public Text RoomNameText;
+    public Text RoomCapacityText;
 
+    public GameObject passwordUI;
+    
     [HideInInspector]
     public StrixRoomListGUI roomList;
+    public StrixEnterRoom enterRoom;
+    public Canvas InputPasswordUI;
     
+
     public void UpdateGUI() {
-        text.text = roomInfo.name + " " + roomInfo.memberCount + "/" + roomInfo.capacity;
+        RoomNameText.text = roomInfo.name;
+        RoomCapacityText.text = roomInfo.memberCount + " / " + roomInfo.capacity;
     }
+
 
     public void OnClick() {
+        
         button.interactable = false;
-        StrixNetwork.instance.JoinRoom(roomInfo.host, roomInfo.port, roomInfo.protocol, roomInfo.roomId, StrixNetwork.instance.playerName, OnRoomJoin, OnRoomJoinFailed);
+
+        // パスワードつきか確認
+        if(roomInfo.isPasswordProtected) {
+            // パスワード入力UIを表示する
+            InputPasswordUI.enabled = true;
+            InputPasswordUI.GetComponent<StrixTittleSettings>().UpdateUI(roomInfo);
+            button.interactable = true;
+
+        } else {
+            // パスワードがない場合はそのまま入室
+            enterRoom.EnterChoiseRoom(roomInfo, args => { OnRoomJoinFailed(args); });
+            //StrixNetwork.instance.JoinRoom(roomInfo.host, roomInfo.port, roomInfo.protocol, roomInfo.roomId, StrixNetwork.instance.playerName, OnRoomJoin, OnRoomJoinFailed);
+        }
+
     }
 
+    // ルームに参加出来た時に実行するメソッド
     private void OnRoomJoin(RoomJoinEventArgs args) {
         button.interactable = true;
 
@@ -35,15 +58,16 @@ public class StrixRoomListItem : MonoBehaviour
         }
     }
 
+    // ルーム参加に失敗したときに実行するメソッド
     private void OnRoomJoinFailed(FailureEventArgs args) {
         button.interactable = true;
 
-        string error = "";
+        // string error = "";
 
-        if (args.cause != null) {
-            error = args.cause.Message;
-        }
+        //if (args.cause != null) {
+        //    error = args.cause.Message;
+        //}
 
-        Debug.unityLogger.Log("Strix", "Room join failed. " + error);
+        //Debug.unityLogger.Log("Strix", "Room join failed. " + error);
     }
 }
