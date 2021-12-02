@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SoftGear.Strix.Unity.Runtime;
 
-public class StrixTittleSettings : MonoBehaviour
+public class StrixTitleSettings : MonoBehaviour
 {
     public StrixEnterRoom enterRoom;
 

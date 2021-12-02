@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 1720336988204349802}
   - component: {fileID: 4351999758202856642}
   - component: {fileID: 835858872838541511}
+  - component: {fileID: 1803597413637336057}
   - component: {fileID: 5391322687793712263}
   m_Layer: 5
   m_Name: EnterRoomBtn
@@ -278,6 +279,25 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1803597413637336057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5975321585921753086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b3cf73193072b4ca98897f6c3539d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 835858872838541511}
+  RoomNameText: {fileID: 3161208383634386013}
+  RoomCapacityText: {fileID: 5557956375402183851}
+  passwordUI: {fileID: 0}
+  roomList: {fileID: 0}
+  enterRoom: {fileID: 0}
+  InputPasswordUI: {fileID: 0}
 --- !u!114 &5391322687793712263
 MonoBehaviour:
   m_ObjectHideFlags: 0

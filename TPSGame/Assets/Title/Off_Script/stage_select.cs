@@ -64,5 +64,9 @@ public class stage_select : MonoBehaviour
         Off_StageDirector_2.AINum = num;
     }
 
+    public void LLog(string s) {
+        Debug.Log(s);
+    }
+
 
 }

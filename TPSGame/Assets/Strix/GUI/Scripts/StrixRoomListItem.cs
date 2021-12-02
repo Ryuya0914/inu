@@ -37,7 +37,7 @@ public class StrixRoomListItem : MonoBehaviour
         if(roomInfo.isPasswordProtected) {
             // パスワード入力UIを表示する
             InputPasswordUI.enabled = true;
-            InputPasswordUI.GetComponent<StrixTittleSettings>().UpdateUI(roomInfo);
+            InputPasswordUI.GetComponent<StrixTitleSettings>().UpdateUI(roomInfo);
             button.interactable = true;
 
         } else {
