@@ -102,17 +102,17 @@ public class OnPlayerDirector : StrixBehaviour
 
     // プレイヤのデータを読み込む (スタート時)
     void PlayerDataLoad() {
-        if (isLocal) S_CameraCon.SetPdata = Pdata;
+        //if (isLocal) S_CameraCon.SetPdata = Pdata;
         S_Ptranschange.SetPdata = Pdata;
         S_Pgun.SetPdata = Pdata;
         // それぞれのスクリプトにプレイヤを登録
-        if (isLocal) S_CameraCon.SetPlayerT = transform;
+        //if (isLocal) S_CameraCon.SetPlayerT = transform;
         S_Pmove.SetPlayerT = transform;
         S_Ptranschange.SetCameraT = Camera.main.transform;
         S_Pmove.SetPlayerR = GetComponent<Rigidbody>();
 
         S_Ptranschange.RegisterObj();
-        if (isLocal) S_CameraCon.StartAngleSet(transform.eulerAngles.y);
+        //if (isLocal) S_CameraCon.StartAngleSet(transform.eulerAngles.y);
 
 
     }
@@ -121,7 +121,7 @@ public class OnPlayerDirector : StrixBehaviour
     void ObjectDataLoad(ObjectData objData) {
         Odata = objData;
         S_Pmove.SetOdata = objData;
-        if(isLocal) S_CameraCon.SetOdata = objData;
+        //if(isLocal) S_CameraCon.SetOdata = objData;
         S_Ptranschange.SetOdata(objData);
         S_Pgun.SetOdata(objData);
         S_Plife.SetOdata(objData);
@@ -144,7 +144,7 @@ public class OnPlayerDirector : StrixBehaviour
         S_CameraCon.CameraPosUpdate();          // カメラの位置更新
         float h = Input.GetAxis(camerah);       // マウスの横方向の移動
         float v = Input.GetAxis(camerav);       // マウスの縦方向の移動
-        S_CameraCon.CameraRotate(h, v, f);     // カメラを回転させる
+        //S_CameraCon.CameraRotate(h, v, f);     // カメラを回転させる
     }
     // 射撃のメソッド呼び出し
     void InputShoot() {

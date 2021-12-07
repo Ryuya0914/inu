@@ -8,7 +8,7 @@ public class PlayerGround : MonoBehaviour
     //string[] tagsname = new string[] { "Ground", "Object" , "NonObject", "" };
 
     void OnTriggerStay(Collider col) {  // コライダに触れている間
-        S_Pdire.JumpFlag = true;
+        //S_Pdire.JumpFlag = true;
     }
 
 }

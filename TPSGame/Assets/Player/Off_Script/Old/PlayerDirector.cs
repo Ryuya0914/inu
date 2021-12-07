@@ -20,7 +20,7 @@ public class PlayerDirector : MonoBehaviour
     int transchangeB = 1;               // 変身 
     KeyCode respawn = KeyCode.Return;   // リスポーン
     KeyCode reloadB = KeyCode.R;        // リロード
-    KeyCode cameraRotateB = KeyCode.LeftShift;    // カメラだけ回転する 
+    KeyCode cameraRotateB = KeyCode.LeftShift;    // カメラだけ回転する
 
     // フラグ *************************************************
     bool InputFlag = false;         // 入力
@@ -101,17 +101,17 @@ public class PlayerDirector : MonoBehaviour
 
     // プレイヤのデータを読み込む (スタート時)
     void PlayerDataLoad() {
-        S_CameraCon.SetPdata = Pdata;
+        //S_CameraCon.SetPdata = Pdata;
         S_Ptranschange.SetPdata = Pdata;
         S_Pgun.SetPdata = Pdata;
         // それぞれのスクリプトにプレイヤを登録
-        S_CameraCon.SetPlayerT = transform;
+        //S_CameraCon.SetPlayerT = transform;
         S_Pmove.SetPlayerT = transform;
         S_Ptranschange.SetCameraT = Camera.main.transform;
         S_Pmove.SetPlayerR = GetComponent<Rigidbody>();
 
         S_Ptranschange.RegisterObj();
-        S_CameraCon.StartAngleSet(transform.eulerAngles.y);
+        //S_CameraCon.StartAngleSet(transform.eulerAngles.y);
 
 
     }
@@ -120,7 +120,7 @@ public class PlayerDirector : MonoBehaviour
     void ObjectDataLoad(ObjectData objData) {
         Odata = objData;
         S_Pmove.SetOdata = objData;
-        S_CameraCon.SetOdata = objData;
+        //S_CameraCon.SetOdata = objData;
         S_Ptranschange.SetOdata(objData);
         S_Pgun.SetOdata(objData);
         S_Plife.SetOdata(objData);
@@ -143,7 +143,7 @@ public class PlayerDirector : MonoBehaviour
         S_CameraCon.CameraPosUpdate();          // カメラの位置更新
         float h = Input.GetAxis(camerah);       // マウスの横方向の移動
         float v = Input.GetAxis(camerav);       // マウスの縦方向の移動
-        S_CameraCon.CameraRotate(h, v, f);     // カメラを回転させる
+        //S_CameraCon.CameraRotate(h, v, f);     // カメラを回転させる
         
     }
     // 射撃のメソッド呼び出し
