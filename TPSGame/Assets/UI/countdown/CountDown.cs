@@ -12,6 +12,7 @@ public class CountDown : MonoBehaviour
     public float Countdown=5;
     int count;
     public UnityEvent CountDownEnd;
+    
 
 
     // Start is called before the first frame update
@@ -32,6 +33,7 @@ public class CountDown : MonoBehaviour
             Countdown -= Time.deltaTime;
             count = (int)Countdown;
             CountTex.text = count.ToString();
+            
         } 
         else
         {
