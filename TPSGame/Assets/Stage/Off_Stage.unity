@@ -311,7 +311,7 @@ PrefabInstance:
     - target: {fileID: 1346783635781736841, guid: 57ed4e9b41f813646ab69f8eed868516,
         type: 3}
       propertyPath: m_RootOrder
-      value: 330
+      value: 202
       objectReference: {fileID: 0}
     - target: {fileID: 1346783635781736841, guid: 57ed4e9b41f813646ab69f8eed868516,
         type: 3}
@@ -739,12 +739,12 @@ PrefabInstance:
     - target: {fileID: 585599299886734286, guid: 9d13b1c978727ba4fa4839be2cee6caa,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 585599298144159612, guid: 9d13b1c978727ba4fa4839be2cee6caa,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2523963158677906173, guid: 9d13b1c978727ba4fa4839be2cee6caa,
         type: 3}
@@ -780,6 +780,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6046778605611327735, guid: 9d13b1c978727ba4fa4839be2cee6caa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d13b1c978727ba4fa4839be2cee6caa, type: 3}
@@ -833,7 +838,7 @@ PrefabInstance:
     - target: {fileID: 4069379626672847354, guid: 95ab7b8766e09334c984ab56952919c0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 328
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4069379626672847354, guid: 95ab7b8766e09334c984ab56952919c0,
         type: 3}
@@ -867,6 +872,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95ab7b8766e09334c984ab56952919c0, type: 3}
+--- !u!1 &698857162
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 698857164}
+  - component: {fileID: 698857163}
+  m_Layer: 0
+  m_Name: StrixSceneInfo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &698857163
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698857162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 229809761, guid: f2c2112f638c5b8489d16403d930373b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentInfo: []
+--- !u!4 &698857164
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698857162}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &715699414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1495,7 +1544,7 @@ PrefabInstance:
     - target: {fileID: 4069379626672847354, guid: 95ab7b8766e09334c984ab56952919c0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 329
+      value: 201
       objectReference: {fileID: 0}
     - target: {fileID: 4069379626672847354, guid: 95ab7b8766e09334c984ab56952919c0,
         type: 3}
