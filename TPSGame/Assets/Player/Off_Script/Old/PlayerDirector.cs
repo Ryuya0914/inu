@@ -29,7 +29,7 @@ public class PlayerDirector : MonoBehaviour
     public bool JumpFlag = true;
 
     // スクリプト *******************************************
-    CameraController S_CameraCon;
+    //CameraController S_CameraCon;
     [SerializeField] PlayerMove S_Pmove;
     [SerializeField] PlayerGun S_Pgun;
     [SerializeField] PlayerTransChange S_Ptranschange;
@@ -48,7 +48,7 @@ public class PlayerDirector : MonoBehaviour
     void Awake()
     {
         // カメラを見つけてくる
-        S_CameraCon = Camera.main.transform.parent.GetComponent<CameraController>();
+       // S_CameraCon = Camera.main.transform.parent.GetComponent<CameraController>();
         // UIを見つけてくる
         S_Pui = GameObject.Find("PlayerCanvas").GetComponent<PlayerUI>();
         // データをそれぞれのスクリプトに読み込ませる
@@ -80,8 +80,8 @@ public class PlayerDirector : MonoBehaviour
                     MoveFlag = false;
                 }
                 if(MoveFlag) {  // 行動可能かどうか
-                    InputMove();        // 移動
-                    InputJump();        // ジャンプ
+                    //InputMove();        // 移動
+                    //InputJump();        // ジャンプ
                     InputShoot();       // 射撃
                     InputTransChage();  // 変身
                 }
@@ -126,21 +126,21 @@ public class PlayerDirector : MonoBehaviour
         S_Plife.SetOdata(objData);
     }
 
-    // 移動のメソッド呼び出し
-    void InputMove() {
-        float h = Input.GetAxis(hmoveB);        // 左右移動の入力
-        float v = Input.GetAxis(vmoveB);        // 前後移動の入力
-        S_Pmove.Move(h, v);
-    }
-    // ジャンプのメソッド呼び出し
-    void InputJump() {
-        if(Input.GetKeyDown(jumpB) && JumpFlag) {   // ジャンプの入力があるか
-            S_Pmove.Jump();
-        }
-    }
+    //// 移動のメソッド呼び出し
+    //void InputMove() {
+    //    float h = Input.GetAxis(hmoveB);        // 左右移動の入力
+    //    float v = Input.GetAxis(vmoveB);        // 前後移動の入力
+    //    S_Pmove.Move(h, v);
+    //}
+    //// ジャンプのメソッド呼び出し
+    //void InputJump() {
+    //    if(Input.GetKeyDown(jumpB) && JumpFlag) {   // ジャンプの入力があるか
+    //        S_Pmove.Jump();
+    //    }
+    //}
     // カメラ回転のメソッド呼び出し
     void InputCameraMove(bool f) {
-        S_CameraCon.CameraPosUpdate();          // カメラの位置更新
+       // S_CameraCon.CameraPosUpdate();          // カメラの位置更新
         float h = Input.GetAxis(camerah);       // マウスの横方向の移動
         float v = Input.GetAxis(camerav);       // マウスの縦方向の移動
         //S_CameraCon.CameraRotate(h, v, f);     // カメラを回転させる
@@ -219,7 +219,7 @@ public class PlayerDirector : MonoBehaviour
 
     // 弾薬の更新
     public void AmmoUpdate(float ammo) {
-        S_Pui.AmmoUIUpdate(ammo / (Odata.MaxAmmo * 1.0f));
+        //S_Pui.AmmoUIUpdate(ammo / (Odata.MaxAmmo * 1.0f));
     }
 
 

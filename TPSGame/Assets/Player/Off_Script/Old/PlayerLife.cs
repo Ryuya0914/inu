@@ -28,7 +28,7 @@ public class PlayerLife : MonoBehaviour
     // HPを減らす
     void DecreaseHP(int damage) {
         if (mylife > 0) {
-            mylife -= damage * 100 / Odata.MaxLife;
+            //mylife -= damage * 100 / Odata.MaxLife;
             HPUpdate();
         }
     }

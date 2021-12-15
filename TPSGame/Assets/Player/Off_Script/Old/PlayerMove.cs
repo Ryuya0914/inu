@@ -40,7 +40,7 @@ public class PlayerMove : MonoBehaviour
             Vector3 vec = new Vector3(h, 0.0f, v);      // 入力さえれた値をまとめる
             vec = vec.normalized;                       // ノーマライズ
             Vector3 movevec = transform.forward * vec.z + transform.right * vec.x;  // 入力された値をプレイヤの向いている方向に合わせる
-            movevec = movevec.normalized * Odata.MoveSpeed;        // 移動速度を設定
+            //movevec = movevec.normalized * Odata.MoveSpeed;        // 移動速度を設定
             movevec.y = PlayerR.velocity.y;
             PlayerR.velocity = movevec;     // 重力で移動する
         } else {
@@ -53,7 +53,7 @@ public class PlayerMove : MonoBehaviour
     // ジャンプ(空中ジャンプは後で直す)
     public void Jump() {
         Vector3 v = PlayerR.velocity;
-        PlayerR.velocity = new Vector3(v.x, Odata.JumpPower, v.z);
+        //PlayerR.velocity = new Vector3(v.x, Odata.JumpPower, v.z);
     }
 
 }

@@ -32,9 +32,9 @@ public class AIMove : MonoBehaviour {
 
     public void FixedWalk(Vector3 _vec) {
         // 加速度を使って移動させる
-        Vector3 v = _vec * Odata.MoveSpeed;
-        v.y = rb.velocity.y;
-        rb.velocity = v;
+        //Vector3 v = _vec * Odata.MoveSpeed;
+        //v.y = rb.velocity.y;
+        //rb.velocity = v;
 
     }
 
