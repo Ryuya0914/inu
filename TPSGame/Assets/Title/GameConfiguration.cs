@@ -9,6 +9,7 @@ public class GameConfiguration : MonoBehaviour
     public GameObject canvas;
     public GameObject taikistage;
     public GameObject Stage_preset;
+    private bool menu = true;
     void Start()
     {
         Configuration.SetActive(false);
@@ -16,14 +17,28 @@ public class GameConfiguration : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-            canvas.SetActive(false);
-            taikistage.SetActive(false);
-            Stage_preset.SetActive(false);
-            Configuration.SetActive(true);
-
+            if (menu == true)
+            {
+                canvas.SetActive(false);
+                taikistage.SetActive(false);
+                Stage_preset.SetActive(false);
+                Configuration.SetActive(true);
+                menu = false;
+                return;
+            }
+            if (menu == false)
+            {
+                canvas.SetActive(true);
+                taikistage.SetActive(true);
+                Stage_preset.SetActive(true);
+                Configuration.SetActive(false);
+                menu = true;
+                return;
+            }
         }
+
     }
     
 }
