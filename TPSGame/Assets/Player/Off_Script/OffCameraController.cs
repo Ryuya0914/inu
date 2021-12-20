@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour {
+public class OffCameraController : MonoBehaviour {
 
     // 現在のカメラの角度
     float Hangle = 0, Vangle = 0;
     // カメラ動かせるかフラグ
     bool moveFlag = false;
-
-    void Start() {
-        moveFlag = true;
-    }
+    public void SetMoveFlag(bool f) { moveFlag = f; }
 
     void Update() {
         // 追跡するターゲットがいない場合、カメラが動かせない場合は何もしない

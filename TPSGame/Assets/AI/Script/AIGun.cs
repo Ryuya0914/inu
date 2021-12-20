@@ -94,17 +94,17 @@ public class AIGun : MonoBehaviour
 
         // 弾丸を飛ばす
         b.gameObject.SetActive(true);                                   // 弾丸を表示
-        b.GetComponent<Bullet>().GetSetDamage = Odata.shootDamage;      // 弾丸にダメージを付与
+        //b.GetComponent<Bullet>().GetSetDamage = Odata.shootDamage;      // 弾丸にダメージを付与
         Vector3 force = _vec * Pdata.BulletSpeed;                        // 飛ばす力を計算
         b.AddForce(force);                                              // 飛ばす
     }
 
     // リロード
     public void Reload() {
-        if(nowammo < Odata.MaxAmmo) {  // 弾薬が最大じゃなかったら
-            nowammo = 0;                        // 弾薬をなくす
-            StartCoroutine("ReloadAmmo");       // リロードのコルーチン呼び出し
-        }
+        //if(nowammo < Odata.MaxAmmo) {  // 弾薬が最大じゃなかったら
+        //    nowammo = 0;                        // 弾薬をなくす
+        //    StartCoroutine("ReloadAmmo");       // リロードのコルーチン呼び出し
+        //}
     }
 
     float checktime = 0.1f;
@@ -123,7 +123,7 @@ public class AIGun : MonoBehaviour
 
 
     public void ResetAmmo() {
-        nowammo = Odata.MaxAmmo;
+        //nowammo = Odata.MaxAmmo;
     }
 
 

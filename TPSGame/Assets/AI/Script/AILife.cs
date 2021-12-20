@@ -47,7 +47,7 @@ public class AILife : MonoBehaviour
     // HPを減らす
     void DecreaseHP(int damage) {
         audio.PlayOneShot(clip);
-        mylife -= damage * 100 / Odata.MaxLife;
+        //mylife -= damage * 100 / Odata.MaxLife;
     }
 
     // HP全回復

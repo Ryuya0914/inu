@@ -49,7 +49,7 @@ public class PlayerTransChange : MonoBehaviour
     // rayを飛ばす
     ObjectData GoRay() {
         // rayのスタート地点
-        Vector3 raypos = CameraT.position + (CameraT.forward * -Odata.cameraOffsetZ.z * 1.3f);
+        Vector3 raypos = CameraT.position + (CameraT.forward /** -Odata.cameraOffsetZ.z*/ * 1.3f);
         // rayを作成
         Ray ray = new Ray(raypos, CameraT.forward);
 
