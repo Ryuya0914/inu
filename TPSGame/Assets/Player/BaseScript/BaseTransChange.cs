@@ -6,10 +6,11 @@ using UnityEngine.Events;
 public class BaseTransChange : MonoBehaviour
 {
     // 変身できるかフラグ
-    public bool transChangeFlag = false;
-
-    // 変身する＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    protected bool transChangeFlag = false;
+    public void SetTransChangeFlag(bool f) { transChangeFlag = f; }
     
+    // 変身する＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
     // 変身したときに呼び出すイベント
     public UnityEvent transChangeEvent;
     // オブジェクトデータとゲームオブジェクトをまとめるクラス
@@ -39,11 +40,13 @@ public class BaseTransChange : MonoBehaviour
         // 取得したオブジェクトと自身のオブジェクトと同じか確認
         if (_data.ObjectNum == objList[objListOffset].objData.ObjectNum) return;
 
-        // 変身する
-
-
-        // 変身したことを他のスクリプトに知らせる
-        transChangeEvent.Invoke();
+        // リストから変身するオブジェクトを探して変身する
+        for (int i = 0; i < objList.Count; i++) {
+            if (objList[i].objData.ObjectNum == _data.ObjectNum) {
+                Change(i);
+                break;
+            }
+        }
 
         // クールダウン開始
         StartCoroutine(CoolDown());
@@ -53,7 +56,17 @@ public class BaseTransChange : MonoBehaviour
 
     // オブジェクトを差し替え、他のスクリプトに知らせる
     protected void Change(int num) {
-        
+        // 変身前のオブジェクトを非表示にする
+        objList[objListOffset].obj.SetActive(false);
+
+        // 変身後のオブジェクトを表示する
+        objList[num].obj.SetActive(true);
+
+        // 変身中オブジェクトのリストの位置を更新
+        objListOffset = num;
+
+        // 変身したことを他のスクリプトに知らせる
+        transChangeEvent.Invoke();
     }
 
 

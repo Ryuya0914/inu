@@ -9,7 +9,6 @@ public class BaseGun : MonoBehaviour
     public void SetShootFlag(bool f) { shootFlag = f; }
 
 
-
     // 弾を準備する＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 弾のスクリプトのリスト
     public List<BaseBullet> bullets;
