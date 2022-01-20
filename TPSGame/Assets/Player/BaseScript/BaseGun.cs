@@ -7,7 +7,35 @@ public class BaseGun : MonoBehaviour
     // 弾を撃てるかどうか
     protected bool shootFlag = false;
     public void SetShootFlag(bool f) { shootFlag = f; }
+    // 生きているかフラグ
+    protected bool aliveFlag = true;
 
+
+    // オブジェクトの変更
+    public virtual void SetObjData(ObjectData _objData) {
+        // オブジェクトサイズ
+        objSize = _objData.ObjSizeNum;
+        // マガジンサイズ
+        m_magazineSize = magazinSize[objSize];
+        // リロード強制終了
+        ReloadEnd();
+        // カメラの位置
+        cameraOffset = _objData.cameraOffset;
+        // 発射位置
+        shootOffset = _objData.BulletOffset;
+    }
+
+    public virtual void Start() {
+        // 変身時のイベント登録
+        gameObject.GetComponent<BaseTransChange>().transChangeEvent += SetObjData;
+
+        // 生きている死んでいるフラグ切り替え
+        BaseState bs = GetComponent<BaseState>();
+        bs.respawnEvent += () => { aliveFlag = true; };
+        bs.dieEvent += () => { aliveFlag = false; };
+        bs.respawnEvent += ReloadEnd;
+
+    }
 
     // 弾を準備する＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     // 弾のスクリプトのリスト
@@ -20,9 +48,9 @@ public class BaseGun : MonoBehaviour
     // オブジェクトサイズ毎のマガジンサイズ
     protected int[] magazinSize = new int[] { 10, 15, 20 };
     // マガジンサイズ
-    protected int m_magazineSize = 10;
+    protected int m_magazineSize = 15;
     // 残り弾薬数
-    int ammoCount = 10;
+    protected int ammoCount = 10;
 
     
     // カメラのオフセット
@@ -40,9 +68,9 @@ public class BaseGun : MonoBehaviour
     protected bool intervalEndFlag = true;
 
     // 弾を発射する
-    protected void Shoot(Vector3 dir) {
+    protected virtual void Shoot(Vector3 dir) {
         // 射撃できるか確認
-        if (shootFlag == false) return;
+        if (!shootFlag || !aliveFlag) return;
 
         // 射撃のインターバル確認
         if (intervalEndFlag == false) return;
@@ -80,7 +108,7 @@ public class BaseGun : MonoBehaviour
     // リロード中か
     protected bool reloadFlag = false;
 
-    protected IEnumerator Reload() {
+    protected virtual IEnumerator Reload() {
         reloadFlag = true;
         yield return new WaitForSeconds(reloadTime);
         reloadFlag = false;
@@ -88,7 +116,7 @@ public class BaseGun : MonoBehaviour
     }
 
     // 変身時や死亡時にリロードを強制終了させる
-    public void ReloadEnd() {
+    public virtual void ReloadEnd() {
         StopCoroutine(Reload());
         reloadFlag = false;
         ammoCount = m_magazineSize;

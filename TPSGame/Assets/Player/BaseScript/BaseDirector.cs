@@ -10,11 +10,11 @@ public class BaseDirector : MonoBehaviour
         switch(mode) {
             case -1:
                 Debug.Log("DebugStart");
-                debugEvent.Invoke();
+                debugEvent?.Invoke();
                 break;
             case 1:
                 Debug.Log("RobyStart");
-                robyEvent.Invoke();
+                robyEvent?.Invoke();
                 break;
         }
     }
@@ -26,15 +26,15 @@ public class BaseDirector : MonoBehaviour
     // 試合開始時にステージディレクターから呼ばれるメソッド
     public void GameStart() {
         if (startEvent != null) {
-            startEvent.Invoke();
+            startEvent?.Invoke();
         }
     }
-    // 試合開始時に実行するメソッドたち
+    // 試合終了時に実行するメソッドたち
     public UnityEvent endEvent;
     // 試合終了時にステージディレクターから呼ばれるメソッド
     public void GameEnd() {
         if(endEvent != null) {
-            endEvent.Invoke();
+            endEvent?.Invoke();
         }
     }
 
@@ -46,5 +46,5 @@ public class BaseDirector : MonoBehaviour
     // デバッグ開始時に実行するメソッドたち
     public UnityEvent debugEvent;
 
-
+    
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class BaseBullet : MonoBehaviour
 {
     // 変身中のオブジェクトサイズ毎のダメージ
-    public float[] damage = new float[] { 10f, 20f, 30f };
+    public int[] damage = new int[] { 30, 20, 10 };
     // 弾を発射する直前にダメージを設定する
-    float nowDamage = 0f;
+    public int nowDamage = 0;
     // 弾の速度
     protected float speed = 1000f;
     // 物理演算
@@ -59,8 +59,12 @@ public class BaseBullet : MonoBehaviour
     protected void HitGameObject(GameObject obj) {
         if(obj.tag == "PlayerObj" || obj.tag == "AIObj") {
             // 体力を減少させる
-
+            bool f = obj.GetComponent<BaseState>().DecreaseHP(this);
             // 弾を消す
+            if (f) {
+                rb.velocity = Vector3.zero;
+                gameObject.SetActive(false);
+            }
             
         } else {
             // 壁とか地面とかに当たったら停止する

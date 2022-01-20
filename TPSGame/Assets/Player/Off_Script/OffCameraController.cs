@@ -8,7 +8,21 @@ public class OffCameraController : MonoBehaviour {
     float Hangle = 0, Vangle = 0;
     // カメラ動かせるかフラグ
     bool moveFlag = false;
-    public void SetMoveFlag(bool f) { moveFlag = f; }
+    public void SetMoveFlag(bool f) { 
+        moveFlag = f;
+        if(f) {
+            // マウスカーソルを消す
+            Cursor.visible = false;
+            // カーソルを動かないようにする
+            Cursor.lockState = CursorLockMode.Locked;
+        } else {
+            // マウスカーソルを表示
+            Cursor.visible = true;
+            // カーソルを動くようにする
+            Cursor.lockState = CursorLockMode.None;
+        }
+        
+    }
 
     void Update() {
         // 追跡するターゲットがいない場合、カメラが動かせない場合は何もしない
@@ -29,10 +43,10 @@ public class OffCameraController : MonoBehaviour {
     // 追跡するオブジェクト
     public GameObject targetObj;
     // カメラの位置を変更(変身とかしたとき)
-    public void SetCameraOffSet(Vector3 _vec) {
-        offSet = _vec;
+    public void SetCameraOffSet(ObjectData _od) {
+        offSet = _od.cameraOffset;
         // カメラの位置をオフセットに合わせる
-        Camera.main.transform.localPosition = new Vector3 (0, 0, offSet.z);
+        Camera.main.transform.localPosition = new Vector3 (0, 0, -offSet.z);
     }
 
     public void CameraPosUpdate() {
@@ -77,6 +91,7 @@ public class OffCameraController : MonoBehaviour {
         var lookRotation = Quaternion.LookRotation(dir, Vector3.up);
         targetObj.transform.rotation = Quaternion.Lerp(targetObj.transform.rotation, lookRotation, 0.8f);
     }
+
 
 
 
