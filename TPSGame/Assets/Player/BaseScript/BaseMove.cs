@@ -7,6 +7,8 @@ public class BaseMove : MonoBehaviour
     // 移動できるかどうか
     protected bool moveFlag = false;
     public void SetMoveFlag(bool f) { moveFlag = f; }
+    // 生きているかフラグ
+    protected bool aliveFlag = true;
     
     // リジットボディ
     Rigidbody rb;
@@ -16,6 +18,11 @@ public class BaseMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    void Start() {
+        BaseState bs = GetComponent<BaseState>();
+        bs.respawnEvent += () => { aliveFlag = true; };
+        bs.dieEvent += () => { aliveFlag = false; };
+    }
 
     // 移動＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
@@ -24,7 +31,7 @@ public class BaseMove : MonoBehaviour
 
     // 移動
     protected void Move(float h, float v) {
-        if((h != 0 || v != 0) && moveFlag == true) {
+        if((h != 0 || v != 0) && moveFlag == true && aliveFlag) {
             Vector3 vec = new Vector3(h, 0.0f, v);      // 入力さえれた値をまとめる
             vec = vec.normalized;                       // ノーマライズ
             Vector3 movevec = transform.forward * vec.z + transform.right * vec.x;  // 入力された値をプレイヤの向いている方向に合わせる
@@ -45,7 +52,7 @@ public class BaseMove : MonoBehaviour
 
     // ジャンプ
     protected void Jump() {
-        if (moveFlag == false) return;
+        if (!moveFlag || !aliveFlag) return;
 
         // 縦方向の加速度だけいじる
         Vector3 v = rb.velocity;

@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: S_elephant
   m_EditorClassIdentifier: 
   ObjectNum: 40
-  MaxLife: 100
-  MaxAmmo: 10
-  shootDamage: 35
   ObjSizeNum: 2
-  MoveSpeed: 6
-  JumpPower: 5
-  cameraOffsetY: {x: 0, y: 2, z: 0}
-  cameraOffsetZ: {x: 0, y: 0, z: -0.7}
+  cameraOffset: {x: 0, y: 2.5, z: 1.5}
   BulletOffset: {x: 0, y: 1.3, z: 0.5}
+  AImoveLayPos: {x: 0, y: 0, z: 0}
+  AImoveLayScale: {x: 0, y: 0, z: 0}

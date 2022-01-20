@@ -15,6 +15,8 @@ public class OffPlayerDirector : BaseDirector
         OffCameraController cameraScript = GameObject.Find("CameraParent").GetComponent<OffCameraController>();
         cameraScript.targetObj = gameObject;
         cameraScript.SetMoveFlag(true);
+        // カメラオフセットを変更するメソッドを変身するスクリプトに登録する
+        GetComponent<BaseTransChange>().transChangeEvent += cameraScript.SetCameraOffSet;
     }
-
+    
 }

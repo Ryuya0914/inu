@@ -9,4 +9,6 @@ public class ObjectDirector : MonoBehaviour
     // オブジェクト情報のゲッタ―
     public ObjectData GetOdata { get { return MyOdata; } }
 
+    
+
 }

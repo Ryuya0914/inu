@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+
 public class BaseTransChange : MonoBehaviour
 {
     // 変身できるかフラグ
     protected bool transChangeFlag = false;
     public void SetTransChangeFlag(bool f) { transChangeFlag = f; }
+    // 生きているフラグ
+    protected bool aliveFlag = true;
     
-    // 変身する＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 変身する準備＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-    // 変身したときに呼び出すイベント
-    public UnityEvent transChangeEvent;
     // オブジェクトデータとゲームオブジェクトをまとめるクラス
     public class ObjectDataSet {
         // オブジェクトのデータ
@@ -22,23 +23,62 @@ public class BaseTransChange : MonoBehaviour
     }
     // 変身できるオブジェクトのリスト
     public List<ObjectDataSet> objList = new List<ObjectDataSet>();
+    // 変身できるオブジェクトのリストに変身するオブジェクトを登録する
+    public void RegisterObj(ObjectDirector _oData) {
+        // オブジェクトデータセットを作成
+        ObjectDataSet _ods = new ObjectDataSet();
+        // オブジェクトのデータとオブジェクトを設定
+        _ods.objData = _oData.GetOdata;
+        _ods.obj = _oData.gameObject;
+        // リストに登録
+        objList.Add(_ods);
+    }
+    
+    protected void Awake() {
+        // 自信の子オブジェクトから変身できるオブジェクトを取得
+        foreach (Transform child in transform) {
+            ObjectDirector od;
+            if (od = child.GetComponentInChildren<ObjectDirector>()) {
+                RegisterObj(od);
+                if (od.gameObject.activeSelf == true) {
+                    objListOffset = objList.Count-1;
+                }
+            }
+        }
+    }
+
+    void Start() {
+        BaseState bs = GetComponent<BaseState>();
+        bs.respawnEvent += () => { aliveFlag = true; };
+        bs.dieEvent += () => { aliveFlag = false; };
+        bs.respawnEvent += CoolDownEnd;
+    }
+
+
+    // 変身する＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    // 変身したときに呼び出すイベント
+    public event System.Action<ObjectData> transChangeEvent;
+
     // 現在変身中のオブジェクトがリストのどこか
     protected int objListOffset = 0;
 
-    // 変身
+    // オブジェクトを受け取って変身出来たらする
     protected void ChangeObject(GameObject obj) {
+        // オブジェクトがnullか確認
+        if (obj == null) return;
         // 変身できるか確認
-        if (transChangeFlag == false) return;
+        if (!transChangeFlag || !aliveFlag) return;
         // クールダウン中か確認
         if (coolDownFlag == true) return;
-
+        
         // オブジェクトデータを取得する
         ObjectData _data = null;
-        if(_data = obj.GetComponentInParent<ObjectDirector>().GetOdata) {
+        if(obj.GetComponentInParent<ObjectDirector>()) {
+            _data = obj.GetComponentInParent<ObjectDirector>().GetOdata;
         } else { return; }
-
+        
         // 取得したオブジェクトと自身のオブジェクトと同じか確認
-        if (_data.ObjectNum == objList[objListOffset].objData.ObjectNum) return;
+        if(_data.ObjectNum == objList[objListOffset].objData.ObjectNum) return;
 
         // リストから変身するオブジェクトを探して変身する
         for (int i = 0; i < objList.Count; i++) {
@@ -50,9 +90,7 @@ public class BaseTransChange : MonoBehaviour
 
         // クールダウン開始
         StartCoroutine(CoolDown());
-
     }
-
 
     // オブジェクトを差し替え、他のスクリプトに知らせる
     protected void Change(int num) {
@@ -66,7 +104,8 @@ public class BaseTransChange : MonoBehaviour
         objListOffset = num;
 
         // 変身したことを他のスクリプトに知らせる
-        transChangeEvent.Invoke();
+        //transChangeEvent?.Invoke(objList[objListOffset].objData);
+        transChangeEvent?.Invoke(objList[objListOffset].objData);
     }
 
 
