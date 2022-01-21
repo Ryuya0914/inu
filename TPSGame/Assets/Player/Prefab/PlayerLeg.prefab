@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9182521399159670384}
   - component: {fileID: 3523842033322466161}
   - component: {fileID: 5320368817961342540}
-  - component: {fileID: 1108770945404692628}
+  - component: {fileID: 2348586184387584903}
   m_Layer: 11
   m_Name: PlayerLeg
   m_TagString: PlayerLeg
@@ -92,7 +92,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1108770945404692628
+--- !u!114 &2348586184387584903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,7 +101,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9093492550718466154}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 082ab00105aef7e4eafd0aac37fe4e83, type: 3}
+  m_Script: {fileID: 11500000, guid: 644a542e3439f584f9898abf2459cda2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  S_Pdire: {fileID: 0}

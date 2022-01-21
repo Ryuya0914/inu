@@ -49,14 +49,18 @@ public class BaseMove : MonoBehaviour
 
     // ジャンプ力
     float JumpPow = 10.0f;
+    // 地面についているか
+    public bool isGround = true;
 
     // ジャンプ
     protected void Jump() {
-        if (!moveFlag || !aliveFlag) return;
+        if (!moveFlag || !aliveFlag || !isGround) return;
 
         // 縦方向の加速度だけいじる
         Vector3 v = rb.velocity;
         rb.velocity = new Vector3(v.x, JumpPow, v.z);
+        // 着地フラグをオフにする
+        isGround = false;
     }
 
 

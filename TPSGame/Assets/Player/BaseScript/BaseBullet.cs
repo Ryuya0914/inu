@@ -57,15 +57,17 @@ public class BaseBullet : MonoBehaviour
     }
 
     protected void HitGameObject(GameObject obj) {
-        if(obj.tag == "PlayerObj" || obj.tag == "AIObj") {
+        if(obj.tag == "Player" || obj.tag == "AI") {
             // 体力を減少させる
-            bool f = obj.GetComponent<BaseState>().DecreaseHP(this);
-            // 弾を消す
-            if (f) {
-                rb.velocity = Vector3.zero;
-                gameObject.SetActive(false);
+            if(obj.GetComponentInParent<BaseState>()) {
+                bool f = obj.GetComponentInParent<BaseState>().DecreaseHP(this);
+                // 弾を消す
+                if(f) {
+                    rb.velocity = Vector3.zero;
+                    gameObject.SetActive(false);
+                }
             }
-            
+
         } else {
             // 壁とか地面とかに当たったら停止する
             rb.velocity = Vector3.zero;

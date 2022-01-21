@@ -15,11 +15,10 @@ public class BaseState : MonoBehaviour
     public event System.Action dieEvent;
     // リスポーン時イベント
     public event System.Action respawnEvent;
-        
 
     // 生きているかのフラグ
     protected bool aliveFlag = true;
-    
+
 
     // オブジェクトの変更
     public virtual void SetObjData(ObjectData _objData) {
@@ -32,11 +31,9 @@ public class BaseState : MonoBehaviour
     public virtual void Awake() {
         // リスポーン地点設定
         respawnPos = transform.position;
+        // 死亡時に旗落とすメソッド呼び出すようにする
+        dieEvent += DropFlag;
     }
-
-
-    // Start処理＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-
 
 
     // ダメージ処理＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
@@ -47,11 +44,18 @@ public class BaseState : MonoBehaviour
     // オブジェクトサイズ毎の最大体力
     int[] maxLifes = new int[] {200, 150, 100};
 
+    // フレンドリーファイア
+    protected bool ff = false;
+
     // ダメージ判定とHP減少
     public bool DecreaseHP(BaseBullet bulletScr) {
         // HPを減らせるかチェック
         if (!stateFlag) return false;
         if (!aliveFlag) return false;
+        // 自分自身か確認
+        if (bulletScr.owner == gameObject) return false;
+        // 同じチームからの攻撃か確認
+        if (!ff && (bulletScr.owner.GetComponent<OffTeam>().m_teamColor == gameObject.GetComponent<OffTeam>().m_teamColor)) return false;
 
         // HPを減らす
         life -= bulletScr.nowDamage * 100 / maxLife;
@@ -140,6 +144,58 @@ public class BaseState : MonoBehaviour
         respawnEvent?.Invoke();
         // 生きているフラグをオンにする
         aliveFlag = true;
+
+    }
+
+
+    // 旗の処理＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+    // 旗の機能があるかフラグ
+    protected bool flagFlag = false;
+    public void SetflagFlag(bool f) { flagFlag = f; }
+
+    // 旗のスクリプト(nullでない場合は旗を所持している)
+    public OffFlag flagScr;
+
+    // 旗を手に入れることができるか確認 ＆ 手に入れる
+    public bool TakeFlag(OffFlag _flag) {
+        // 旗を手に入れることができるか確認
+        if (!flagFlag || !aliveFlag) return false;
+        // 旗を既に所持しているか確認
+        if (flagScr != null) return false;
+
+        // 旗を取得する
+        flagScr = _flag;
+        return true;
+    }
+
+    // 旗を落とす
+    public void DropFlag() {
+        // 旗の機能確認
+        if(!flagFlag)　return;
+        // 旗を所持しているか確認
+        if (flagScr == null) return;
+        // 旗を落とす
+        flagScr.Drop();
+        flagScr = null;
+    }
+
+    // 得点を取得したときに旗を消す
+    public bool DeletFlag() {
+        // 旗の機能確認
+        if (!flagFlag) return false;
+        // 生きているか確認
+        if (!aliveFlag) return false;
+        // 旗を持っているか確認
+        if(flagScr == null) return false;
+
+        
+        // 旗を消す
+        flagScr.Delete();
+        // 旗を捨てる
+        flagScr = null;
+
+        return true;
 
     }
 

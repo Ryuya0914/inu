@@ -42,6 +42,8 @@ GameObject:
   - component: {fileID: 6046014484235219652}
   - component: {fileID: 6046014484235219259}
   - component: {fileID: 6046014484235219258}
+  - component: {fileID: 1710826169184128966}
+  - component: {fileID: 7025231685283811488}
   m_Layer: 21
   m_Name: king1
   m_TagString: Zone_1
@@ -123,6 +125,32 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9999999, y: 8.91439, z: 1}
   m_Center: {x: 0, y: 3.9571943, z: 0}
+--- !u!114 &1710826169184128966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046014484235219257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d53e8f082e0f718499fa1d6adc13022c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flagPoint: 3
+--- !u!114 &7025231685283811488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046014484235219257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2c912f1521a7c74ebf5887ddeba828c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_teamColor: 2
 --- !u!1 &8668181749928471202
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +263,8 @@ MonoBehaviour:
   state: 0
   Mren: {fileID: 8668181749930407010}
   Ccol: {fileID: 5255653337898329440}
+  Bcol: {fileID: 0}
+  under: -3.5
 --- !u!1001 &4071653396537859853
 PrefabInstance:
   m_ObjectHideFlags: 0
