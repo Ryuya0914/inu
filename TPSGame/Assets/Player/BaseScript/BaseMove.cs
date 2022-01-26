@@ -18,11 +18,18 @@ public class BaseMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void Start() {
+    protected void Start() {
         BaseState bs = GetComponent<BaseState>();
         bs.respawnEvent += () => { aliveFlag = true; };
         bs.dieEvent += () => { aliveFlag = false; };
+        GetComponent<BaseTransChange>().transChangeEvent += SetObjData;
     }
+
+    // 変身時＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+    protected virtual void SetObjData(ObjectData od) {
+        return;
+    }
+
 
     // 移動＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 

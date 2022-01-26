@@ -36,7 +36,7 @@ public class AIMovePoint : MonoBehaviour
         }
 
         Gizmos.color = new Color(0.1f, 1.0f, 0.1f);
-        Gizmos.DrawWireSphere(transform.position, 2.0f);
+        Gizmos.DrawWireSphere(transform.position, 1.5f*1.5f);
 
     }
 

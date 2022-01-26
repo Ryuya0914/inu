@@ -15,7 +15,7 @@ public class Leg : MonoBehaviour
 
     // コライダに触れている間
     void OnTriggerStay(Collider col) {
-        if(col.tag == "Ground" || col.tag == "NonObject" || col.tag == "Player" || col.tag == "Object") {
+        if(col.tag == "Ground" || col.tag == "NonObject" || col.tag == "Player" || col.tag == "Object" || col.tag == "AI") {
             if (moveScr != null) {
                 moveScr.isGround = true;
             }

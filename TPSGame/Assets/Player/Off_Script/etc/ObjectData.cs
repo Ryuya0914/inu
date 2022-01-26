@@ -11,7 +11,9 @@ public class ObjectData : ScriptableObject {
 
     // カメラまでの距離
     public Vector3  cameraOffset,   // カメラまでの距離
-                    BulletOffset,   // 弾を発射する位置
-                AImoveLayPos,
-                AImoveLayScale;
+                    BulletOffset;   // 弾を発射する位置
+    // AI用Rayのデータ
+    public float[] AImoveRayLength;
+    public Vector3[]    AImoveRayPos,
+                        AImoveRaySize;
 }
